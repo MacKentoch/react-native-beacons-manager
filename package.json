@@ -1,0 +1,46 @@
+{
+  "name": "react-native-beacons-manager",
+  "version": "1.0.0",
+  "description": "React-Native library for detecting beacons (iOS and Android)",
+  "keywords": [
+    "react-native",
+    "react-component",
+    "ios",
+    "ibeacon",
+    "beacon",
+    "beacons",
+    "android",
+    "ibeacons",
+    "altbeacons"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MacKentoch/react-native-ibeacons.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MacKentoch/react-native-ibeacons/issues"
+  },
+  "homepage": "https://github.com/MacKentoch/react-native-ibeacons#readme",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Erwan DATIN (http://www.erwan-datin.com)",
+  "license": "MIT",
+  "nativePackage": true,
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.15.0",
+    "eslint-plugin-react": "^6.10.0",
+    "eslint-plugin-react-native": "^2.2.1",
+    "react": "^15.4.2",
+    "react-native": "^0.41.2"
+  },
+  "peerDependencies": {
+    "react": ">=15.4.2",
+    "react-native": ">=0.41.2"
+  }
+}

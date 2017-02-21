@@ -17,7 +17,7 @@
    View,
    DeviceEventEmitter
  }                     from 'react-native';
- import Beacons        from 'react-native-ibeacons';
+ import Beacons        from 'react-native-beacons-manager';
 
  /**
   * uuid of YOUR BEACON (change to yours)

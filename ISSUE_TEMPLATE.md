@@ -1,5 +1,5 @@
 ### Version
-0.2.2
+1.0.1
 
 ### Platform
 iOS | Android

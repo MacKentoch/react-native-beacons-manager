@@ -17,7 +17,7 @@
    ListView,
    DeviceEventEmitter
  }                             from 'react-native';
- import Beacons                from 'react-native-ibeacons';
+ import Beacons                from 'react-native-beacons-manager';
  import BluetoothState         from 'react-native-bluetooth-state';
 
 /**

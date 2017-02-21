@@ -1,10 +1,10 @@
-[![npm](https://img.shields.io/npm/v/npm.svg)](https://github.com/MacKentoch/react-native-ibeacons)
+[![npm (scoped)](https://img.shields.io/npm/v/@cycle/core.svg)](https://github.com/MacKentoch/react-native-beacons-manager)
 
-# react-native-ibeacons
+# react-native-beacons-manager
 
 ![logo](./images/RN-iBeacon.png)
 
-`react-native-ibeacons`: add beacon technology in your React Native application for both iOS and Android.
+`react-native-beacons-manager`: add beacon technology in your React Native application for both iOS and Android.
 
 This repository is born to keep alive and up to date these 2 original awesome:
 - [ibeacon for android](https://github.com/mmazzarolo/react-native-beacons-android)
@@ -29,16 +29,16 @@ If you want to know more about just have a look at [my medium article](https://m
 ### 1. get modules
 *via npm:*
 ```javascript:
-npm install react-native-ibeacons
+npm install react-native-beacons-manager
 ```
 *or via yarn:*
 ```javascript:
-yarn install react-native-ibeacons
+yarn install react-native-beacons-manager
 ```
 ### 2. link to your application
 
 ```javascript
-react-native link react-native-ibeacons
+react-native link react-native-beacons-manager
 ```
 ### 3.a configuration specific to iOS
 
@@ -62,7 +62,7 @@ Nothing (lucky Android :smile:).
 var React = require('react-native');
 var {DeviceEventEmitter} = React;
 
-var Beacons = require('react-native-ibeacons');
+var Beacons = require('react-native-beacons-manager');
 
 // Define a region which can be identifier + uuid,
 // identifier + uuid + major or identifier + uuid + major + minor
@@ -128,7 +128,7 @@ var subscription = DeviceEventEmitter.addListener(
 
 ```javascript
 import { DeviceEventEmitter } from 'react-native'
-import Beacons from 'react-native-ibeacons'
+import Beacons from 'react-native-beacons-manager'
 
 // Tells the library to detect iBeacons
 Beacons.detectIBeacons()

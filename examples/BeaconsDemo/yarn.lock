@@ -2932,9 +2932,9 @@ react-deep-force-update@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.0.1.tgz#f911b5be1d2a6fe387507dd6e9a767aa2924b4c7"
 
-react-native-beacons-manager@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-beacons-manager/-/react-native-beacons-manager-1.0.0.tgz#355d52bb8fe251e64dcf2525c44ff75f1501ad06"
+react-native-beacons-manager@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-beacons-manager/-/react-native-beacons-manager-1.0.1.tgz#15428d116aa8bbf8d6395042128ce1dc2eeebff7"
 
 react-native-bluetooth-state@^2.0.0:
   version "2.0.0"

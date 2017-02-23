@@ -59,15 +59,13 @@ Nothing (lucky Android :smile:).
 #### Simple example
 
 ```javascript
-var React = require('react-native');
-var {DeviceEventEmitter} = React;
-
-var Beacons = require('react-native-beacons-manager');
+import { DeviceEventEmitter } from 'react-native'
+import Beacons from 'react-native-beacons-manager'
 
 // Define a region which can be identifier + uuid,
 // identifier + uuid + major or identifier + uuid + major + minor
 // (minor and major properties are numbers)
-var region = {
+const region = {
     identifier: 'Estimotes',
     uuid: 'B9407F30-F5F8-466E-AFF9-25556B57FE6D'
 };
@@ -81,7 +79,7 @@ Beacons.startRangingBeaconsInRegion(region);
 Beacons.startUpdatingLocation();
 
 // Listen for beacon changes
-var subscription = DeviceEventEmitter.addListener(
+const subscription = DeviceEventEmitter.addListener(
   'beaconsDidRange',
   (data) => {
     // data.region - The current region

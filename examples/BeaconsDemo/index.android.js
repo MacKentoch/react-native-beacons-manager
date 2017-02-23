@@ -47,16 +47,25 @@
      Beacons.detectIBeacons();
 
      const uuid = this.state.uuidRef;
+    //  Beacons
+    //    .startRangingBeaconsInRegion(
+    //      'REGION1',
+    //      uuid
+    //    )
+    //    .then(
+    //      () => console.log('Beacons ranging started succesfully')
+    //    )
+    //    .catch(
+    //      error => console.log(`Beacons ranging not started, error: ${error}`)
+    //    );
+
      Beacons
-       .startRangingBeaconsInRegion(
-         'REGION1',
-         uuid
-       )
+       .startMonitoringForRegion({identifier: 'test', uuid})
        .then(
-         () => console.log('Beacons ranging started succesfully')
+         () => console.log('Beacons monitoring started succesfully')
        )
        .catch(
-         error => console.log(`Beacons ranging not started, error: ${error}`)
+         error => console.log(`Beacons monitoring not started, error: ${error}`)
        );
    }
 

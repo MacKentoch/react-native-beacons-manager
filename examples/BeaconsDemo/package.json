@@ -1,6 +1,6 @@
 {
   "name": "BeaconsDemo",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -9,7 +9,7 @@
   "dependencies": {
     "react": "~15.4.0",
     "react-native": "0.41.2",
-    "react-native-beacons-manager": "^1.0.0",
+    "react-native-beacons-manager": "^1.0.1",
     "react-native-bluetooth-state": "^2.0.0",
     "react-native-ibeacons": "^0.3.0"
   },

@@ -138,8 +138,13 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
     @Override
     public void onBeaconServiceConnect() {
         Log.v(LOG_TAG, "onBeaconServiceConnect");
-        mBeaconManager.setMonitorNotifier(mMonitorNotifier);
-        mBeaconManager.setRangeNotifier(mRangeNotifier);
+
+        // deprecated since v2.9 (see github: https://github.com/AltBeacon/android-beacon-library/releases/tag/2.9)
+        // mBeaconManager.setMonitorNotifier(mMonitorNotifier);
+        // mBeaconManager.setRangeNotifier(mRangeNotifier);
+
+        mBeaconManager.addMonitorNotifier(mMonitorNotifier);
+        mBeaconManager.addRangeNotifier(mRangeNotifier);
     }
 
     @Override
@@ -162,10 +167,6 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
      **********************************************************************************************/
     @ReactMethod
     public void startMonitoring(String regionId, String beaconUuid, int minor, int major, Callback resolve, Callback reject) {
-        // minor and minor are optionals
-        // minor = minor != null ? minor : 0;
-        // major = major != null ? major : 0;
-
         Log.d(LOG_TAG, "startMonitoring, monitoringRegionId: " + regionId + ", monitoringBeaconUuid: " + beaconUuid + ", minor: " + minor + ", major: " + major);
         try {
             Region region = createRegion(regionId, beaconUuid, minor, major);

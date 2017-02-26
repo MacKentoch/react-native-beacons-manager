@@ -47,26 +47,18 @@
      Beacons.detectIBeacons();
 
      const uuid = this.state.uuidRef;
-    //  Beacons
-    //    .startRangingBeaconsInRegion(
-    //      'REGION1',
-    //      uuid
-    //    )
-    //    .then(
-    //      () => console.log('Beacons ranging started succesfully')
-    //    )
-    //    .catch(
-    //      error => console.log(`Beacons ranging not started, error: ${error}`)
-    //    );
+     Beacons
+       .startRangingBeaconsInRegion(
+         'REGION1',
+         uuid
+       )
+       .then(() => console.log('Beacons ranging started succesfully'))
+       .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
 
      Beacons
-       .startMonitoringForRegion({identifier: 'test', uuid})
-       .then(
-         () => console.log('Beacons monitoring started succesfully')
-       )
-       .catch(
-         error => console.log(`Beacons monitoring not started, error: ${error}`)
-       );
+       .startMonitoringForRegion({identifier: '123456', uuid})
+       .then(() => console.log('Beacons monitoring started succesfully'))
+       .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
    }
 
    componentDidMount() {
@@ -74,18 +66,49 @@
      // component state aware here - attach events
      //
      // Ranging:
-     this.beaconsDidRange = DeviceEventEmitter.addListener(
+     DeviceEventEmitter.addListener(
        'beaconsDidRange',
        (data) => {
-         this.setState({
-           dataSource: this.state.dataSource.cloneWithRows(data.beacons)
-         });
+         console.log('beaconsDidRange data: ', data);
+         this.setState({ dataSource: this.state.dataSource.cloneWithRows(data.beacons) });
+       }
+     );
+
+    // monitoring:
+     DeviceEventEmitter.addListener(
+       'regionDidEnter',
+       (data) => {
+         console.log('monitoring - regionDidEnter data: ', data);
+       }
+     );
+
+     DeviceEventEmitter.addListener(
+       'regionDidExit',
+       (data) => {
+         console.log('monitoring - regionDidExit data: ', data);
        }
      );
    }
 
    componentWillUnMount(){
-     this.beaconsDidRange = null;
+     const uuid = this.state.uuidRef;
+
+     Beacons
+      .stopRangingBeaconsInRegion(
+        'REGION1',
+        uuid
+      )
+      .then(() => console.log('Beacons ranging stopped succesfully'))
+      .catch(error => console.log(`Beacons ranging not stopped, error: ${error}`));
+
+
+     Beacons
+       .stopMonitoringForRegion({identifier: '123456', uuid})
+       .then(() => console.log('Beacons monitoring stopped succesfully'))
+       .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
+
+
+    DeviceEventEmitter.remove();
    }
 
    render() {

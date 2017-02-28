@@ -47,6 +47,7 @@
      Beacons.detectIBeacons();
 
      const uuid = this.state.uuidRef;
+
      Beacons
        .startRangingBeaconsInRegion(
          'REGION1',

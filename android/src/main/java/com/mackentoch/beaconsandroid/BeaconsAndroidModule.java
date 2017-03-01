@@ -214,8 +214,8 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
         Region region = createRegion(
           regionId,
           beaconUuid,
-          String.valueOf(minor),
-          String.valueOf(major)
+          String.valueOf(minor) != "-1" ? String.valueOf(minor) : "",
+          String.valueOf(major) != "-1" ? String.valueOf(major) : ""
           // minor,
           // major
         );

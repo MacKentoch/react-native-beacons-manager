@@ -83,7 +83,7 @@
        'regionDidEnter',
        ({ identifer, uuid, minor, major }) => {
          console.log('monitoring - regionDidEnter data: ', { identifer, uuid, minor, major });
-        //  this.setState({ regionEnterDatasource: this.state.rangingDataSource.cloneWithRows({ identifer, uuid, minor, major }) });
+        // this.setState({ regionEnterDatasource: this.state.rangingDataSource.cloneWithRows({ identifer, uuid, minor, major }) });
        }
      );
 
@@ -91,13 +91,13 @@
        'regionDidExit',
        ({ identifer, uuid, minor, major }) => {
          console.log('monitoring - regionDidExit data: ', { identifer, uuid, minor, major });
-        //  this.setState({ regionExitDatasource: this.state.rangingDataSource.cloneWithRows({ identifer, uuid, minor, major }) });
+        // this.setState({ regionExitDatasource: this.state.rangingDataSource.cloneWithRows({ identifer, uuid, minor, major }) });
        }
      );
    }
 
    componentWillUnMount(){
-     const uuid = this.state.uuidRef;
+     const { uuid } = this.state;
 
      Beacons
       .stopRangingBeaconsInRegion(
@@ -175,7 +175,8 @@
      );
    }
 
-   renderMonitoringEnterRow = ({ identifier, uuid, minor, major }) => {
+   renderMonitoringEnterRow = (row, { identifier, uuid, minor, major }) => {
+     console.log('row: ', row);
      return (
        <View style={styles.row}>
          <Text style={styles.smallText}>

@@ -18,6 +18,7 @@
    DeviceEventEmitter
  }                     from 'react-native';
  import Beacons        from 'react-native-beacons-manager';
+ import moment         from 'moment';
 
  /**
   * uuid of YOUR BEACON (change to yours)
@@ -28,15 +29,17 @@
  class BeaconsDemo extends Component {
    constructor(props) {
      super(props);
-     // Create our dataSource which will be displayed in the ListView
-     var ds = new ListView.DataSource({
-       rowHasChanged: (r1, r2) => r1 !== r2 }
-     );
+
      this.state = {
        // region information
-       uuidRef: UUID,
-       // React Native ListView datasource initialization
-       dataSource: ds.cloneWithRows([])
+       uuid: UUID,
+       // monotoring identifier:
+       identifier: '123456',
+
+       // React Native ListViews datasources initialization
+       rangingDataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
+       regionEnterDatasource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
+       regionExitDatasource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([])
      };
    }
 
@@ -45,8 +48,7 @@
      // ONLY non component state aware here in componentWillMount
      //
      Beacons.detectIBeacons();
-
-     const uuid = this.state.uuidRef;
+     const { uuid, identifier } = this.state;
 
      Beacons
        .startRangingBeaconsInRegion(
@@ -56,8 +58,9 @@
        .then(() => console.log('Beacons ranging started succesfully'))
        .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
 
+
      Beacons
-       .startMonitoringForRegion({identifier: '123456', uuid})
+       .startMonitoringForRegion({ identifier, uuid }) // minor and major are null here
        .then(() => console.log('Beacons monitoring started succesfully'))
        .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
    }
@@ -71,22 +74,24 @@
        'beaconsDidRange',
        (data) => {
          console.log('beaconsDidRange data: ', data);
-         this.setState({ dataSource: this.state.dataSource.cloneWithRows(data.beacons) });
+         this.setState({ rangingDataSource: this.state.rangingDataSource.cloneWithRows(data.beacons) });
        }
      );
 
     // monitoring:
      DeviceEventEmitter.addListener(
        'regionDidEnter',
-       (data) => {
-         console.log('monitoring - regionDidEnter data: ', data);
+       ({ identifer, uuid, minor, major }) => {
+         console.log('monitoring - regionDidEnter data: ', { identifer, uuid, minor, major });
+        //  this.setState({ regionEnterDatasource: this.state.rangingDataSource.cloneWithRows({ identifer, uuid, minor, major }) });
        }
      );
 
      DeviceEventEmitter.addListener(
        'regionDidExit',
-       (data) => {
-         console.log('monitoring - regionDidExit data: ', data);
+       ({ identifer, uuid, minor, major }) => {
+         console.log('monitoring - regionDidExit data: ', { identifer, uuid, minor, major });
+        //  this.setState({ regionExitDatasource: this.state.rangingDataSource.cloneWithRows({ identifer, uuid, minor, major }) });
        }
      );
    }
@@ -108,27 +113,44 @@
        .then(() => console.log('Beacons monitoring stopped succesfully'))
        .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
 
-
     DeviceEventEmitter.remove();
    }
 
    render() {
-     const { dataSource } =  this.state;
+     const { rangingDataSource, regionEnterDatasource, regionExitDatasource } =  this.state;
      return (
        <View style={styles.container}>
          <Text style={styles.headline}>
-           All beacons in the area
+           ranging beacons in the area:
          </Text>
          <ListView
-           dataSource={ dataSource }
+           dataSource={ rangingDataSource }
            enableEmptySections={ true }
-           renderRow={(rowData) => this.renderRow(rowData)}
+           renderRow={this.renderRangingRow}
+         />
+
+         <Text style={styles.headline}>
+           monitoring enter information:
+         </Text>
+         <ListView
+           dataSource={ regionEnterDatasource }
+           enableEmptySections={ true }
+           renderRow={this.renderMonitoringEnterRow}
+         />
+
+         <Text style={styles.headline}>
+           monitoring exit information:
+         </Text>
+         <ListView
+           dataSource={ regionExitDatasource }
+           enableEmptySections={ true }
+           renderRow={this.renderMonitoringEnterRow}
          />
        </View>
      );
    }
 
-   renderRow(rowData) {
+   renderRangingRow = (rowData) => {
      return (
        <View style={styles.row}>
          <Text style={styles.smallText}>
@@ -148,6 +170,44 @@
          </Text>
          <Text>
            Distance: {rowData.accuracy ? rowData.accuracy.toFixed(2) : 'NA'}m
+         </Text>
+       </View>
+     );
+   }
+
+   renderMonitoringEnterRow = ({ identifier, uuid, minor, major }) => {
+     return (
+       <View style={styles.row}>
+         <Text style={styles.smallText}>
+           Identifier: {identifier ? identifier : 'NA'}
+         </Text>
+         <Text style={styles.smallText}>
+           UUID: {uuid ? uuid  : 'NA'}
+         </Text>
+         <Text style={styles.smallText}>
+           Major: {major ? major : ''}
+         </Text>
+         <Text style={styles.smallText}>
+           Minor: { minor ? minor : ''}
+         </Text>
+       </View>
+     );
+   }
+
+   renderMonitoringLeaveRow = ({ identifier, uuid, minor, major }) => {
+     return (
+       <View style={styles.row}>
+         <Text style={styles.smallText}>
+           Identifier: {identifier ? identifier : 'NA'}
+         </Text>
+         <Text style={styles.smallText}>
+           UUID: {uuid ? uuid  : 'NA'}
+         </Text>
+         <Text style={styles.smallText}>
+           Major: {major ? major : ''}
+         </Text>
+         <Text style={styles.smallText}>
+           Minor: { minor ? minor : ''}
          </Text>
        </View>
      );

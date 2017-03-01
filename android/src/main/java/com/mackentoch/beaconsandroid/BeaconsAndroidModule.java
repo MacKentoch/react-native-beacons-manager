@@ -169,7 +169,12 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
     public void startMonitoring(String regionId, String beaconUuid, int minor, int major, Callback resolve, Callback reject) {
         Log.d(LOG_TAG, "startMonitoring, monitoringRegionId: " + regionId + ", monitoringBeaconUuid: " + beaconUuid + ", minor: " + minor + ", major: " + major);
         try {
-            Region region = createRegion(regionId, beaconUuid, minor, major);
+            Region region = createRegion(
+              regionId,
+              beaconUuid,
+              String.valueOf(minor) != "-1" ? String.valueOf(minor) : "",
+              String.valueOf(major) != "-1" ? String.valueOf(major) : ""
+            );
             mBeaconManager.startMonitoringBeaconsInRegion(region);
             resolve.invoke();
         } catch (Exception e) {
@@ -299,8 +304,13 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
         return new Region(regionId, id1, null, null);
     }
 
-    private Region createRegion(String regionId, String beaconUuid, int minor, int major) {
+    private Region createRegion(String regionId, String beaconUuid, String minor, String major) {
         Identifier id1 = (beaconUuid == null) ? null : Identifier.parse(beaconUuid);
-        return new Region(regionId, id1, Identifier.fromInt(major), Identifier.fromInt(minor));
+        return new Region(
+          regionId,
+          id1,
+          major.length() > 0 ? Identifier.parse(major) : null,
+          minor.length() > 0 ? Identifier.parse(minor) : null
+        );
     }
 }

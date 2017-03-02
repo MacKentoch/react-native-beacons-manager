@@ -13,6 +13,7 @@
    AppRegistry,
    StyleSheet,
    Text,
+   ScrollView,
    ListView,
    View,
    DeviceEventEmitter
@@ -25,6 +26,7 @@
   * @type {String} uuid
   */
  const UUID = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
+ const TIME_FORMAT = 'MM/DD/YYYY HH:MM:SS';
 
  class BeaconsDemo extends Component {
    constructor(props) {
@@ -81,23 +83,25 @@
     // monitoring:
      DeviceEventEmitter.addListener(
        'regionDidEnter',
-       ({ identifer, uuid, minor, major }) => {
-         console.log('monitoring - regionDidEnter data: ', { identifer, uuid, minor, major });
-        // this.setState({ regionEnterDatasource: this.state.rangingDataSource.cloneWithRows({ identifer, uuid, minor, major }) });
+       ({ identifier, uuid, minor, major }) => {
+         console.log('monitoring - regionDidEnter data: ', { identifier, uuid, minor, major });
+         const time = moment().format(TIME_FORMAT);
+         this.setState({ regionEnterDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier, uuid, minor, major, time }]) });
        }
      );
 
      DeviceEventEmitter.addListener(
        'regionDidExit',
-       ({ identifer, uuid, minor, major }) => {
-         console.log('monitoring - regionDidExit data: ', { identifer, uuid, minor, major });
-        // this.setState({ regionExitDatasource: this.state.rangingDataSource.cloneWithRows({ identifer, uuid, minor, major }) });
+       ({ identifier, uuid, minor, major }) => {
+         console.log('monitoring - regionDidExit data: ', { identifier, uuid, minor, major });
+         const time = moment().format(TIME_FORMAT);
+        this.setState({ regionExitDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier, uuid, minor, major, time }]) });
        }
      );
    }
 
    componentWillUnMount(){
-     const { uuid } = this.state;
+     const { uuid, identifier } = this.state;
 
      Beacons
       .stopRangingBeaconsInRegion(
@@ -109,7 +113,7 @@
 
 
      Beacons
-       .stopMonitoringForRegion({identifier: '123456', uuid})
+       .stopMonitoringForRegion({identifier, uuid})
        .then(() => console.log('Beacons monitoring stopped succesfully'))
        .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
 
@@ -119,34 +123,36 @@
    render() {
      const { rangingDataSource, regionEnterDatasource, regionExitDatasource } =  this.state;
      return (
-       <View style={styles.container}>
-         <Text style={styles.headline}>
-           ranging beacons in the area:
-         </Text>
-         <ListView
-           dataSource={ rangingDataSource }
-           enableEmptySections={ true }
-           renderRow={this.renderRangingRow}
-         />
+       <ScrollView style={styles.scrollview}>
+         <View style={styles.container}>
+           <Text style={styles.headline}>
+             ranging beacons in the area:
+           </Text>
+           <ListView
+             dataSource={ rangingDataSource }
+             enableEmptySections={ true }
+             renderRow={this.renderRangingRow}
+           />
 
-         <Text style={styles.headline}>
-           monitoring enter information:
-         </Text>
-         <ListView
-           dataSource={ regionEnterDatasource }
-           enableEmptySections={ true }
-           renderRow={this.renderMonitoringEnterRow}
-         />
+           <Text style={styles.headline}>
+             monitoring enter information:
+           </Text>
+           <ListView
+             dataSource={ regionEnterDatasource }
+             enableEmptySections={ true }
+             renderRow={this.renderMonitoringEnterRow}
+           />
 
-         <Text style={styles.headline}>
-           monitoring exit information:
-         </Text>
-         <ListView
-           dataSource={ regionExitDatasource }
-           enableEmptySections={ true }
-           renderRow={this.renderMonitoringEnterRow}
-         />
-       </View>
+           <Text style={styles.headline}>
+             monitoring exit information:
+           </Text>
+           <ListView
+             dataSource={ regionExitDatasource }
+             enableEmptySections={ true }
+             renderRow={this.renderMonitoringEnterRow}
+           />
+         </View>
+       </ScrollView>
      );
    }
 
@@ -175,8 +181,7 @@
      );
    }
 
-   renderMonitoringEnterRow = (row, { identifier, uuid, minor, major }) => {
-     console.log('row: ', row);
+   renderMonitoringEnterRow = ({ identifier, uuid, minor, major, time }) => {
      return (
        <View style={styles.row}>
          <Text style={styles.smallText}>
@@ -190,12 +195,15 @@
          </Text>
          <Text style={styles.smallText}>
            Minor: { minor ? minor : ''}
+         </Text>
+         <Text style={styles.smallText}>
+           time: { time ? time : 'NA'}
          </Text>
        </View>
      );
    }
 
-   renderMonitoringLeaveRow = ({ identifier, uuid, minor, major }) => {
+   renderMonitoringLeaveRow = ({ identifier, uuid, minor, major, time }) => {
      return (
        <View style={styles.row}>
          <Text style={styles.smallText}>
@@ -209,6 +217,9 @@
          </Text>
          <Text style={styles.smallText}>
            Minor: { minor ? minor : ''}
+         </Text>
+         <Text style={styles.smallText}>
+           time: { time ? time : 'NA'}
          </Text>
        </View>
      );
@@ -216,6 +227,9 @@
  }
 
  const styles = StyleSheet.create({
+   scrollview: {
+     flex: 1
+   },
    container: {
      flex: 1,
      paddingTop: 60,

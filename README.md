@@ -1,4 +1,5 @@
-[![npm (scoped)](https://img.shields.io/npm/v/@cycle/core.svg)](https://github.com/MacKentoch/react-native-beacons-manager)
+[![npm](https://img.shields.io/npm/l/express.svg)](https://github.com/MacKentoch/easyFormGenerator)
+[![npm](https://img.shields.io/npm/v/npm.svg)](https://github.com/MacKentoch/easyFormGenerator)
 
 # react-native-beacons-manager
 

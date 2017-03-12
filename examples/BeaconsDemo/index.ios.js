@@ -25,6 +25,7 @@
  * @type {String} uuid
  */
 const UUID = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
+const IDENTIFIER = '123456';
 
  class BeaconsDemo extends Component {
    constructor(props) {
@@ -36,7 +37,7 @@ const UUID = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
      this.state = {
        bluetoothState: '',
        // region information
-       identifier: 'GemTot for iOS',
+       identifier: IDENTIFIER,
        uuid: UUID,
        // React Native ListView datasource initialization
        dataSource: ds.cloneWithRows([])
@@ -44,6 +45,7 @@ const UUID = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
    }
 
    componentWillMount(){
+     const { identifier, uuid } = this.state;
      //
      // ONLY non component state aware here in componentWillMount
      //
@@ -52,10 +54,7 @@ const UUID = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
      // Define a region which can be identifier + uuid,
      // identifier + uuid + major or identifier + uuid + major + minor
      // (minor and major properties are numbers)
-     const region = {
-       identifier: this.state.identifier,
-       uuid: this.state.uuid
-     };
+     const region = { identifier, uuid };
      // Range for beacons inside the region
      Beacons.startRangingBeaconsInRegion(region);
      Beacons.startUpdatingLocation();

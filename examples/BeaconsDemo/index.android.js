@@ -26,6 +26,7 @@
   * @type {String} uuid
   */
  const UUID = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
+ const IDENTIFIER = '123456';
  const TIME_FORMAT = 'MM/DD/YYYY HH:MM:SS';
 
  class BeaconsDemo extends Component {
@@ -36,12 +37,11 @@
        // region information
        uuid: UUID,
        // monotoring identifier:
-       identifier: '123456',
-
+       identifier: IDENTIFIER,
        // React Native ListViews datasources initialization
-       rangingDataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
+       rangingDataSource:     new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
        regionEnterDatasource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
-       regionExitDatasource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([])
+       regionExitDatasource:  new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([])
      };
    }
 
@@ -53,13 +53,9 @@
      const { uuid, identifier } = this.state;
 
      Beacons
-       .startRangingBeaconsInRegion(
-         'REGION1',
-         uuid
-       )
+       .startRangingBeaconsInRegion(identifier, uuid)
        .then(() => console.log('Beacons ranging started succesfully'))
        .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
-
 
      Beacons
        .startMonitoringForRegion({ identifier, uuid }) // minor and major are null here
@@ -104,13 +100,9 @@
      const { uuid, identifier } = this.state;
 
      Beacons
-      .stopRangingBeaconsInRegion(
-        'REGION1',
-        uuid
-      )
+      .stopRangingBeaconsInRegion(identifier, uuid)
       .then(() => console.log('Beacons ranging stopped succesfully'))
       .catch(error => console.log(`Beacons ranging not stopped, error: ${error}`));
-
 
      Beacons
        .stopMonitoringForRegion({identifier, uuid})

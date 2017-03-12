@@ -52,6 +52,9 @@ react-native link react-native-beacons-manager
 
 Nothing (lucky Android :smile:).
 
+Just don't forget to activate
+- Bluetooth service (*all android version*)
+- Location service (*android < 7: beacon detection won't work on android 6 if location service is off*)
 
 ## 4 usage
 

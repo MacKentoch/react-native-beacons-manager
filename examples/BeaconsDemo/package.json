@@ -11,8 +11,7 @@
     "react": "~15.4.0",
     "react-native": "0.41.2",
     "react-native-beacons-manager": "git+https://github.com/MacKentoch/react-native-beacons-manager.git",
-    "react-native-bluetooth-state": "^2.0.0",
-    "react-native-ibeacons": "^0.3.0"
+    "react-native-bluetooth-state": "^2.0.0"
   },
   "devDependencies": {
     "babel-jest": "18.0.0",

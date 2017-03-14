@@ -71,19 +71,19 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = BeaconsDemo;
 		};
+		0D553BF31E782EF8007F27E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0D553BD51E782EF8007F27E4 /* RNiBeacon.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0D03EBDE1E56B1E700C55E6B;
+			remoteInfo = RNiBeacon;
+		};
 		0D57CEF81E578A2E00D05C64 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6399F373E6CA4CF98A399ADB /* RNBluetoothState.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNBluetoothState;
-		};
-		0D57CF231E578A8100D05C64 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AD2AA2E7675A47B5873D1F01 /* RNiBeacon.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0D03EBDE1E56B1E700C55E6B;
-			remoteInfo = RNiBeacon;
 		};
 		139105C01AF99BAD00B5F7CC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -237,6 +237,7 @@
 		00E356EE1AD99517003FC87E /* BeaconsDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeaconsDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* BeaconsDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BeaconsDemoTests.m; sourceTree = "<group>"; };
+		0D553BD51E782EF8007F27E4 /* RNiBeacon.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNiBeacon.xcodeproj; path = "../node_modules/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon.xcodeproj"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* BeaconsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeaconsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -252,7 +253,6 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		910612FD619E4092B596FC93 /* libRNiBeacon.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNiBeacon.a; sourceTree = "<group>"; };
-		AD2AA2E7675A47B5873D1F01 /* RNiBeacon.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNiBeacon.xcodeproj; path = "../node_modules/react-native-ibeacons/ios/RNiBeacon/RNiBeacon.xcodeproj"; sourceTree = "<group>"; };
 		DE1DAA09833A4BD7A378D016 /* libRNBluetoothState.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBluetoothState.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -347,18 +347,18 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		0D57CEDC1E578A2E00D05C64 /* Products */ = {
+		0D553BD61E782EF8007F27E4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0D57CEF91E578A2E00D05C64 /* libRNBluetoothState.a */,
+				0D553BF41E782EF8007F27E4 /* libRNiBeacon.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		0D57CF061E578A8100D05C64 /* Products */ = {
+		0D57CEDC1E578A2E00D05C64 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0D57CF241E578A8100D05C64 /* libRNiBeacon.a */,
+				0D57CEF91E578A2E00D05C64 /* libRNBluetoothState.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -431,6 +431,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				0D553BD51E782EF8007F27E4 /* RNiBeacon.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -443,7 +444,6 @@
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				6399F373E6CA4CF98A399ADB /* RNBluetoothState.xcodeproj */,
-				AD2AA2E7675A47B5873D1F01 /* RNiBeacon.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -602,8 +602,8 @@
 					ProjectRef = 6399F373E6CA4CF98A399ADB /* RNBluetoothState.xcodeproj */;
 				},
 				{
-					ProductGroup = 0D57CF061E578A8100D05C64 /* Products */;
-					ProjectRef = AD2AA2E7675A47B5873D1F01 /* RNiBeacon.xcodeproj */;
+					ProductGroup = 0D553BD61E782EF8007F27E4 /* Products */;
+					ProjectRef = 0D553BD51E782EF8007F27E4 /* RNiBeacon.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -650,18 +650,18 @@
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		0D553BF41E782EF8007F27E4 /* libRNiBeacon.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNiBeacon.a;
+			remoteRef = 0D553BF31E782EF8007F27E4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		0D57CEF91E578A2E00D05C64 /* libRNBluetoothState.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNBluetoothState.a;
 			remoteRef = 0D57CEF81E578A2E00D05C64 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0D57CF241E578A8100D05C64 /* libRNiBeacon.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNiBeacon.a;
-			remoteRef = 0D57CF231E578A8100D05C64 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		139105C11AF99BAD00B5F7CC /* libRCTSettings.a */ = {

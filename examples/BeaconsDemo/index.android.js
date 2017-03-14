@@ -36,7 +36,6 @@
      this.state = {
        // region information
        uuid: UUID,
-       // monotoring identifier:
        identifier: IDENTIFIER,
        // React Native ListViews datasources initialization
        rangingDataSource:     new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
@@ -50,8 +49,13 @@
      // ONLY non component state aware here in componentWillMount
      //
      Beacons.detectIBeacons();
-     const { uuid, identifier } = this.state;
+     const { identifier, uuid } = this.state;
+     //
+     // ONLY non component state aware here in componentWillMount
+     //
 
+     // TO FIX (In lib): "startRangingBeaconsInRegion" should take an object as parameter to make it uniform with iOS
+     // NOTE: needs to take either object or like now multiple parameters to avoid users breaking changes
      Beacons
        .startRangingBeaconsInRegion(identifier, uuid)
        .then(() => console.log('Beacons ranging started succesfully'))
@@ -67,7 +71,7 @@
      //
      // component state aware here - attach events
      //
-     // Ranging:
+     // Ranging: Listen for beacon changes
      DeviceEventEmitter.addListener(
        'beaconsDidRange',
        (data) => {
@@ -109,11 +113,13 @@
        .then(() => console.log('Beacons monitoring stopped succesfully'))
        .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
 
-    DeviceEventEmitter.remove();
+     // remove all listeners in a row
+     DeviceEventEmitter.remove();
    }
 
    render() {
      const { rangingDataSource, regionEnterDatasource, regionExitDatasource } =  this.state;
+
      return (
        <ScrollView style={styles.scrollview}>
          <View style={styles.container}>
@@ -141,7 +147,7 @@
            <ListView
              dataSource={ regionExitDatasource }
              enableEmptySections={ true }
-             renderRow={this.renderMonitoringEnterRow}
+             renderRow={this.renderMonitoringLeaveRow}
            />
          </View>
        </ScrollView>
@@ -216,6 +222,7 @@
        </View>
      );
    }
+
  }
 
  const styles = StyleSheet.create({

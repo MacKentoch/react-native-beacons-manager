@@ -169,7 +169,26 @@ DeviceEventEmitter.addListener('beaconsDidRange', (data) => {
 | **stopRangingBeaconsInRegion(regionId: string, beaconsUUID: string): promise**                    | Stops the range scan for beacons.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
 
+## TODO:
+**Standardization of iOS and android to make libray more coherent:**
+
+- **iOS**
+  - [ ] `startRangingBeaconsInRegion` and `startMonitoringForRegion` should return promises like android
+
+- **android**
+  - [ ] `startRangingBeaconsInRegion` should accept an object like iOS and other methods (won't prevent from accepting current parameters: not to break existing)
+  - [ ] add support to Eddystone
+
+**Improvements or new feature:**
+
+- **iOS**
+  - [ ] add support to Eddystone
+- **android**
+  - [ ] add support to Eddystone
+
+
 ## license
+
 The MIT License (MIT)
 
 Copyright (c) 2017 Erwan DATIN

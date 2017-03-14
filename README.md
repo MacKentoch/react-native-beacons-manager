@@ -170,14 +170,13 @@ DeviceEventEmitter.addListener('beaconsDidRange', (data) => {
 
 
 ## TODO:
-**Standardization of iOS and android to make libray more coherent:**
+**Standardization of iOS and android to make library more coherent:**
 
 - **iOS**
   - [ ] `startRangingBeaconsInRegion` and `startMonitoringForRegion` should return promises like android
 
 - **android**
   - [ ] `startRangingBeaconsInRegion` should accept an object like iOS and other methods (won't prevent from accepting current parameters: not to break existing)
-  - [ ] add support to Eddystone
 
 **Improvements or new feature:**
 

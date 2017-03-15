@@ -52,15 +52,22 @@ class BeaconsDemo extends Component {
    //
    // ONLY non component state aware here in componentWillMount
    //
-   // Request for authorization while the app is open
-   Beacons.requestWhenInUseAuthorization();
+
+
+   // Choice 1: Request for authorization while the app is open
+   // Beacons.requestWhenInUseAuthorization();
+
+   // Choice 2: Request for permanent authorization:
+   Beacons.requestAlwaysAuthorization();
+
 
    // Define a region which can be identifier + uuid,
    // identifier + uuid + major or identifier + uuid + major + minor
    // (minor and major properties are numbers)
    const region = { identifier, uuid };
    // Range for beacons inside the region
-   Beacons.startRangingBeaconsInRegion(region);
+  //  Beacons.startRangingBeaconsInRegion(region);
+   
    // Monitor for Beacons
    Beacons.startMonitoringForRegion(region);
 

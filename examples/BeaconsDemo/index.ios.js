@@ -67,7 +67,7 @@ class BeaconsDemo extends Component {
    const region = { identifier, uuid };
    // Range for beacons inside the region
   //  Beacons.startRangingBeaconsInRegion(region);
-   
+
    // Monitor for Beacons
    Beacons.startMonitoringForRegion(region);
 

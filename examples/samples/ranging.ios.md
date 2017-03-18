@@ -22,7 +22,9 @@ You can request 2 kind of authorizations depending on the use case:
 ### 1.a `Beacons.requestWhenInUseAuthorization();` (**foreground** only use-case)
 
 #### in your react native application
-Ensure to call ```javascript
+Ensure to call
+
+```javascript
 Beacons.requestWhenInUseAuthorization();
 ```
 
@@ -36,7 +38,17 @@ By chance `react-native init YOUR_APP_NAME` should have already set it for you i
 
 ![ios: request when in use authorization](../../images/plistRequireWhenInUseAutorization.png)
 
+
 ### 1.b `Beacons.requestAlwaysAuthorization();` (**background use-case**)
+
+#### in your react native application
+Ensure to call
+
+```javascript
+Beacons.requestAlwaysAuthorization();
+```
+
+#### in your iOS project
 
 To be effective your `info.plist` file should have `Privacy - Location Always Usage Description` key defined (*empty value or not. It is better to define a value to a custom / more user-friendly message*).
 

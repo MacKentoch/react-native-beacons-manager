@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Need to access location when in use to manage Beacons</string>
+	<string>WRITE YOUR MESSAGE (OR LEAVE BLANK) TO EXPLAIN USER WHY YOU NEED LOCATION SERVICE</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>

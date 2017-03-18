@@ -1,4 +1,5 @@
 ## 1.0.3 (UPCOMING)
+  - add iOS event `authorizationStatusDidChange` to documentation (=events table in README)
   - add new layouts:
     - altBeacon
     - eddystone (uid, tlm, url)

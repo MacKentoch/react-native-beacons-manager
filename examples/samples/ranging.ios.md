@@ -1,8 +1,8 @@
 # Fully detailed documentation for "ranging beacons in iOS"
 
-This documentation give a deeper explanation on how to range (*but ranging only*) beacon in iOS.
+This documentation give a deeper explanation on how to range (*but ranging only*) beacons in iOS.
 
-This documentation is linked to the sample code [monitoring.ios.js](./monitoring.ios.js)
+This documentation is linked to the sample code [monitoring.ios.js](./ranging.ios.js)
 
 ## 1- request authorization
 

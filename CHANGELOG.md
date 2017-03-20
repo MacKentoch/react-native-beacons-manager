@@ -1,4 +1,7 @@
-## 1.0.3 (UPCOMING)
+## 1.0.4 (UPCOMING)
+ - updated documentation with sample example
+
+## 1.0.3 (RELEASED)
   - add iOS event `authorizationStatusDidChange` to documentation (=events table in README)
   - add new layouts:
     - altBeacon

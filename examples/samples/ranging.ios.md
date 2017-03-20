@@ -18,7 +18,6 @@ If you don't:
 You can request 2 kind of authorizations depending on the use case:
 > Do you need background capability or not?
 
-[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.ios.js#L35)
 
 ### 1.a `Beacons.requestWhenInUseAuthorization();` (**foreground** only use-case)
 
@@ -28,6 +27,8 @@ Ensure to call
 ```javascript
 Beacons.requestWhenInUseAuthorization();
 ```
+
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.ios.js#L35)
 
 #### in your iOS project
 
@@ -48,6 +49,8 @@ Ensure to call
 ```javascript
 Beacons.requestAlwaysAuthorization();
 ```
+
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.ios.js#L35)
 
 #### in your iOS project
 
@@ -72,7 +75,7 @@ const region = { identifier, uuid };
 Beacons.startRangingBeaconsInRegion(region);
 ```
 
-[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.ios.js#L40)
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.ios.js#L41)
 
 ## 3- register events
 
@@ -105,7 +108,7 @@ Note: beacons is an array of object:
 }
 ```
 
-[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.ios.js#L55)
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.ios.js#L50)
 
 
 ## 4- on componentWillUnMount: unregister events and stop ranging
@@ -121,4 +124,4 @@ Beacons.stopRangingBeaconsInRegion();
 DeviceEventEmitter.remove();
 ```
 
-[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.ios.js#L64)
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.ios.js#L61)

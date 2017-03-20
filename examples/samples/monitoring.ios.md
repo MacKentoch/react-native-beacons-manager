@@ -17,7 +17,7 @@ If you don't:
 
 > For monitoring you don't have the choice you have to request `Always` authorization wether you need background mode or not.
 
-[See matching lines in sample example]()
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/monitoring.ios.js#L36)
 
 ### 1 `Beacons.requestAlwaysAuthorization();` (**background and foreground use-case**)
 

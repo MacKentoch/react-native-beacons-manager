@@ -74,22 +74,7 @@ Beacons.startRangingBeaconsInRegion(region);
 
 [See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.ios.js#L40)
 
-## 3- start updating
-
-To start updating location explicitly use
-```javascript
-Beacons.startUpdatingLocation();
-```
-
-Beacons offer 2 methods:
-- startUpdatingLocation
-- stopUpdatingLocation
-
-*These methods give you the opportunity to start / stop location exactly where it is needed so that you **minimize** for example **power consumption**.*
-
-[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.ios.js#L46)
-
-## 4- register events
+## 3- register events
 
 Ranging now works.
 
@@ -120,15 +105,15 @@ Note: beacons is an array of object:
 [See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.ios.js#L55)
 
 
-## 5- on componentWillUnMount: unregister events and stop updating location
+## 4- on componentWillUnMount: unregister events and stop ranging
 
 A good practise is to ALWAYS unregister events in `componentWillUnMount`.
 
-Tell iOS to stop updating location at the same time.
+Tell iOS to stop ranging at the same time.
 
 ```javascript
-// stop updating location:
-Beacons.stopUpdatingLocation();
+// stop ranging beacons:
+Beacons.stopRangingBeaconsInRegion();
 // remove all listeners in a row
 DeviceEventEmitter.remove();
 ```

@@ -45,9 +45,6 @@ class debugBeacon1 extends Component {
 
    // Range for beacons inside the region
    Beacons.startRangingBeaconsInRegion(region);
-
-   // start updating location (you can stop it to save battery usage for example):
-   Beacons.startUpdatingLocation();
  }
 
  componentDidMount() {
@@ -66,8 +63,8 @@ class debugBeacon1 extends Component {
  }
 
  componentWillUnMount() {
-   // stop updating location:
-   Beacons.stopUpdatingLocation();
+   // stop ranging beacons:
+   Beacons.stopRangingBeaconsInRegion();
    // remove all listeners in a row
    DeviceEventEmitter.remove();
  }

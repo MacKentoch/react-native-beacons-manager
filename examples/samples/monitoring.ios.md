@@ -64,7 +64,7 @@ Beacons.startUpdatingLocation();
 
 ## 4- register events
 
-Ranging now works.
+Monitoring now works.
 
 You have to register events to know and use about data from enter region and leave region events.
 

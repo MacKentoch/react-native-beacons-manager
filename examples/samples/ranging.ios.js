@@ -34,7 +34,7 @@ class debugBeacon1 extends Component {
    // RANGING ONLY (this is not enough to make MONITORING working)
    Beacons.requestWhenInUseAuthorization();
 
-   // Always authoraization request if whne in use is not enough for your needs:
+   // Always authorization request if whne in use is not enough for your needs:
    // Beacons.requestAlwaysAuthorization();
 
 

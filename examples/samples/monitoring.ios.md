@@ -28,6 +28,8 @@ Ensure to call
 Beacons.requestAlwaysAuthorization();
 ```
 
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/monitoring.ios.js#L36)
+
 #### in your iOS project
 
 To be effective your `info.plist` file should have `Privacy - Location Always Usage Description` key defined (*empty value or not. It is better to define a value to a custom / more user-friendly message*).
@@ -51,6 +53,8 @@ const region = { identifier, uuid };
 Beacons.startMonitoringForRegion(region);
 ```
 
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/monitoring.ios.js#L43)
+
 ## 3- get the position of the device
 
 Monitoring needs you to get position of the device.
@@ -60,7 +64,7 @@ Just call:
 Beacons.startUpdatingLocation();
 ```
 
-[See matching lines in sample example]()
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/monitoring.ios.js#L45)
 
 ## 4- register events
 
@@ -97,7 +101,7 @@ DeviceEventEmitter.addListener(
 - **if you start the monotoring when already in region, `regionDidEnter` will not trigger first time. (leave region and wait at least 30 seconds then enter again the region)**
 
 
-[See matching lines in sample example]()
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/monitoring.ios.js#L54)
 
 
 ## 5- on componentWillUnMount: unregister events and stop monitoring
@@ -115,4 +119,4 @@ Beacons.stopUpdatingLocation();
 DeviceEventEmitter.remove();
 ```
 
-[See matching lines in sample example]()
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/monitoring.ios.js#L75)

@@ -4,7 +4,7 @@ import moment   from 'moment';
 
 const TIME_FORMAT = 'MM/DD/YYYY hh:mm:ss';
 
-class debugBeacon1 extends Component {
+class beaconRangingOnly extends Component {
  constructor(props) {
    super(props);
 
@@ -33,16 +33,10 @@ class debugBeacon1 extends Component {
    //           -> this is the authorization set by default by react-native init in the info.plist file
    // RANGING ONLY (this is not enough to make MONITORING working)
    Beacons.requestWhenInUseAuthorization();
-
-   // Always authorization request if whne in use is not enough for your needs:
-   // Beacons.requestAlwaysAuthorization();
-
-
    // Define a region which can be identifier + uuid,
    // identifier + uuid + major or identifier + uuid + major + minor
    // (minor and major properties are numbers)
    const region = { identifier, uuid };
-
    // Range for beacons inside the region
    Beacons.startRangingBeaconsInRegion(region);
  }

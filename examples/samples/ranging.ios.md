@@ -93,6 +93,8 @@ DeviceEventEmitter.addListener(
 ```
 
 Note: beacons is an array of object:
+```javascript
+
 {
   uuid,
   major,
@@ -101,6 +103,7 @@ Note: beacons is an array of object:
   proximity,
   accuracy,
 }
+```
 
 [See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.ios.js#L55)
 

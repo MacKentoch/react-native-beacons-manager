@@ -2,7 +2,7 @@
 import Beacons  from 'react-native-beacons-manager';
 import moment   from 'moment';
 
-const TIME_FORMAT = 'MM/DD/YYYY hh:mm:ss';
+const TIME_FORMAT = 'MM/DD/YYYY HH:mm:ss';
 
 class beaconMonitoringOnly extends Component {
  constructor(props) {

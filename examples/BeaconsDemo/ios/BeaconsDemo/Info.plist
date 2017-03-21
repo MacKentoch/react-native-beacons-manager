@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>WRITE YOUR MESSAGE (OR LEAVE BLANK) TO EXPLAIN USER WHY YOU NEED LOCATION SERVICE</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -37,12 +35,13 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>WRITE YOUR MESSAGE (OR LEAVE BLANK) TO EXPLAIN USER WHY YOU NEED LOCATION SERVICE</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Need to access location when in use to manage Beacons</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>
-		<string>bluetooth-peripheral</string>
 		<string>location</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

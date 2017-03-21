@@ -44,7 +44,7 @@ react-native link react-native-beacons-manager
 ### 3.a configuration specific to iOS
 
 If you plan to:
-- `only range beacons` no configuration needed (`react-native init` already did the job for you), or just check that you already have `WhenInUse` authorazation declared in your `info.plist`:
+- `only range beacons` no configuration needed (`react-native init` already did the job for you), or just check that you already have `WhenInUse` authorization declared in your `info.plist`:
   - ![ios: request when in use authorization](./images/plistRequireWhenInUseAutorization.png)
 
 

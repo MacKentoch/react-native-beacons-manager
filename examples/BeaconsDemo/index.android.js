@@ -113,8 +113,11 @@
        .then(() => console.log('Beacons monitoring stopped succesfully'))
        .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
 
-     // remove all listeners in a row
-     DeviceEventEmitter.remove();
+      // remove monitoring events we registered at componentDidMount
+      DeviceEventEmitter.removeListener('regionDidEnter');
+      DeviceEventEmitter.removeListener('regionDidExit');
+      // remove ranging event we registered at componentDidMount
+      DeviceEventEmitter.removeListener('beaconsDidRange');
    }
 
    render() {

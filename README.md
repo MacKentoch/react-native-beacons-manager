@@ -43,13 +43,17 @@ react-native link react-native-beacons-manager
 ```
 ### 3.a configuration specific to iOS
 
-If you plan to
+If you plan to:
 - `only range beacons` no configuration needed (`react-native init` already did the job for you), or just check that you already have `WhenInUse` authorazation declared in your `info.plist`:
   - ![ios: request when in use authorization](./images/plistRequireWhenInUseAutorization.png)
+
+
 - `monitor` then default authorization won't be enough:
-  - in your `info.plist` file should have `Privacy - Location Always Usage Description` key defined (*empty value or not. It is better to define a value to a custom / more user-friendly message*).
+  - in your `info.plist`, add `Privacy - Location Always Usage Description` key defined (*empty value or not. It is better to define a value to a custom / more user-friendly message*).
   ![ios: request when in use authorization](./images/plistRequireAlwaysUseAutorization.png)
 
+
+- **use background mode** check [this documentation](./BACKGROUND_MODES.md)
 
 ### 3.b configuration specific to Android
 

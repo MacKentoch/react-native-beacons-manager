@@ -27,7 +27,7 @@ import moment                 from 'moment';
 */
 const UUID = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
 const IDENTIFIER = '123456';
-const TIME_FORMAT = 'MM/DD/YYYY HH:MM:SS';
+const TIME_FORMAT = 'MM/DD/YYYY HH:mm:ss';
 
 class BeaconsDemo extends Component {
  constructor(props) {
@@ -53,24 +53,26 @@ class BeaconsDemo extends Component {
    // ONLY non component state aware here in componentWillMount
    //
 
+   // OPTIONAL: listen to authorization change
+   DeviceEventEmitter.addListener(
+     'authorizationStatusDidChange',
+     (info) => console.log('authorizationStatusDidChange: ', info)
+   );
 
-   // Choice 1: Request for authorization while the app is open
-   // Beacons.requestWhenInUseAuthorization();
-
-   // Choice 2: Request for permanent authorization:
+   // MANDATORY: you have to request ALWAYS Authorization (not only when in use) when monitoring
+   // you also have to add "Privacy - Location Always Usage Description" in your "Info.plist" file
+   // otherwise monitoring won't work
    Beacons.requestAlwaysAuthorization();
-
 
    // Define a region which can be identifier + uuid,
    // identifier + uuid + major or identifier + uuid + major + minor
    // (minor and major properties are numbers)
    const region = { identifier, uuid };
    // Range for beacons inside the region
-  //  Beacons.startRangingBeaconsInRegion(region);
-
-   // Monitor for Beacons
    Beacons.startMonitoringForRegion(region);
-
+   // Range for beacons inside the region
+   Beacons.startRangingBeaconsInRegion(region);
+   // update location to ba able to monitor:
    Beacons.startUpdatingLocation();
  }
 
@@ -115,9 +117,17 @@ class BeaconsDemo extends Component {
  }
 
  componentWillUnMount(){
+   // stop monitoring beacons:
+   Beacons.stopMonitoringForRegion();
+   // stop ranging beacons:
+   Beacons.stopRangingBeaconsInRegion();
+   // stop updating locationManager:
    Beacons.stopUpdatingLocation();
-   // remove all listeners in a row
-   DeviceEventEmitter.remove();
+   // remove monitoring events we registered at componentDidMount
+   DeviceEventEmitter.removeListener('regionDidEnter');
+   DeviceEventEmitter.removeListener('regionDidExit');
+   // remove ranging event we registered at componentDidMount
+   DeviceEventEmitter.removeListener('beaconsDidRange');
  }
 
  render() {

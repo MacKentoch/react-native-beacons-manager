@@ -120,8 +120,8 @@ Tell iOS to stop ranging at the same time.
 ```javascript
 // stop ranging beacons:
 Beacons.stopRangingBeaconsInRegion();
-// remove all listeners in a row
-DeviceEventEmitter.remove();
+// remove beacons event we registered at componentDidMount
+DeviceEventEmitter.removeListener('beaconsDidRange');
 ```
 
 [See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.ios.js#L61)

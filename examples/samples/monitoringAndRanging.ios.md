@@ -131,8 +131,11 @@ Beacons.stopMonitoringForRegion();
 Beacons.stopRangingBeaconsInRegion();
 // stop updating locationManager:
 Beacons.stopUpdatingLocation();
-// remove all listeners in a row
-DeviceEventEmitter.remove();
+// remove beacons events we registered at componentDidMount
+DeviceEventEmitter.removeListener('regionDidEnter');
+DeviceEventEmitter.removeListener('regionDidExit');
+// remove beacons event we registered at componentDidMount
+DeviceEventEmitter.removeListener('beaconsDidRange');
 ```
 
 [See matching lines in sample example]()

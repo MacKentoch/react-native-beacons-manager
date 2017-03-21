@@ -115,8 +115,9 @@ Tell iOS to stop ranging at the same time.
 Beacons.stopMonitoringForRegion();
 // stop updating locationManager:
 Beacons.stopUpdatingLocation();
-// remove all listeners in a row
-DeviceEventEmitter.remove();
+// remove beacons events we registered at componentDidMount
+DeviceEventEmitter.removeListener('regionDidEnter');
+DeviceEventEmitter.removeListener('regionDidExit');
 ```
 
 [See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/monitoring.ios.js#L75)

@@ -59,8 +59,8 @@ class beaconRangingOnly extends Component {
  componentWillUnMount() {
    // stop ranging beacons:
    Beacons.stopRangingBeaconsInRegion();
-   // remove all listeners in a row
-   DeviceEventEmitter.remove();
+   // remove beacons event we registered at componentDidMount
+   DeviceEventEmitter.removeListener('beaconsDidRange');
  }
 
  render() {

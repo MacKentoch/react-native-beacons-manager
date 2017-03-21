@@ -40,7 +40,7 @@ class beaconMonitoringOnly extends Component {
    // identifier + uuid + major or identifier + uuid + major + minor
    // (minor and major properties are numbers)
    const region = { identifier, uuid };
-   // Range for beacons inside the region
+   // Monitor for beacons inside the region
    Beacons.startMonitoringForRegion(region);
    // Range for beacons inside the region
    Beacons.startRangingBeaconsInRegion(region);

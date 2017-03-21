@@ -68,7 +68,7 @@ class BeaconsDemo extends Component {
    // identifier + uuid + major or identifier + uuid + major + minor
    // (minor and major properties are numbers)
    const region = { identifier, uuid };
-   // Range for beacons inside the region
+   // monitor for beacons inside the region
    Beacons.startMonitoringForRegion(region);
    // Range for beacons inside the region
    Beacons.startRangingBeaconsInRegion(region);
@@ -84,7 +84,7 @@ class BeaconsDemo extends Component {
    DeviceEventEmitter.addListener(
      'beaconsDidRange',
      (data) => {
-      //  console.log('beaconsDidRange data: ', data);
+       console.log('beaconsDidRange data: ', data);
        this.setState({ rangingDataSource: this.state.rangingDataSource.cloneWithRows(data.beacons) });
      }
    );

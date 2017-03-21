@@ -29,13 +29,33 @@ Use the method `requestAlwaysAuthorization`.
 Beacons.requestAlwaysAuthorization();
 ```
 
-Finally when killed or sleeping and a beacon is found your whole app wont be loaded, just the `didFinishLaunchingWithOptions:(NSDictionary *)launchOptions` delegate so you need to act on it there like:
-```objective-c
-  // a region we were scanning for has appeared, ask to open us
-  if([launchOptions objectForKey:@"UIApplicationLaunchOptionsLocationKey"])
-  {
-    //pop a notification to ask user to open, or maybe reload your scanner with delegate so that code fires
-  }
+Finally when killed or sleeping and a beacon is found your whole app wont be loaded.
+
+So do the tasks (that does not long last since iOS won't let it run more than few seconds):
+```javascript
+// monitoring:
+ DeviceEventEmitter.addListener(
+   'regionDidEnter',
+   (data) => {
+    // good place for background tasks
+     console.log('monitoring - regionDidEnter data: ', data);
+
+     const time = moment().format(TIME_FORMAT);
+     this.setState({ regionEnterDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier:data.identifier, uuid:data.uuid, minor:data.minor, major:data.major, time }]) });
+   }
+ );
+
+ DeviceEventEmitter.addListener(
+   'regionDidExit',
+   ({ identifier, uuid, minor, major }) => {
+     // good place for background tasks
+     console.log('monitoring - regionDidExit data: ', { identifier, uuid, minor, major });
+
+     const time = moment().format(TIME_FORMAT);
+    this.setState({ regionExitDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier, uuid, minor, major, time }]) });
+   }
+ );
+
 ```
 
 

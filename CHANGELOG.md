@@ -1,5 +1,8 @@
-## 1.0.4 (UPCOMING)
- - updated documentation with sample example
+## 1.0.5 (UPCOMING)
+ - improved documentation
+
+## 1.0.4 (RELEASE)
+ - same as v1.0.3 (npm publish nightmare...)
 
 ## 1.0.3 (RELEASED)
   - add iOS event `authorizationStatusDidChange` to documentation (=events table in README)

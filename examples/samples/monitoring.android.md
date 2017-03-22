@@ -13,7 +13,7 @@ Before starting tell the library what kind of beacon you want to manage.
 Beacons.detectIBeacons();
 ```
 
-[See matching lines in sample example]()
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/monitoring.android.js#L33)
 
 ## 2- start monitoring
 
@@ -33,7 +33,7 @@ Beacons
   .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
 ```
 
-[See matching lines in sample example]()
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/monitoring.android.js#L35)
 
 ## 3- register events
 
@@ -70,7 +70,7 @@ DeviceEventEmitter.addListener(
 - **if you start the monotoring when already in region, `regionDidEnter` will not trigger first time. (leave region and wait at least 30 seconds then enter again the region)**
 
 
-[See matching lines in sample example]()
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/monitoring.android.js#L47)
 
 
 ## 4- on componentWillUnMount: unregister events and stop monitoring
@@ -94,4 +94,4 @@ DeviceEventEmitter.removeListener('regionDidEnter');
 DeviceEventEmitter.removeListener('regionDidExit');
 ```
 
-[See matching lines in sample example])
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/monitoring.android.js#L71)

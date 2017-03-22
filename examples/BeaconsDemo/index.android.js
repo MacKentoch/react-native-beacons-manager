@@ -27,7 +27,7 @@
   */
  const UUID = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
  const IDENTIFIER = '123456';
- const TIME_FORMAT = 'MM/DD/YYYY HH:MM:SS';
+ const TIME_FORMAT = 'MM/DD/YYYY HH:mm:ss';
 
  class BeaconsDemo extends Component {
    constructor(props) {
@@ -48,12 +48,12 @@
      //
      // ONLY non component state aware here in componentWillMount
      //
-     Beacons.detectIBeacons();
      const { identifier, uuid } = this.state;
      //
      // ONLY non component state aware here in componentWillMount
      //
 
+     Beacons.detectIBeacons();
      // TO FIX (In lib): "startRangingBeaconsInRegion" should take an object as parameter to make it uniform with iOS
      // NOTE: needs to take either object or like now multiple parameters to avoid users breaking changes
      Beacons
@@ -61,10 +61,10 @@
        .then(() => console.log('Beacons ranging started succesfully'))
        .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
 
-     Beacons
-       .startMonitoringForRegion({ identifier, uuid }) // minor and major are null here
-       .then(() => console.log('Beacons monitoring started succesfully'))
-       .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
+       Beacons
+         .startMonitoringForRegion({ identifier, uuid }) // minor and major are null here
+         .then(() => console.log('Beacons monitoring started succesfully'))
+         .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
    }
 
    componentDidMount() {

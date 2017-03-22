@@ -24,25 +24,18 @@ class beaconMonitoringOnly extends Component {
    // ONLY non component state aware here in componentWillMount
    //
 
-   // OPTIONAL: listen to authorization change
-   DeviceEventEmitter.addListener(
-     'authorizationStatusDidChange',
-     (info) => console.log('authorizationStatusDidChange: ', info)
-   );
-
-   // MANDATORY: you have to request ALWAYS Authorization (not only when in use) when monitoring
-   // you also have to add "Privacy - Location Always Usage Description" in your "Info.plist" file
-   // otherwise monitoring won't work
-   Beacons.requestAlwaysAuthorization();
-
    // Define a region which can be identifier + uuid,
    // identifier + uuid + major or identifier + uuid + major + minor
-   // (minor and major properties are numbers)
+   // (minor and major properties are 'OPTIONAL' numbers)
    const region = { identifier, uuid };
+
+   // start iBeacon detection (later will add Eddystone and Nordic Semiconductor beacons)
+   Beacons.detectIBeacons();
    // Monitor beacons inside the region
-   Beacons.startMonitoringForRegion(region);
-   // update location to ba able to monitor:
-   Beacons.startUpdatingLocation();
+   Beacons
+     .startMonitoringForRegion(region)
+     .then(() => console.log('Beacons monitoring started succesfully'))
+     .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
  }
 
  componentDidMount() {
@@ -53,10 +46,10 @@ class beaconMonitoringOnly extends Component {
    // monitoring:
    DeviceEventEmitter.addListener(
      'regionDidEnter',
-     (data) => {
-       console.log('monitoring - regionDidEnter data: ', data);
+     ({ identifier, uuid, minor, major }) => {
+       console.log('monitoring - regionDidEnter data: ', { identifier, uuid, minor, major });
        const time = moment().format(TIME_FORMAT);
-       this.setState({ regionEnterDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier:data.identifier, uuid:data.uuid, minor:data.minor, major:data.major, time }]) });
+       this.setState({ regionEnterDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier, uuid, minor, major, time }]) });
      }
    );
 
@@ -71,10 +64,15 @@ class beaconMonitoringOnly extends Component {
  }
 
  componentWillUnMount() {
+   const { uuid, identifier } = this.state;
+   const region = { identifier, uuid };
+
    // stop monitoring beacons:
-   Beacons.stopMonitoringForRegion();
-   // stop updating locationManager:
-   Beacons.stopUpdatingLocation();
+   Beacons
+     .stopMonitoringForRegion(region)
+     .then(() => console.log('Beacons monitoring stopped succesfully'))
+     .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
+
    // remove beacons events we registered at componentDidMount
    DeviceEventEmitter.removeListener('regionDidEnter');
    DeviceEventEmitter.removeListener('regionDidExit');

@@ -49,11 +49,9 @@
      // ONLY non component state aware here in componentWillMount
      //
      const { identifier, uuid } = this.state;
-     //
-     // ONLY non component state aware here in componentWillMount
-     //
-
+     // start iBeacon detection
      Beacons.detectIBeacons();
+
      // TO FIX (In lib): "startRangingBeaconsInRegion" should take an object as parameter to make it uniform with iOS
      // NOTE: needs to take either object or like now multiple parameters to avoid users breaking changes
      Beacons

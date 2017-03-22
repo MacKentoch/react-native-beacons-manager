@@ -49,7 +49,7 @@ Tell iOS what you want to range by defining a desired `region` object.
 // (minor and major properties are numbers)
 const region = { identifier, uuid };
 
-// Range for beacons inside the region
+// Monitor beacons inside the region
 Beacons.startMonitoringForRegion(region);
 ```
 

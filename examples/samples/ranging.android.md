@@ -13,7 +13,7 @@ Before starting tell the library what kind of beacon you want to manage.
 Beacons.detectIBeacons();
 ```
 
-[See matching lines in sample example]()
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.android.js#L27)
 
 ## 2- start ranging
 
@@ -28,7 +28,7 @@ Beacons
   .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
 ```
 
-[See matching lines in sample example]()
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.android.js#L29)
 
 ## 3- register events
 
@@ -48,7 +48,7 @@ DeviceEventEmitter.addListener(
 );
 ```
 
-[See matching lines in sample example]()
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.android.js#L42)
 
 
 ## 4- on componentWillUnMount: unregister event and stop ranging
@@ -69,4 +69,4 @@ Beacons
 DeviceEventEmitter.removeListener('beaconsDidRange');
 ```
 
-[See matching lines in sample example]()
+[See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.android.js#L54)

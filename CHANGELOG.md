@@ -1,5 +1,6 @@
 ## 1.0.5 (UPCOMING)
  - improved documentation
+   - when you want to understand or something's wrong please have a look at [this detailed documentation + code sample](https://github.com/MacKentoch/react-native-beacons-manager/tree/master/examples/samples)
 
 ## 1.0.4 (RELEASE)
  - same as v1.0.3 (npm publish nightmare...)

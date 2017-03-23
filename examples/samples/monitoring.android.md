@@ -17,7 +17,7 @@ Beacons.detectIBeacons();
 
 ## 2- start monitoring
 
-Tell Android what you want to range by defining a desired `region` object.
+Tell Android what you want to monitor by defining a desired `region` object.
 
 
 ```javascript
@@ -77,7 +77,7 @@ DeviceEventEmitter.addListener(
 
 A good practise is to ALWAYS unregister events in `componentWillUnMount`.
 
-Tell Android to stop ranging at the same time.
+Tell Android to stop monitoring at the same time.
 
 ```javascript
 const { uuid, identifier } = this.state;

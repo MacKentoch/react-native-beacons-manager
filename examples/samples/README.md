@@ -2,7 +2,7 @@
 
 For my concern when I started playing with beacon I didn't even have a clue what was a beacon.
 
-This documentation is the one I would have be pleased to have at that time.
+This documentation is the one I would have been pleased to have at that time.
 
 This documentation is written to make your life easier to give and to give you answers before you ask yourself the questions.
 

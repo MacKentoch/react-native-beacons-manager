@@ -34,7 +34,7 @@ npm install react-native-beacons-manager
 ```
 *or via yarn:*
 ```javascript:
-yarn install react-native-beacons-manager
+yarn add react-native-beacons-manager
 ```
 ### 2. link to your application
 

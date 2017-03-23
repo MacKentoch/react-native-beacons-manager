@@ -65,7 +65,7 @@ Just don't forget to activate
 
 ## 4 usage
 
-If simple examples below don't help you as much as you wanted, [check samples](https://github.com/MacKentoch/react-native-beacons-manager/tree/master/examples/samples)
+>NOTE: If simple examples below don't help you as much as you wanted, [check detailed documentation depending on use-case + code samples here](https://github.com/MacKentoch/react-native-beacons-manager/tree/master/examples/samples#detailed-documentation--sample-code)
 
 ### 4.a iOS
 

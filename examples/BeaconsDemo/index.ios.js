@@ -13,6 +13,7 @@ import {
  AppRegistry,
  StyleSheet,
  View,
+ ScrollView,
  Text,
  ListView,
  DeviceEventEmitter
@@ -27,6 +28,10 @@ import moment                 from 'moment';
 */
 const UUID = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
 const IDENTIFIER = '123456';
+
+const UUID_ALTERNATE = '8fe6cb7e-62cf-4dcf-87b9-cf9fd0e2b43a';
+const IDENTIFIER_ALTERNATE = '654321';
+
 const TIME_FORMAT = 'MM/DD/YYYY HH:mm:ss';
 
 class BeaconsDemo extends Component {
@@ -37,10 +42,16 @@ class BeaconsDemo extends Component {
      // region information
      uuid: UUID,
      identifier: IDENTIFIER,
+
+     uuidAlternate: UUID_ALTERNATE,
+     identifierAlternate: IDENTIFIER_ALTERNATE,
+
      // React Native ListViews datasources initialization
-     rangingDataSource:     new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
-     regionEnterDatasource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
-     regionExitDatasource:  new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
+     rangedBeacon:                [],
+     rangingDataSource:           new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
+     rangingDataAlternateSource:  new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
+     regionEnterDatasource:       new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
+     regionExitDatasource:        new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
 
      // check bluetooth state:
      bluetoothState: '',
@@ -49,6 +60,7 @@ class BeaconsDemo extends Component {
 
  componentWillMount(){
    const { identifier, uuid } = this.state;
+   const { identifierAlternate, uuidAlternate } = this.state;
    //
    // ONLY non component state aware here in componentWillMount
    //
@@ -68,10 +80,16 @@ class BeaconsDemo extends Component {
    // identifier + uuid + major or identifier + uuid + major + minor
    // (minor and major properties are numbers)
    const region = { identifier, uuid };
+
+   const regionAlternate = { identifier: identifierAlternate, uuid: uuidAlternate };
    // monitor for beacons inside the region
    Beacons.startMonitoringForRegion(region);
    // Range for beacons inside the region
    Beacons.startRangingBeaconsInRegion(region);
+
+   // Range for beacons inside the alternate region
+   Beacons.startRangingBeaconsInRegion(regionAlternate);
+
    // update location to ba able to monitor:
    Beacons.startUpdatingLocation();
  }
@@ -81,11 +99,39 @@ class BeaconsDemo extends Component {
    // component state aware here - attach events
    //
    // Ranging: Listen for beacon changes
+   //
+   //
+   //
+
    DeviceEventEmitter.addListener(
      'beaconsDidRange',
      (data) => {
+       // data received object ex:
+       //
+       // {
+       //   region:
+       //    {
+       //      uuid: '7B44B47B-52A1-5381-90C2-F09B6838C5D4',
+       //      identifier: '123456'
+       //    },
+       //   beacons: [
+       //    {
+       //      minor: 0,
+       //      rssi: -56,
+       //      major: 0,
+       //      proximity: 'immediate',
+       //      accuracy: 0.2645421428615187,
+       //      uuid: '7B44B47B-52A1-5381-90C2-F09B6838C5D4'
+       //    }
+       //   ]
+       // }
        console.log('beaconsDidRange data: ', data);
-       this.setState({ rangingDataSource: this.state.rangingDataSource.cloneWithRows(data.beacons) });
+       if (data.region.identifier === IDENTIFIER_ALTERNATE) {
+         this.setState({ rangingDataAlternateSource: this.state.rangingDataAlternateSource.cloneWithRows(data.beacons) });
+       }
+       if (data.region.identifier === IDENTIFIER) {
+         this.setState({ rangingDataSource: this.state.rangingDataSource.cloneWithRows(data.beacons) });
+       }
      }
    );
 
@@ -117,10 +163,17 @@ class BeaconsDemo extends Component {
  }
 
  componentWillUnMount(){
+   const { identifier, uuid } = this.state;
+   const { identifierAlternate, uuidAlternate } = this.state;
+
+   const region = { identifier, uuid };
+   const regionAlternate = { identifier: identifierAlternate, uuid: uuidAlternate };
+
    // stop monitoring beacons:
    Beacons.stopMonitoringForRegion();
    // stop ranging beacons:
-   Beacons.stopRangingBeaconsInRegion();
+   Beacons.stopRangingBeaconsInRegion(region);
+   Beacons.stopRangingBeaconsInRegion(regionAlternate);
    // stop updating locationManager:
    Beacons.stopUpdatingLocation();
    // remove monitoring events we registered at componentDidMount
@@ -131,10 +184,10 @@ class BeaconsDemo extends Component {
  }
 
  render() {
-   const { bluetoothState, rangingDataSource, regionEnterDatasource, regionExitDatasource } =  this.state;
+   const { bluetoothState, rangingDataSource, regionEnterDatasource, regionExitDatasource, rangingDataAlternateSource } =  this.state;
 
    return (
-     <View style={styles.container}>
+     <ScrollView style={styles.container}>
        <Text style={styles.btleConnectionStatus}>
          Bluetooth connection status: { bluetoothState ? bluetoothState  : 'NA' }
        </Text>
@@ -143,6 +196,15 @@ class BeaconsDemo extends Component {
        </Text>
        <ListView
          dataSource={ rangingDataSource }
+         enableEmptySections={ true }
+         renderRow={this.renderRangingRow}
+       />
+
+       <Text style={styles.headline}>
+         ranging beacons in the area:
+       </Text>
+       <ListView
+         dataSource={ rangingDataAlternateSource }
          enableEmptySections={ true }
          renderRow={this.renderRangingRow}
        />
@@ -164,7 +226,7 @@ class BeaconsDemo extends Component {
         enableEmptySections={ true }
         renderRow={this.renderMonitoringLeaveRow}
       />
-     </View>
+     </ScrollView>
    );
  }
 
@@ -242,9 +304,12 @@ const styles = StyleSheet.create({
  container: {
    flex: 1,
    paddingTop: 60,
+   backgroundColor: '#F5FCFF',
+ },
+ contentContainer: {
+   flex: 1,
    justifyContent: 'center',
    alignItems: 'center',
-   backgroundColor: '#F5FCFF',
  },
  btleConnectionStatus: {
    fontSize: 20,

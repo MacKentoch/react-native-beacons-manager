@@ -118,8 +118,10 @@ A good practise is to ALWAYS unregister events in `componentWillUnMount`.
 Tell iOS to stop ranging at the same time.
 
 ```javascript
+const { identifier, uuid } = this.state;
+const region = { identifier, uuid };
 // stop ranging beacons:
-Beacons.stopRangingBeaconsInRegion();
+Beacons.stopRangingBeaconsInRegion(region);
 // remove beacons event we registered at componentDidMount
 DeviceEventEmitter.removeListener('beaconsDidRange');
 ```

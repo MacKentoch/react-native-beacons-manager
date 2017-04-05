@@ -48,8 +48,11 @@ class BeaconsDemo extends Component {
 
      // React Native ListViews datasources initialization
      rangedBeacon:                [],
-     rangingDataSource:           new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
-     rangingDataAlternateSource:  new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
+     rangingDataSource:           new ListView.DataSource({
+       rowHasChanged: (r1, r2) => r1 !== r2,
+       sectionHeaderHasChanged: (s1, s2) => s1 !== s2
+     }).cloneWithRows([]),
+
      regionEnterDatasource:       new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
      regionExitDatasource:        new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
 
@@ -126,12 +129,15 @@ class BeaconsDemo extends Component {
        //   ]
        // }
        console.log('beaconsDidRange data: ', data);
-       if (data.region.identifier === IDENTIFIER_ALTERNATE) {
-         this.setState({ rangingDataAlternateSource: this.state.rangingDataAlternateSource.cloneWithRows(data.beacons) });
-       }
-       if (data.region.identifier === IDENTIFIER) {
-         this.setState({ rangingDataSource: this.state.rangingDataSource.cloneWithRows(data.beacons) });
-       }
+       this.setState({ rangingDataSource: this.state.rangingDataSource.cloneWithRows(this.convertRangingArrayToMap(data.beacons)) });
+
+
+      //  if (data.region.identifier === IDENTIFIER_ALTERNATE) {
+      //    this.setState({ rangingDataAlternateSource: this.state.rangingDataAlternateSource.cloneWithRows(data.beacons) });
+      //  }
+      //  if (data.region.identifier === IDENTIFIER) {
+      //    this.setState({ rangingDataSource: this.state.rangingDataSource.cloneWithRows(data.beacons) });
+      //  }
      }
    );
 
@@ -184,7 +190,7 @@ class BeaconsDemo extends Component {
  }
 
  render() {
-   const { bluetoothState, rangingDataSource, regionEnterDatasource, regionExitDatasource, rangingDataAlternateSource } =  this.state;
+   const { bluetoothState, rangingDataSource, regionEnterDatasource, regionExitDatasource } =  this.state;
 
    return (
      <ScrollView style={styles.container}>
@@ -198,15 +204,7 @@ class BeaconsDemo extends Component {
          dataSource={ rangingDataSource }
          enableEmptySections={ true }
          renderRow={this.renderRangingRow}
-       />
-
-       <Text style={styles.headline}>
-         ranging beacons in the area:
-       </Text>
-       <ListView
-         dataSource={ rangingDataAlternateSource }
-         enableEmptySections={ true }
-         renderRow={this.renderRangingRow}
+         renderSectionHeader={this.renderSectionHeader}
        />
 
       <Text style={styles.headline}>
@@ -229,6 +227,14 @@ class BeaconsDemo extends Component {
      </ScrollView>
    );
  }
+
+ renderRangingSectionHeader(sectionData, uuid) {
+  return (
+    <Text style={{fontWeight: '700'}}>
+      {uuid}
+    </Text>
+  );
+}
 
  renderRangingRow(rowData) {
    return (
@@ -298,6 +304,18 @@ class BeaconsDemo extends Component {
      </View>
    );
  }
+
+ convertRangingArrayToMap = (rangedBeacon) => {
+   const rangedBeaconsUUIDMap = {};
+    rangedBeacon.forEach(
+      (beacon) => {
+        if (!rangedBeaconsUUIDMap[beacon.uuid]) {
+          rangedBeaconsUUIDMap[beacon.uuid] = [];
+        }
+        rangedBeaconsUUIDMap[beacon.uuid].push(beacon);
+      });
+    return rangedBeaconsUUIDMap;
+  }
 }
 
 const styles = StyleSheet.create({

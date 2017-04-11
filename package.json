@@ -1,6 +1,6 @@
 {
   "name": "react-native-beacons-manager",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "React-Native library for detecting beacons (iOS and Android)",
   "keywords": [
     "react-native",

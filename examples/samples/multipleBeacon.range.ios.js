@@ -39,7 +39,7 @@ class BeaconsDemo extends Component {
    otherUUID: OTHER_UUID,
    otherIdentifier: OTHER_IDENTIFIER,
 
-   // list of disired UUID to range:
+   // list of desired UUID to range (Note: these will be section headers in the listview rendered):
    rangedBeaconsUUIDMap: {
      [UUID.toUpperCase()]: [],
      [OTHER_UUID.toUpperCase()]: []

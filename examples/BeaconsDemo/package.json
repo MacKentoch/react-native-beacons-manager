@@ -8,9 +8,9 @@
   },
   "dependencies": {
     "moment": "^2.17.1",
-    "react": "~15.4.0",
-    "react-native": "0.41.2",
-    "react-native-beacons-manager": "https://github.com/MacKentoch/react-native-beacons-manager.git",
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.43.3",
+    "react-native-beacons-manager": "^1.0.4",
     "react-native-bluetooth-state": "^2.0.0"
   },
   "devDependencies": {

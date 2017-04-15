@@ -1,7 +1,6 @@
 package com.beaconsdemo;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.facebook.react.ReactApplication;
 import com.mackentoch.beaconsandroid.BeaconsAndroidPackage;

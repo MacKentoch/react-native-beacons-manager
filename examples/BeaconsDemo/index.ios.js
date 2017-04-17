@@ -19,15 +19,15 @@ import {
 }                             from 'react-native';
 import Beacons                from 'react-native-beacons-manager';
 import BluetoothState         from 'react-native-bluetooth-state';
-// import moment                 from 'moment';
+import moment                 from 'moment';
 
 /**
 * uuid of YOUR BEACON (change to yours)
 * @type {String} uuid
 */
-const UUID = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
-const IDENTIFIER = '123456';
-// const TIME_FORMAT = 'HH:mm:ss';
+const UUID        = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
+const IDENTIFIER  = '123456';
+const TIME_FORMAT = 'HH:mm:ss';
 const EMPTY_BEACONS_LISTS = {
   rangingList:      [],
   monitorEnterList: [],
@@ -92,6 +92,7 @@ class BeaconsDemo extends Component {
     DeviceEventEmitter.addListener(
       'beaconsDidRange',
       (data) => {
+        console.log('beaconsDidRange, data: ', data);
         const updatedBeaconsLists = this.updateBeaconList(data.beacons, 'rangingList');
         this._beaconsLists = updatedBeaconsLists;
         this.setState({ beaconsLists: this.state.beaconsLists.cloneWithRowsAndSections(this._beaconsLists)});
@@ -100,9 +101,10 @@ class BeaconsDemo extends Component {
     // monitoring events
     DeviceEventEmitter.addListener(
       'regionDidEnter',
-      (data) => {
-        console.log('regionDidEnter');
-        const updatedBeaconsLists = this.updateBeaconList(data.beacons, 'monitorEnterList');
+      ({uuid, identifier}) => {
+        console.log('regionDidEnter, data: ', {uuid, identifier});
+        const time = moment().format(TIME_FORMAT);
+        const updatedBeaconsLists = this.updateBeaconList({uuid, identifier, time}, 'monitorEnterList');
         this._beaconsLists = updatedBeaconsLists;
         this.setState({ beaconsLists: this.state.beaconsLists.cloneWithRowsAndSections(this._beaconsLists)});
       }
@@ -110,10 +112,11 @@ class BeaconsDemo extends Component {
     DeviceEventEmitter.addListener(
       'regionDidExit',
       ({ identifier, uuid, minor, major }) => {
-        console.log('regionDidExit');
-      const updatedBeaconsLists = this.updateBeaconList({ identifier, uuid, minor, major }, 'monitorExitList');
-      this._beaconsLists = updatedBeaconsLists;
-      this.setState({ beaconsLists: this.state.beaconsLists.cloneWithRowsAndSections(this._beaconsLists)});
+        console.log('regionDidExit, data: ', {identifier, uuid, minor, major});
+        const time = moment().format(TIME_FORMAT);
+        const updatedBeaconsLists = this.updateBeaconList({ identifier, uuid, minor, major, time }, 'monitorExitList');
+        this._beaconsLists = updatedBeaconsLists;
+        this.setState({ beaconsLists: this.state.beaconsLists.cloneWithRowsAndSections(this._beaconsLists)});
       }
     );
     // listen bluetooth state change event
@@ -176,13 +179,13 @@ class BeaconsDemo extends Component {
       <Text style={styles.smallText}>
         time: { rowData.time ? rowData.time : 'NA'}
       </Text>
-      <Text>
+      <Text style={styles.smallText}>
         RSSI: {rowData.rssi ? rowData.rssi : 'NA'}
       </Text>
-      <Text>
+      <Text style={styles.smallText}>
         Proximity: {rowData.proximity ? rowData.proximity : 'NA'}
       </Text>
-      <Text>
+      <Text style={styles.smallText}>
         Distance: {rowData.accuracy ? rowData.accuracy.toFixed(2) : 'NA'}m
       </Text>
     </View>
@@ -198,31 +201,38 @@ class BeaconsDemo extends Component {
     // just a deep copy of "this._beaconsLists":
     const previousLists   = deepCopyBeaconsLists(this._beaconsLists);
     const listNameIsValid = Object.keys(EMPTY_BEACONS_LISTS).some(header => header === listName);
+    const updateMatchingList = beacon => {
+      if (beacon.uuid.length > 0) {
+        const uuid  = beacon.uuid.toUpperCase();
+        const major = parseInt(beacon.major, 10) ? beacon.major : 0;
+        const minor = parseInt(beacon.minor, 10) ? beacon.minor : 0;
+
+        const hasEqualProp = (left, right) => (String(left).toUpperCase() === String(right).toUpperCase());
+        const isNotTheSameBeacon = beaconDetail => {
+          return !hasEqualProp(beaconDetail.uuid, uuid)
+              || !hasEqualProp(beaconDetail.major, major)
+              || !hasEqualProp(beaconDetail.minor, minor);
+        };
+
+        const otherBeaconsInSameList = previousLists[listName].filter(isNotTheSameBeacon);
+        previousLists[listName] = [...otherBeaconsInSameList, beacon];
+      }
+    };
 
     if (!listNameIsValid) {
       return previousLists;
     }
 
-    detectedBeacons.forEach(
-      beacon => {
-        if (beacon.uuid.length > 0) {
-          const uuid  = beacon.uuid.toUpperCase();
-          const major = parseInt(beacon.major, 10) ? beacon.major : 0;
-          const minor = parseInt(beacon.minor, 10) ? beacon.minor : 0;
+    if (!Array.isArray(detectedBeacons)) {
+      if (detectedBeacons instanceof Object) {
+        updateMatchingList(detectedBeacons);
+        return previousLists;
+      } else {
+        return previousLists;
+      }
+    }
 
-          const hasEqualProp = (left, right) => (String(left).toUpperCase() === String(right).toUpperCase());
-          const isNotTheSameBeacon = beaconDetail => {
-            return !hasEqualProp(beaconDetail.uuid, uuid)
-                || !hasEqualProp(beaconDetail.major, major)
-                || !hasEqualProp(beaconDetail.minor, minor);
-          };
-
-          const otherBeaconsInSameList = previousLists[listName].filter(isNotTheSameBeacon);
-
-          previousLists[listName] = [...otherBeaconsInSameList, beacon];
-        }
-    });
-
+    detectedBeacons.forEach(updateMatchingList);
     return previousLists;
   }
 }

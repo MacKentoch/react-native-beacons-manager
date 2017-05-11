@@ -26,16 +26,21 @@
     "example": "examples"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "flow": "node_modules/.bin/flow",
+    "flow-typed": "node_modules/.bin/flow-typed"
   },
   "author": "Erwan DATIN (http://www.erwan-datin.com)",
   "license": "MIT",
   "nativePackage": true,
   "devDependencies": {
+    "babel-cli": "^6.24.1",
     "babel-eslint": "^7.1.1",
+    "babel-preset-flow": "^6.23.0",
     "eslint": "^3.15.0",
     "eslint-plugin-react": "^6.10.0",
     "eslint-plugin-react-native": "^2.2.1",
+    "flow-bin": "^0.46.0",
     "react": "^15.4.2",
     "react-native": "^0.41.2"
   },

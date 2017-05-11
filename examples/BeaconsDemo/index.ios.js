@@ -98,6 +98,7 @@ class BeaconsDemo extends Component {
         this.setState({ beaconsLists: this.state.beaconsLists.cloneWithRowsAndSections(this._beaconsLists)});
       }
     );
+
     // monitoring events
     DeviceEventEmitter.addListener(
       'regionDidEnter',

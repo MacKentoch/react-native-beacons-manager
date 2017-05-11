@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "flow-bin": "0.40.0",
     "moment": "^2.17.1",
     "react": "16.0.0-alpha.6",
     "react-native": "0.43.3",
@@ -14,7 +15,9 @@
     "react-native-bluetooth-state": "^2.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.24.1",
     "babel-jest": "18.0.0",
+    "babel-preset-flow": "^6.23.0",
     "babel-preset-react-native": "1.9.1",
     "jest": "18.1.0",
     "react-test-renderer": "~15.4.0"

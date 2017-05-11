@@ -1,0 +1,24 @@
+// Placez vos paramètres dans ce fichier pour remplacer les paramètres par défaut et les paramètres utilisateur.
+{
+  // coding style and xp:
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+
+  "editor.autoClosingBrackets": true,
+
+  // search:
+  "search.exclude": {
+    "node_modules": true,
+    "bower_components": true,
+    "jspm_packages": true,
+    ".git": true,
+    "flow-typed": true,
+    "__snapshots__": true
+  },
+
+  // flow
+  "javascript.validate.enable": false,
+  "flow.useNPMPackagedFlow": true,
+  "flow.pathToFlow": "node_modules/.bin",
+  "javascript.format.enable": false
+}

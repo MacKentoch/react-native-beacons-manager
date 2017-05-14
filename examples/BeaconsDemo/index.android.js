@@ -1,7 +1,7 @@
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
- * @flow
+ * @flow weak
  */
 
  'use strict';
@@ -45,77 +45,77 @@
    }
 
    componentWillMount() {
-     //
-     // ONLY non component state aware here in componentWillMount
-     //
-     const { identifier, uuid } = this.state;
-     // start iBeacon detection
-     Beacons.detectIBeacons();
+    //
+    // ONLY non component state aware here in componentWillMount
+    //
+    const { identifier, uuid } = this.state;
+    // start iBeacon detection
+    Beacons.detectIBeacons();
 
      // TO FIX (In lib): "startRangingBeaconsInRegion" should take an object as parameter to make it uniform with iOS
      // NOTE: needs to take either object or like now multiple parameters to avoid users breaking changes
-     Beacons
-       .startRangingBeaconsInRegion(identifier, uuid)
-       .then(() => console.log('Beacons ranging started succesfully'))
-       .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
+    Beacons
+      .startRangingBeaconsInRegion(identifier, uuid)
+      .then(() => console.log('Beacons ranging started succesfully'))
+      .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
 
-       Beacons
-         .startMonitoringForRegion({ identifier, uuid }) // minor and major are null here
-         .then(() => console.log('Beacons monitoring started succesfully'))
-         .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
+    Beacons
+      .startMonitoringForRegion({ identifier, uuid }) // minor and major are null here
+      .then(() => console.log('Beacons monitoring started succesfully'))
+      .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
    }
 
    componentDidMount() {
-     //
-     // component state aware here - attach events
-     //
-     // Ranging: Listen for beacon changes
-     DeviceEventEmitter.addListener(
-       'beaconsDidRange',
-       (data) => {
-         console.log('beaconsDidRange data: ', data);
-         this.setState({ rangingDataSource: this.state.rangingDataSource.cloneWithRows(data.beacons) });
-       }
-     );
+    //
+    // component state aware here - attach events
+    //
+    // Ranging: Listen for beacon changes
+    DeviceEventEmitter.addListener(
+      'beaconsDidRange',
+      (data) => {
+        console.log('beaconsDidRange data: ', data);
+        this.setState({ rangingDataSource: this.state.rangingDataSource.cloneWithRows(data.beacons) });
+      }
+    );
 
     // monitoring:
-     DeviceEventEmitter.addListener(
-       'regionDidEnter',
-       ({ identifier, uuid, minor, major }) => {
-         console.log('monitoring - regionDidEnter data: ', { identifier, uuid, minor, major });
-         const time = moment().format(TIME_FORMAT);
-         this.setState({ regionEnterDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier, uuid, minor, major, time }]) });
-       }
-     );
+    DeviceEventEmitter.addListener(
+      'regionDidEnter',
+      ({ identifier, uuid, minor, major }) => {
+        console.log('monitoring - regionDidEnter data: ', { identifier, uuid, minor, major });
+        const time = moment().format(TIME_FORMAT);
+        this.setState({ regionEnterDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier, uuid, minor, major, time }]) });
+      }
+    );
 
-     DeviceEventEmitter.addListener(
-       'regionDidExit',
-       ({ identifier, uuid, minor, major }) => {
-         console.log('monitoring - regionDidExit data: ', { identifier, uuid, minor, major });
-         const time = moment().format(TIME_FORMAT);
-        this.setState({ regionExitDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier, uuid, minor, major, time }]) });
-       }
-     );
+    DeviceEventEmitter.addListener(
+      'regionDidExit',
+      ({ identifier, uuid, minor, major }) => {
+        console.log('monitoring - regionDidExit data: ', { identifier, uuid, minor, major });
+        const time = moment().format(TIME_FORMAT);
+      this.setState({ regionExitDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier, uuid, minor, major, time }]) });
+      }
+    );
    }
 
    componentWillUnMount(){
-     const { uuid, identifier } = this.state;
+    const { uuid, identifier } = this.state;
 
-     Beacons
-      .stopRangingBeaconsInRegion(identifier, uuid)
-      .then(() => console.log('Beacons ranging stopped succesfully'))
-      .catch(error => console.log(`Beacons ranging not stopped, error: ${error}`));
+    Beacons
+    .stopRangingBeaconsInRegion(identifier, uuid)
+    .then(() => console.log('Beacons ranging stopped succesfully'))
+    .catch(error => console.log(`Beacons ranging not stopped, error: ${error}`));
 
-     Beacons
-       .stopMonitoringForRegion({identifier, uuid})
-       .then(() => console.log('Beacons monitoring stopped succesfully'))
-       .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
+    Beacons
+      .stopMonitoringForRegion({identifier, uuid})
+      .then(() => console.log('Beacons monitoring stopped succesfully'))
+      .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
 
-      // remove monitoring events we registered at componentDidMount
-      DeviceEventEmitter.removeListener('regionDidEnter');
-      DeviceEventEmitter.removeListener('regionDidExit');
-      // remove ranging event we registered at componentDidMount
-      DeviceEventEmitter.removeListener('beaconsDidRange');
+    // remove monitoring events we registered at componentDidMount
+    DeviceEventEmitter.removeListener('regionDidEnter');
+    DeviceEventEmitter.removeListener('regionDidExit');
+    // remove ranging event we registered at componentDidMount
+    DeviceEventEmitter.removeListener('beaconsDidRange');
    }
 
    render() {

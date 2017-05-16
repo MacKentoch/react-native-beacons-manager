@@ -48,7 +48,7 @@ const deepCopyBeaconsLists = beaconsLists => {
 };
 
 class BeaconsDemo extends Component {
-  _beaconsLists: EMPTY_BEACONS_LISTS;
+  _beaconsLists = null;
 
   state = {
     // region information

@@ -226,7 +226,11 @@
 			buildSettings = {
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = "";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../node_modules/react-native/React";
+				HEADER_SEARCH_PATHS = (
+					"<Multiple",
+					"values>",
+					"${SRCROOT}/../../../../ios/Pods/Headers/Public",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -238,7 +242,11 @@
 			buildSettings = {
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = "";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../react-native/React";
+				HEADER_SEARCH_PATHS = (
+					"<Multiple",
+					"values>",
+					"${SRCROOT}/../../../../ios/Pods/Headers/Public",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

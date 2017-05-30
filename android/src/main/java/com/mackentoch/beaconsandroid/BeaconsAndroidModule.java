@@ -27,6 +27,8 @@ import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.MonitorNotifier;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
+import org.altbeacon.beacon.service.ArmaRssiFilter;
+import org.altbeacon.beacon.service.RunningAverageRssiFilter;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -34,6 +36,8 @@ import java.util.Map;
 
 public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements BeaconConsumer {
     private static final String LOG_TAG = "BeaconsAndroidModule";
+    private static final int RUNNING_AVG_RSSI_FILTER = 0;
+    private static final int ARMA_RSSI_FILTER = 1;
     private ReactApplicationContext mReactContext;
     private Context mApplicationContext;
     private BeaconManager mBeaconManager;
@@ -62,6 +66,8 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
         constants.put("NOT_SUPPORTED_BLE", BeaconTransmitter.NOT_SUPPORTED_BLE);
         constants.put("NOT_SUPPORTED_CANNOT_GET_ADVERTISER_MULTIPLE_ADVERTISEMENTS", BeaconTransmitter.NOT_SUPPORTED_CANNOT_GET_ADVERTISER_MULTIPLE_ADVERTISEMENTS);
         constants.put("NOT_SUPPORTED_CANNOT_GET_ADVERTISER", BeaconTransmitter.NOT_SUPPORTED_CANNOT_GET_ADVERTISER);
+        constants.put("RUNNING_AVG_RSSI_FILTER",RUNNING_AVG_RSSI_FILTER);
+        constants.put("ARMA_RSSI_FILTER",ARMA_RSSI_FILTER);
         return constants;
     }
 
@@ -98,6 +104,27 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
     @ReactMethod
     public void setForegroundBetweenScanPeriod(int period) {
         mBeaconManager.setForegroundBetweenScanPeriod((long) period);
+    }
+
+    @ReactMethod
+    public void setRssiFilter(int filterType, double avgModifier) {
+        String logMsg = "Could not set the rssi filter.";
+        if (filterType==RUNNING_AVG_RSSI_FILTER){
+          logMsg="Setting filter RUNNING_AVG";
+          BeaconManager.setRssiFilterImplClass(RunningAverageRssiFilter.class);
+          if (avgModifier>0){
+            RunningAverageRssiFilter.setSampleExpirationMilliseconds((long) avgModifier);
+            logMsg+=" with custom avg modifier";
+          }
+        } else if (filterType==ARMA_RSSI_FILTER){
+          logMsg="Setting filter ARMA";
+          BeaconManager.setRssiFilterImplClass(ArmaRssiFilter.class);
+          if (avgModifier>0){
+            ArmaRssiFilter.setDEFAULT_ARMA_SPEED(avgModifier);
+            logMsg+=" with custom avg modifier";
+          }
+        }
+        Log.d(LOG_TAG, logMsg);
     }
 
     @ReactMethod

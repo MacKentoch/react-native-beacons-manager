@@ -23,7 +23,6 @@ public class BeaconsAndroidPackage implements ReactPackage {
         return new ArrayList<>();
     }
 
-    @Override
     public List<Class<? extends JavaScriptModule>> createJSModules() {
         return new ArrayList<>();
     }

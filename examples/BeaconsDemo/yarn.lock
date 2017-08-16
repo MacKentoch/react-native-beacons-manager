@@ -3303,9 +3303,9 @@ react-devtools-core@^2.0.8:
     cross-env "^3.1.4"
     ws "^2.0.3"
 
-"react-native-beacons-manager@https://github.com/MacKentoch/react-native-beacons-manager.git":
+react-native-beacons-manager@^1.0.5:
   version "1.0.5"
-  resolved "https://github.com/MacKentoch/react-native-beacons-manager.git#734aa01bd7fb56f195906c1fc423831c81f7cb11"
+  resolved "https://registry.yarnpkg.com/react-native-beacons-manager/-/react-native-beacons-manager-1.0.5.tgz#14c5e6de0f1deced30c42d4a3ab3e38fb3cb0516"
 
 react-native-bluetooth-state@^2.0.0:
   version "2.0.0"

@@ -11,7 +11,7 @@
     "moment": "^2.17.1",
     "react": "16.0.0-alpha.6",
     "react-native": "0.43.3",
-    "react-native-beacons-manager": "https://github.com/MacKentoch/react-native-beacons-manager.git",
+    "react-native-beacons-manager": "^1.0.5",
     "react-native-bluetooth-state": "^2.0.0"
   },
   "devDependencies": {

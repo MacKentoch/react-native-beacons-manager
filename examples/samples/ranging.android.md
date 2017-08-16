@@ -6,7 +6,7 @@ This documentation is linked to the sample code [ranging.android.js](./ranging.a
 
 ## 1- start detection for beacon of your choice
 
-Before starting tell the library what kind of beacon you want to manage.
+Before starting, tell the library what kind of beacon you want to manage.
 
 ```javascript
 // dealing with iBeacons:

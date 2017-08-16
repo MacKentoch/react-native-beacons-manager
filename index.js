@@ -1,14 +1,15 @@
 // flow weak
 
 import { Platform }     from 'react-native';
-import RNiBeaconAndroid from './lib/module.android.js';
-import RNiBeaconIOS     from './lib/module.ios.js';
+
+const RNiBeaconAndroid = require('./lib/module.android.js');
+const RNiBeaconIOS     = require('./lib/module.ios.js');
 
 function moduleSelector() {
-  if (Platform.OS === 'android') {
-      return RNiBeaconAndroid;
+  if (Platform.OS === 'ios') {
+      return RNiBeaconIOS;
   }
-  return RNiBeaconIOS;
+  return RNiBeaconAndroid;
 }
 
 const RNiBeaconsModule = moduleSelector();

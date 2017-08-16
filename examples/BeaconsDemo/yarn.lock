@@ -3307,6 +3307,10 @@ react-native-beacons-manager@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/react-native-beacons-manager/-/react-native-beacons-manager-1.0.5.tgz#14c5e6de0f1deced30c42d4a3ab3e38fb3cb0516"
 
+"react-native-beacons-manager@git+https://github.com/MacKentoch/react-native-beacons-manager.git":
+  version "1.0.6"
+  resolved "git+https://github.com/MacKentoch/react-native-beacons-manager.git#4cac5a9f688dc6d8b79d19f54510d37c862f19b8"
+
 react-native-bluetooth-state@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-native-bluetooth-state/-/react-native-bluetooth-state-2.0.0.tgz#a38eb7d68e0f5977375e41e20b5020ae27c3e800"

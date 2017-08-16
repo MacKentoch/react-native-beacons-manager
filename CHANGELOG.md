@@ -1,4 +1,6 @@
-## 1.0.5 (UPCOMING)
+## 1.0.6 (RELEASE)
+- fix #38
+## 1.0.5 (RELEASE)
  - improved documentation
    - when you want to understand or something's wrong please have a look at [this detailed documentation + code sample](https://github.com/MacKentoch/react-native-beacons-manager/tree/master/examples/samples)
  - fix `React Native 0.47` android breaking change: `Remove unused createJSModules`

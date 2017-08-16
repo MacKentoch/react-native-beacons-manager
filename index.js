@@ -2,16 +2,9 @@
 
 import { Platform }     from 'react-native';
 
-const RNiBeaconAndroid = require('./lib/module.android.js');
-const RNiBeaconIOS     = require('./lib/module.ios.js');
-
-function moduleSelector() {
-  if (Platform.OS === 'ios') {
-      return RNiBeaconIOS;
-  }
-  return RNiBeaconAndroid;
-}
-
-const RNiBeaconsModule = moduleSelector();
+const RNiBeaconsModule = Platform.select({
+  ios:      () => require('./lib/module.ios.js'),
+  android:  () => require('./lib/module.android.js')
+})();
 
 export default RNiBeaconsModule;

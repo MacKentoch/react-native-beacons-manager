@@ -1,5 +1,13 @@
+## 1.0.7 (COMING SOON)
+
+- iOS: `startRangingBeaconsInRegion` and `startMonitoringForRegion` return promises like android
+
+- android: `startRangingBeaconsInRegion` and `startMonitoringForRegion` accept an object like iOS and other methods. *NOTE: it won't prevent from accepting current parameters: `regionId: string` and `beaconUUID: string`: not to break existing.*
+
+
 ## 1.0.6 (RELEASE)
 - fix #38
+
 ## 1.0.5 (RELEASE)
  - improved documentation
    - when you want to understand or something's wrong please have a look at [this detailed documentation + code sample](https://github.com/MacKentoch/react-native-beacons-manager/tree/master/examples/samples)

@@ -4,8 +4,6 @@
 * @flow weak
 */
 
-'use strict';
-
 import React, {
  Component
 }                             from 'react';
@@ -52,7 +50,7 @@ class BeaconsDemo extends Component {
 
   state = {
     // region information
-    uuid: UUID,
+    uuid:       UUID,
     identifier: IDENTIFIER,
 
     // check bluetooth state:
@@ -81,10 +79,18 @@ class BeaconsDemo extends Component {
     // (minor and major properties are numbers)
     const region = { identifier, uuid };
     // Monitor for beacons inside the region
-    Beacons.startMonitoringForRegion(region);
+    Beacons
+    .startMonitoringForRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
+    .then(() => console.log('Beacons monitoring started succesfully'))
+    .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
+
     // Range for beacons inside the region
-    Beacons.startRangingBeaconsInRegion(region);
-    // update location to ba able to monitor:
+    Beacons
+    .startRangingBeaconsInRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
+    .then(() => console.log('Beacons ranging started succesfully'))
+    .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
+
+    // update location to be able to monitor:
     Beacons.startUpdatingLocation();
   }
 
@@ -128,10 +134,22 @@ class BeaconsDemo extends Component {
   }
 
   componentWillUnMount() {
+    const { uuid, identifier } = this.state;
+
+    const region = { identifier, uuid }; // minor and major are null here
+
     // stop monitoring beacons:
-    Beacons.stopMonitoringForRegion();
+    Beacons
+    .stopMonitoringForRegion(region)
+    .then(() => console.log('Beacons monitoring stopped succesfully'))
+    .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
+
     // stop ranging beacons:
-    Beacons.stopRangingBeaconsInRegion();
+    Beacons
+    .stopRangingBeaconsInRegion(region)
+    .then(() => console.log('Beacons ranging stopped succesfully'))
+    .catch(error => console.log(`Beacons ranging not stopped, error: ${error}`));
+
     // stop updating locationManager:
     Beacons.stopUpdatingLocation();
     // remove monitoring events we registered at componentDidMount

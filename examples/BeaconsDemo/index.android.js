@@ -4,8 +4,6 @@
  * @flow weak
  */
 
- 'use strict';
-
  import React, {
    Component
  }                     from 'react';
@@ -30,19 +28,15 @@
  const TIME_FORMAT = 'MM/DD/YYYY HH:mm:ss';
 
  class BeaconsDemo extends Component {
-   constructor(props) {
-     super(props);
-
-     this.state = {
-       // region information
-       uuid: UUID,
-       identifier: IDENTIFIER,
-       // React Native ListViews datasources initialization
-       rangingDataSource:     new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
-       regionEnterDatasource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
-       regionExitDatasource:  new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([])
-     };
-   }
+   state = {
+     // region information
+     uuid: UUID,
+     identifier: IDENTIFIER,
+     // React Native ListViews datasources initialization
+     rangingDataSource:     new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
+     regionEnterDatasource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
+     regionExitDatasource:  new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([])
+   };
 
    componentWillMount() {
     //
@@ -52,15 +46,15 @@
     // start iBeacon detection
     Beacons.detectIBeacons();
 
-     // TO FIX (In lib): "startRangingBeaconsInRegion" should take an object as parameter to make it uniform with iOS
-     // NOTE: needs to take either object or like now multiple parameters to avoid users breaking changes
+    const region = { identifier, uuid }; // minor and major are null here
+
     Beacons
-      .startRangingBeaconsInRegion(identifier, uuid)
+      .startRangingBeaconsInRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
       .then(() => console.log('Beacons ranging started succesfully'))
       .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
 
     Beacons
-      .startMonitoringForRegion({ identifier, uuid }) // minor and major are null here
+      .startMonitoringForRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
       .then(() => console.log('Beacons monitoring started succesfully'))
       .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
    }
@@ -101,15 +95,17 @@
    componentWillUnMount(){
     const { uuid, identifier } = this.state;
 
+    const region = { identifier, uuid }; // minor and major are null here
+
     Beacons
-    .stopRangingBeaconsInRegion(identifier, uuid)
+    .stopRangingBeaconsInRegion(region) // or like  < v1.0.7: .stopRangingBeaconsInRegion(identifier, uuid)
     .then(() => console.log('Beacons ranging stopped succesfully'))
     .catch(error => console.log(`Beacons ranging not stopped, error: ${error}`));
 
     Beacons
-      .stopMonitoringForRegion({identifier, uuid})
-      .then(() => console.log('Beacons monitoring stopped succesfully'))
-      .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
+    .stopMonitoringForRegion(region) // or like  < v1.0.7: .stopMonitoringForRegion(identifier, uuid)
+    .then(() => console.log('Beacons monitoring stopped succesfully'))
+    .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
 
     // remove monitoring events we registered at componentDidMount
     DeviceEventEmitter.removeListener('regionDidEnter');

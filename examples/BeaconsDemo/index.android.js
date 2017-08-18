@@ -23,9 +23,9 @@
   * uuid of YOUR BEACON (change to yours)
   * @type {String} uuid
   */
- const UUID = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
- const IDENTIFIER = '123456';
- const TIME_FORMAT = 'MM/DD/YYYY HH:mm:ss';
+ const UUID         = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
+ const IDENTIFIER   = '123456';
+ const TIME_FORMAT  = 'MM/DD/YYYY HH:mm:ss';
 
  class BeaconsDemo extends Component {
    state = {
@@ -49,14 +49,14 @@
     const region = { identifier, uuid }; // minor and major are null here
 
     Beacons
-      .startRangingBeaconsInRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
-      .then(() => console.log('Beacons ranging started succesfully'))
-      .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
+    .startRangingBeaconsInRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
+    .then(() => console.log('Beacons ranging started succesfully'))
+    .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
 
     Beacons
-      .startMonitoringForRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
-      .then(() => console.log('Beacons monitoring started succesfully'))
-      .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
+    .startMonitoringForRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
+    .then(() => console.log('Beacons monitoring started succesfully'))
+    .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
    }
 
    componentDidMount() {

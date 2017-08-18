@@ -185,10 +185,10 @@ DeviceEventEmitter.addListener('beaconsDidRange', (data) => {
 **Standardization of iOS and android to make library more coherent:**
 
 - **iOS**
-  - [ ] `startRangingBeaconsInRegion` and `startMonitoringForRegion` should return promises like android
+  - [x] `startRangingBeaconsInRegion` and `startMonitoringForRegion` should return promises like android
 
 - **android**
-  - [ ] `startRangingBeaconsInRegion` should accept an object like iOS and other methods (won't prevent from accepting current parameters: not to break existing)
+  - [x] `startRangingBeaconsInRegion` should accept an object like iOS and other methods (won't prevent from accepting current parameters: not to break existing)
 
 **Improvements or new feature:**
 

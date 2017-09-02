@@ -4,6 +4,9 @@
 
 - android: `startRangingBeaconsInRegion` and `startMonitoringForRegion` accept an object like iOS and other methods. *NOTE: it won't prevent from accepting current parameters: `regionId: string` and `beaconUUID: string`: not to break existing.*
 
+- add typescript types
+
+- fix #40
 
 ## 1.0.6 (RELEASE)
 - fix #38

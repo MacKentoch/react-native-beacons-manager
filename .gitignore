@@ -35,3 +35,8 @@ node_modules/
 npm-debug.log
 Pods/
 AirMapsExplorer.xcworkspace/
+
+
+# yarn
+yarn.lock
+yarn-error.log

@@ -1,8 +1,9 @@
 {
-  "typeAcquisition": {
-    "include": [
-      "react",
-      "react-native"
-    ]
-  }
+  "exclude": [
+    "node_modules",
+    "android",
+    "ios",
+    "images",
+    "example"
+  ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "react-native-beacons-manager",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "React-Native library for detecting beacons (iOS and Android)",
   "keywords": [
     "react-native",
@@ -17,6 +17,10 @@
     "type": "git",
     "url": "git+https://github.com/MacKentoch/react-native-beacons-manager.git"
   },
+  "typescript": {
+    "definition": "typings/react-native-beacons-manager.d.ts"
+  },
+  "types": "typings/react-native-beacons-manager.d.ts",
   "bugs": {
     "url": "https://github.com/MacKentoch/react-native-beacons-manager/issues"
   },
@@ -41,7 +45,6 @@
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
-    "babel-preset-flow": "^6.23.0",
     "eslint": "^4.4.1",
     "eslint-plugin-flowtype": "^2.35.0",
     "eslint-plugin-react": "^7.2.0",

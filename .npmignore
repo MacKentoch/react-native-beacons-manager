@@ -1,0 +1,14 @@
+.eslintrc
+.babelrc
+
+.editorconfig
+
+examples
+
+_config.yml
+
+images
+
+BACKGROUND_MODES.md
+CHANGELOG.md
+ISSUE_TEMPLATE.md

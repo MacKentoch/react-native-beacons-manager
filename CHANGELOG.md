@@ -1,4 +1,4 @@
-## 1.0.7 (COMING SOON)
+## 1.0.7 (RELEASE)
 
 - iOS: `startRangingBeaconsInRegion` and `startMonitoringForRegion` return promises like android
 

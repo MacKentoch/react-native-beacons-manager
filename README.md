@@ -53,6 +53,7 @@ If you plan to:
   - in your `info.plist`, add `Privacy - Location Always Usage Description` key defined (*empty value or not. It is better to define a value to a custom / more user-friendly message*).
   ![ios: request when in use authorization](./images/plistRequireAlwaysUseAutorization.png)
 
+-  If your `Info.plist` contains a `NSBluetoothPeripheralUsageDescription` key, you have to specify an associated text to avoid being rejected.
 
 - **use background mode** check [this documentation](./BACKGROUND_MODES.md)
 

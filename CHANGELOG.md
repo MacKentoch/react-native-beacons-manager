@@ -1,3 +1,8 @@
+## 1.0.7 (COMING SOON)
+
+- improve typescript types
+- remove previous non flow typed libs versions (*these before 1.0.7*)
+
 ## 1.0.7 (RELEASE)
 
 - iOS: `startRangingBeaconsInRegion` and `startMonitoringForRegion` return promises like android

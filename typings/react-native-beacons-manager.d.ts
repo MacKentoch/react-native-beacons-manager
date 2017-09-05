@@ -7,6 +7,27 @@ declare module 'react-native-beacons-manager' {
     major?: number
   };
 
+
+  ///////////////////////////////////////////////////////
+  // iOS only
+  ///////////////////////////////////////////////////////
+
+  function requestAlwaysAuthorization(): void;
+
+  function requestWhenInUseAuthorization(): void
+
+  function getAuthorizationStatus(
+    callback: (status: AuthorizationStatus) => any
+  ): any;
+
+  function startUpdatingLocation(): void;
+
+  function stopUpdatingLocation(): void;
+
+  function shouldDropEmptyRanges(
+    drop: boolean
+  ): void;
+
   ///////////////////////////////////////////////////////
   // android only
   ///////////////////////////////////////////////////////
@@ -66,8 +87,7 @@ declare module 'react-native-beacons-manager' {
   ): Promise<any>;
 
   function startRangingBeaconsInRegion(
-    regionId: string,
-    beaconsUUID?: string
+    region: BeaconRegion
   ): Promise<any>;
 
   function stopMonitoringForRegion(
@@ -75,9 +95,6 @@ declare module 'react-native-beacons-manager' {
   ): Promise<any>;
 
   function stopRangingBeaconsInRegion(
-    regionId: string,
-    beaconsUUID?: string
+    region: BeaconRegion
   ): Promise<any>;
-
-
 }

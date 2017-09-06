@@ -1,4 +1,7 @@
-## 1.0.7 (COMING SOON)
+## 1.0.8 (COMING SOON)
+
+
+## 1.0.7 (RELEASE)
 
 - improve typescript types
 - remove previous non flow typed libs versions (*these before 1.0.7*)

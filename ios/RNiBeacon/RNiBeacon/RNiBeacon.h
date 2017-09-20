@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <React/RCTBridgeModule.h>
 
-@interface RNiBeacon : NSObject <RCTBridgeModule>
+#import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
+
+@interface RNiBeacon : RCTEventEmitter <RCTBridgeModule>
 
 @end

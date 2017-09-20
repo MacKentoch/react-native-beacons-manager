@@ -25,8 +25,6 @@
 
 RCT_EXPORT_MODULE()
 
-@synthesize bridge = _bridge;
-
 #pragma mark Initialization
 
 - (instancetype)init
@@ -40,6 +38,16 @@ RCT_EXPORT_MODULE()
   }
 
   return self;
+}
+
+- (NSArray<NSString *> *)supportedEvents
+{
+    return @[
+             @"authorizationStatusDidChange",
+             @"beaconsDidRange",
+             @"regionDidEnter",
+             @"regionDidExit",
+             ];
 }
 
 #pragma mark
@@ -207,8 +215,8 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 
 -(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
-  NSString *statusName = [self nameForAuthorizationStatus:status];
-  [self.bridge.eventDispatcher sendDeviceEventWithName:@"authorizationStatusDidChange" body:statusName];
+    NSString *statusName = [self nameForAuthorizationStatus:status];
+    [self sendEventWithName:@"authorizationStatusDidChange" body:statusName];
 }
 
 -(void)locationManager:(CLLocationManager *)manager rangingBeaconsDidFailForRegion:(CLBeaconRegion *)region withError:(NSError *)error
@@ -222,6 +230,26 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 
 -(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
   NSLog(@"Location manager failed: %@", error);
+}
+
+- (void) locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region
+{
+    NSLog(@"did determine state");
+    
+    switch (state) {
+        case CLRegionStateInside:
+            NSLog(@"state inside");
+            break;
+        case CLRegionStateOutside:
+            NSLog(@"state outside");
+            break;
+        case CLRegionStateUnknown:
+            NSLog(@"state unknown");
+            break;
+        default:
+            NSLog(@"Default case: Region unknown");
+            break;
+    }
 }
 
 -(void) locationManager:(CLLocationManager *)manager didRangeBeacons:
@@ -252,27 +280,27 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
                           @"beacons": beaconArray
                           };
 
-  [self.bridge.eventDispatcher sendDeviceEventWithName:@"beaconsDidRange" body:event];
+    [self sendEventWithName:@"beaconsDidRange" body:event];
 }
 
 -(void)locationManager:(CLLocationManager *)manager
         didEnterRegion:(CLBeaconRegion *)region {
   NSDictionary *event = @{
-                          @"identifier": region.identifier,
+                          @"region": region.identifier,
                           @"uuid": [region.proximityUUID UUIDString],
                           };
 
-  [self.bridge.eventDispatcher sendDeviceEventWithName:@"regionDidEnter" body:event];
+    [self sendEventWithName:@"regionDidEnter" body:event];
 }
 
 -(void)locationManager:(CLLocationManager *)manager
          didExitRegion:(CLBeaconRegion *)region {
   NSDictionary *event = @{
-                          @"identifier": region.identifier,
+                          @"region": region.identifier,
                           @"uuid": [region.proximityUUID UUIDString],
                           };
 
-  [self.bridge.eventDispatcher sendDeviceEventWithName:@"regionDidExit" body:event];
+    [self sendEventWithName:@"regionDidExit" body:event];
 }
 
 

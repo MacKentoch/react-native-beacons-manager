@@ -56,6 +56,8 @@ class BeaconsDemo extends Component {
     // check bluetooth state:
     bluetoothState: '',
 
+    message: '',
+
     beaconsLists: new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
       sectionHeaderHasChanged: (s1, s2) => s1 !== s2
@@ -98,7 +100,8 @@ class BeaconsDemo extends Component {
     DeviceEventEmitter.addListener(
       'beaconsDidRange',
       (data) => {
-        console.log('beaconsDidRange, data: ', data);
+        this.setState({ message:  'beaconsDidRange event'});
+        // console.log('beaconsDidRange, data: ', data);
         const updatedBeaconsLists = this.updateBeaconList(data.beacons, 'rangingList');
         this._beaconsLists = updatedBeaconsLists;
         this.setState({ beaconsLists: this.state.beaconsLists.cloneWithRowsAndSections(this._beaconsLists)});
@@ -109,6 +112,7 @@ class BeaconsDemo extends Component {
     DeviceEventEmitter.addListener(
       'regionDidEnter',
       ({uuid, identifier}) => {
+        this.setState({ message:  'regionDidEnter event'});
         console.log('regionDidEnter, data: ', {uuid, identifier});
         const time = moment().format(TIME_FORMAT);
         const updatedBeaconsLists = this.updateBeaconList({uuid, identifier, time}, 'monitorEnterList');
@@ -119,6 +123,7 @@ class BeaconsDemo extends Component {
     DeviceEventEmitter.addListener(
       'regionDidExit',
       ({ identifier, uuid, minor, major }) => {
+        this.setState({ message:  'regionDidExit event'});
         console.log('regionDidExit, data: ', {identifier, uuid, minor, major});
         const time = moment().format(TIME_FORMAT);
         const updatedBeaconsLists = this.updateBeaconList({ identifier, uuid, minor, major, time }, 'monitorExitList');
@@ -160,12 +165,20 @@ class BeaconsDemo extends Component {
   }
 
   render() {
-    const { bluetoothState, beaconsLists } = this.state;
+    const {
+      bluetoothState,
+      beaconsLists,
+      message
+    } = this.state;
 
     return (
       <View style={styles.container}>
         <Text style={styles.btleConnectionStatus}>
           Bluetooth connection status: { bluetoothState ? bluetoothState  : 'NA' }
+        </Text>
+
+        <Text>
+          { message }
         </Text>
 
         <View style={styles.justFlex}>

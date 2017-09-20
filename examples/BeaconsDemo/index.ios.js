@@ -76,6 +76,7 @@ class BeaconsDemo extends Component {
     // you also have to add "Privacy - Location Always Usage Description" in your "Info.plist" file
     // otherwise monitoring won't work
     Beacons.requestAlwaysAuthorization();
+    Beacons.shouldDropEmptyRanges(true);
     // Define a region which can be identifier + uuid,
     // identifier + uuid + major or identifier + uuid + major + minor
     // (minor and major properties are numbers)

@@ -51,11 +51,11 @@
     "eslint-plugin-react-native": "^3.0.1",
     "flow-bin": "^0.52.0",
     "prop-types": "^15.5.10",
-    "react": "^15.4.2",
-    "react-native": "^0.41.2"
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.43.3"
   },
   "peerDependencies": {
-    "react": ">=15.4.2",
-    "react-native": ">=0.41.2"
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.43.3"
   }
 }

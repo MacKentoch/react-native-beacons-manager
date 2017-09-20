@@ -51,6 +51,8 @@ declare module 'react-native-beacons-manager' {
 
   function detectEddystoneTLM(): void;
 
+  function detectEddystoneEID(): void;
+
   function detectCustomBeaconLayout(
     parser: number
   ): void;
@@ -73,6 +75,8 @@ declare module 'react-native-beacons-manager' {
   ): void;
 
   function getRangedRegions(): Promise<any>;
+
+  function bindManager(): Promise<any>;
 
   function getMonitoredRegions(): Promise<Array<BeaconRegion>>;
 

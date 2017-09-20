@@ -246,7 +246,6 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
     NSDictionary *event = @{
                           @"state":   [self stringForState:state],
                           @"region":  region.identifier,
-                          @"uuid":    [region.proximityUUID UUIDString]
                           };
   
     [self sendEventWithName:@"didDetermineState" body:event];  

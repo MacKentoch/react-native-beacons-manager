@@ -47,6 +47,7 @@ RCT_EXPORT_MODULE()
              @"beaconsDidRange",
              @"regionDidEnter",
              @"regionDidExit",
+             @"didDetermineState"
              ];
 }
 
@@ -232,24 +233,23 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
   NSLog(@"Location manager failed: %@", error);
 }
 
+-(NSString *)stringForState:(CLRegionState)state {
+  switch (state) {
+    case CLRegionStateInside:   return @"inside";
+    case CLRegionStateOutside:  return @"outside";
+    case CLRegionStateUnknown:  return @"unknown";
+  }
+}
+
 - (void) locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region
 {
-    NSLog(@"did determine state");
-    
-    switch (state) {
-        case CLRegionStateInside:
-            NSLog(@"state inside");
-            break;
-        case CLRegionStateOutside:
-            NSLog(@"state outside");
-            break;
-        case CLRegionStateUnknown:
-            NSLog(@"state unknown");
-            break;
-        default:
-            NSLog(@"Default case: Region unknown");
-            break;
-    }
+    NSDictionary *event = @{
+                          @"state":   [self stringForState:state],
+                          @"region":  region.identifier,
+                          @"uuid":    [region.proximityUUID UUIDString]
+                          };
+  
+    [self sendEventWithName:@"didDetermineState" body:event];  
 }
 
 -(void) locationManager:(CLLocationManager *)manager didRangeBeacons:

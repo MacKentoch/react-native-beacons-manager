@@ -21,7 +21,7 @@
 
  /**
   * uuid of YOUR BEACON (change to yours)
-  * @type {String} uuid
+  * @type {?String} uuid
   */
  const UUID         = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
  const IDENTIFIER   = '123456';

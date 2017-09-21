@@ -21,7 +21,7 @@
 
  /**
   * uuid of YOUR BEACON (change to yours)
-  * @type {String} uuid
+  * @type {?String} uuid
   */
  const UUID         = null;
  const identifier    = 'all-beacons';
@@ -47,7 +47,7 @@
     //
     // ONLY non component state aware here in componentWillMount
     //
-    // start iBeacon detection
+    // start Eddystone EID detection
     Beacons.detectEddystoneEID();
      this._bindBeacons()
       .then(() => {

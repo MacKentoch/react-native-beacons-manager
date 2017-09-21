@@ -347,6 +347,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		0D2FF6501F70D368005C8819 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				DE1DAA09833A4BD7A378D016 /* libRNBluetoothState.a */,
+				5D53217D131A43AAB1AFB09E /* libRNiBeacon.a */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		0D553C471E793B65007F27E4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -464,6 +473,7 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* BeaconsDemoTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
+				0D2FF6501F70D368005C8819 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";

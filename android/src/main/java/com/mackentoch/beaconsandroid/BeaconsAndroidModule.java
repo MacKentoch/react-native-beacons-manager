@@ -3,10 +3,10 @@ package com.mackentoch.beaconsandroid;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
@@ -48,9 +48,6 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
         this.mReactContext = reactContext;
         this.mApplicationContext = reactContext.getApplicationContext();
         this.mBeaconManager = BeaconManager.getInstanceForApplication(mApplicationContext);
-        // Detect iBeacons ( http://stackoverflow.com/questions/25027983/is-this-the-correct-layout-to-detect-ibeacons-with-altbeacons-android-beacon-li )
-        addParser("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24");
-        mBeaconManager.bind(this);
     }
 
     @Override
@@ -74,6 +71,11 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
     @ReactMethod
     public void setHardwareEqualityEnforced(Boolean e) {
       Beacon.setHardwareEqualityEnforced(e.booleanValue());
+    }
+
+    @ReactMethod
+    public void bindManager() {
+        mBeaconManager.bind(this);
     }
 
     @ReactMethod
@@ -186,7 +188,11 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
 
     @Override
     public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i) {
-        return mApplicationContext.bindService(intent, serviceConnection, i);
+        boolean bindStatus = mApplicationContext.bindService(intent, serviceConnection, i);
+        WritableMap params = Arguments.createMap();
+        params.putString("status", String.valueOf(bindStatus));
+        sendEvent(mReactContext, "bindStatus", params);
+        return bindStatus;
     }
 
     /***********************************************************************************************
@@ -289,8 +295,10 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
         for (Beacon beacon : beacons) {
             WritableMap b = new WritableNativeMap();
             b.putString("uuid", beacon.getId1().toString());
-            b.putInt("major", beacon.getId2().toInt());
-            b.putInt("minor", beacon.getId3().toInt());
+            if (beacon.getIdentifiers().size() > 1) {
+                b.putInt("major", beacon.getId2().toInt());
+                b.putInt("minor", beacon.getId3().toInt());
+            }
             b.putInt("rssi", beacon.getRssi());
             b.putDouble("distance", beacon.getDistance());
             b.putString("proximity", getProximity(beacon.getDistance()));

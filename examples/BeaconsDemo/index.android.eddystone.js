@@ -23,15 +23,15 @@
   * uuid of YOUR BEACON (change to yours)
   * @type {?String} uuid
   */
- const UUID         = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
- const IDENTIFIER   = '123456';
+ const UUID         = null;
+ const identifier    = 'all-beacons';
  const TIME_FORMAT  = 'MM/DD/YYYY HH:mm:ss';
 
  class BeaconsDemo extends Component {
    state = {
      // region information
      uuid: UUID,
-     identifier: IDENTIFIER,
+     identifier: identifier,
      // React Native ListViews datasources initialization
      rangingDataSource:     new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
      regionEnterDatasource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
@@ -47,25 +47,27 @@
     //
     // ONLY non component state aware here in componentWillMount
     //
-    // start iBeacon detection
-    Beacons.detectIBeacons();
-    this._bindBeacons()
+    // start Eddystone EID detection
+    Beacons.detectEddystoneEID();
+     this._bindBeacons()
       .then(() => {
-         const { identifier, uuid } = this.state;
-         const region = { identifier, uuid }; // minor and major are null here
-         Beacons
-           .startRangingBeaconsInRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
-           .then(() => console.log('Beacons ranging started succesfully'))
-           .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
-         Beacons
-           .startMonitoringForRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
-           .then(() => console.log('Beacons monitoring started succesfully'))
-           .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
-       })
-       .catch(() => console.log("failed binding"));
+        const { uuid, identifier } = this.state;
+        const region = { uuid, identifier }; // minor and major are null here
+      Beacons
+        .startRangingBeaconsInRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
+        .then(() => console.log('Beacons ranging started succesfully'))
+        .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
+      Beacons
+       .startMonitoringForRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
+       .then(() => console.log('Beacons monitoring started succesfully'))
+       .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
+      })
+      .catch(() => console.log("failed binding"));
    }
 
    componentDidMount() {
+
+
     //
     // component state aware here - attach events
     //

@@ -13,8 +13,7 @@
    Text,
    ScrollView,
    ListView,
-   View,
-   DeviceEventEmitter
+   View
  }                     from 'react-native';
  import Beacons        from 'react-native-beacons-manager';
  import moment         from 'moment';
@@ -28,6 +27,13 @@
  const TIME_FORMAT  = 'MM/DD/YYYY HH:mm:ss';
 
  class BeaconsDemo extends Component {
+   // will be set as a reference to "beaconsDidRange" event:
+   beaconsDidRangeEvent = null;
+   // will be set as a reference to "regionDidEnter" event:
+   regionDidEnterEvent = null;
+   // will be set as a reference to "regionDidExit" event:
+   regionDidExitEvent = null
+
    state = {
      // region information
      uuid: UUID,

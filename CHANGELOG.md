@@ -1,6 +1,7 @@
 ## 1.0.8 (COMING SOON)
 - PR #45 thank you to @stoneman1
 - PR #46 thank you to @ashemah
+ - **BEWARE**: *breaking change* = drop of  `DeviceEventEmitter` in favor of `Beacons.BeaconsEventEmitter` (see [BeaconsDemo example project](./examples/BeaconsDemo))
  
 
 ## 1.0.7 (RELEASE)

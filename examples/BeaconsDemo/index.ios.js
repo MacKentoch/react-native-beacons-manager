@@ -12,8 +12,7 @@ import {
  StyleSheet,
  View,
  Text,
- ListView,
- DeviceEventEmitter
+ ListView
 }                             from 'react-native';
 import Beacons                from 'react-native-beacons-manager';
 import BluetoothState         from 'react-native-bluetooth-state';
@@ -46,7 +45,17 @@ const deepCopyBeaconsLists = beaconsLists => {
 };
 
 class BeaconsDemo extends Component {
+  // will be set as list of beacons to update state
   _beaconsLists = null;
+
+  // will be set as a reference to "beaconsDidRange" event:
+  beaconsDidRangeEvent = null;
+  // will be set as a reference to "regionDidEnter" event:
+  regionDidEnterEvent = null;
+  // will be set as a reference to "regionDidExit" event:
+  regionDidExitEvent = null;
+  // will be set as a reference to "authorizationStatusDidChange" event:
+  authStateDidRangeEvent = null;
 
   state = {
     // region information
@@ -67,11 +76,7 @@ class BeaconsDemo extends Component {
   componentWillMount(){
     this._beaconsLists = EMPTY_BEACONS_LISTS;
     const { identifier, uuid } = this.state;
-    // OPTIONAL: listen to authorization change
-    DeviceEventEmitter.addListener(
-      'authorizationStatusDidChange',
-      (info) => console.log('authorizationStatusDidChange: ', info)
-    );
+
     // MANDATORY: you have to request ALWAYS Authorization (not only when in use) when monitoring
     // you also have to add "Privacy - Location Always Usage Description" in your "Info.plist" file
     // otherwise monitoring won't work
@@ -98,7 +103,13 @@ class BeaconsDemo extends Component {
   }
 
   componentDidMount() {
-    DeviceEventEmitter.addListener(
+    // OPTIONAL: listen to authorization change
+    this.authStateDidRangeEvent = Beacons.BeaconsEventEmitter.addListener(
+      'authorizationStatusDidChange',
+      (info) => console.log('authorizationStatusDidChange: ', info)
+    );
+
+    this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener(
       'beaconsDidRange',
       (data) => {
         this.setState({ message:  'beaconsDidRange event'});
@@ -110,7 +121,7 @@ class BeaconsDemo extends Component {
     );
 
     // monitoring events
-    DeviceEventEmitter.addListener(
+    this.beaconsDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
       'regionDidEnter',
       ({uuid, identifier}) => {
         this.setState({ message:  'regionDidEnter event'});
@@ -121,7 +132,8 @@ class BeaconsDemo extends Component {
         this.setState({ beaconsLists: this.state.beaconsLists.cloneWithRowsAndSections(this._beaconsLists)});
       }
     );
-    DeviceEventEmitter.addListener(
+
+    this.regionDidExitEvent = Beacons.BeaconsEventEmitter.addListener(
       'regionDidExit',
       ({ identifier, uuid, minor, major }) => {
         this.setState({ message:  'regionDidExit event'});
@@ -159,10 +171,11 @@ class BeaconsDemo extends Component {
     // stop updating locationManager:
     Beacons.stopUpdatingLocation();
     // remove monitoring events we registered at componentDidMount
-    DeviceEventEmitter.removeListener('regionDidEnter');
-    DeviceEventEmitter.removeListener('regionDidExit');
+    this.authStateDidRangeEvent.remove();
+    this.regionDidEnterEvent.remove();
+    this.regionDidExitEvent.remove();
     // remove ranging event we registered at componentDidMount
-    DeviceEventEmitter.removeListener('beaconsDidRange');
+    this.beaconsDidRangeEvent.remove();
   }
 
   render() {

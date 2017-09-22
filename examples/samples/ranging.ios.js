@@ -1,4 +1,5 @@
 
+import { NativeEventEmitter } from 'react-native'
 import Beacons  from 'react-native-beacons-manager';
 import moment   from 'moment';
 
@@ -7,6 +8,10 @@ const TIME_FORMAT = 'MM/DD/YYYY HH:mm:ss';
 class beaconRangingOnly extends Component {
  constructor(props) {
    super(props);
+
+   this.beaconsEmitter = new NativeEventEmitter(Beacons);
+   this.beaconsDidRangeEvent = null;
+   this.authStateDidRangeEvent = null;
 
    this.state = {
      // region information
@@ -24,7 +29,7 @@ class beaconRangingOnly extends Component {
    //
 
    // OPTIONAL: listen to authorization change
-   DeviceEventEmitter.addListener(
+   this.authStateDidRangeEvent = this.beaconsEmitter.addListener(
      'authorizationStatusDidChange',
      (info) => console.log('authorizationStatusDidChange: ', info)
    );
@@ -47,7 +52,7 @@ class beaconRangingOnly extends Component {
    //
 
    // Ranging: Listen for beacon changes
-   DeviceEventEmitter.addListener(
+   this.beaconsDidRangeEvent = this.beaconsEmitter.addListener(
      'beaconsDidRange',
      (data) => {
       //  console.log('beaconsDidRange data: ', data);
@@ -62,7 +67,8 @@ class beaconRangingOnly extends Component {
    // stop ranging beacons:
    Beacons.stopRangingBeaconsInRegion(region);
    // remove beacons event we registered at componentDidMount
-   DeviceEventEmitter.removeListener('beaconsDidRange');
+   this.beaconsDidRangeEvent.remove();
+   this.authStateDidRangeEvent.remove();
  }
 
  render() {

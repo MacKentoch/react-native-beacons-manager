@@ -238,6 +238,7 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
     case CLRegionStateInside:   return @"inside";
     case CLRegionStateOutside:  return @"outside";
     case CLRegionStateUnknown:  return @"unknown";
+    default:                    return @"unknown";
   }
 }
 

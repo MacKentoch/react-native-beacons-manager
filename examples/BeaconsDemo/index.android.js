@@ -70,7 +70,7 @@
     // component state aware here - attach events
     //
     // Ranging: Listen for beacon changes
-    DeviceEventEmitter.addListener(
+    this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener(
       'beaconsDidRange',
       (data) => {
         console.log('beaconsDidRange data: ', data);
@@ -79,7 +79,7 @@
     );
 
     // monitoring:
-    DeviceEventEmitter.addListener(
+    this.beaconsDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
       'regionDidEnter',
       ({ identifier, uuid, minor, major }) => {
         console.log('monitoring - regionDidEnter data: ', { identifier, uuid, minor, major });
@@ -88,7 +88,7 @@
       }
     );
 
-    DeviceEventEmitter.addListener(
+    this.regionDidExitEvent = Beacons.BeaconsEventEmitter.addListener(
       'regionDidExit',
       ({ identifier, uuid, minor, major }) => {
         console.log('monitoring - regionDidExit data: ', { identifier, uuid, minor, major });
@@ -113,11 +113,11 @@
     .then(() => console.log('Beacons monitoring stopped succesfully'))
     .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
 
-    // remove monitoring events we registered at componentDidMount
-    DeviceEventEmitter.removeListener('regionDidEnter');
-    DeviceEventEmitter.removeListener('regionDidExit');
-    // remove ranging event we registered at componentDidMount
-    DeviceEventEmitter.removeListener('beaconsDidRange');
+    // remove monitiring events we registered at componentDidMount::
+    this.regionDidEnterEvent.remove();
+    this.regionDidExitEvent.remove();
+    // remove ranging event we registered at componentDidMount:
+    this.beaconsDidRangeEvent.remove();
    }
 
    render() {

@@ -109,6 +109,7 @@ class BeaconsDemo extends Component {
       (info) => console.log('authorizationStatusDidChange: ', info)
     );
 
+    // Ranging: Listen for beacon changes
     this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener(
       'beaconsDidRange',
       (data) => {
@@ -121,7 +122,7 @@ class BeaconsDemo extends Component {
     );
 
     // monitoring events
-    this.beaconsDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
+    this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
       'regionDidEnter',
       ({uuid, identifier}) => {
         this.setState({ message:  'regionDidEnter event'});
@@ -170,11 +171,12 @@ class BeaconsDemo extends Component {
 
     // stop updating locationManager:
     Beacons.stopUpdatingLocation();
-    // remove monitoring events we registered at componentDidMount
+    // remove auth state event we registered at componentDidMount:
     this.authStateDidRangeEvent.remove();
+    // remove monitiring events we registered at componentDidMount::
     this.regionDidEnterEvent.remove();
     this.regionDidExitEvent.remove();
-    // remove ranging event we registered at componentDidMount
+    // remove ranging event we registered at componentDidMount:
     this.beaconsDidRangeEvent.remove();
   }
 

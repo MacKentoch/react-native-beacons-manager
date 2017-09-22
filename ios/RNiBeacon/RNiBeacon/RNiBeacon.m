@@ -246,7 +246,7 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 {
     NSDictionary *event = @{
                           @"state":   [self stringForState:state],
-                          @"region":  region.identifier,
+                          @"identifier":  region.identifier,
                           };
   
     [self sendEventWithName:@"didDetermineState" body:event];  
@@ -286,7 +286,7 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 -(void)locationManager:(CLLocationManager *)manager
         didEnterRegion:(CLBeaconRegion *)region {
   NSDictionary *event = @{
-                          @"region": region.identifier,
+                          @"identifier": region.identifier,
                           @"uuid": [region.proximityUUID UUIDString],
                           };
 
@@ -296,7 +296,7 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 -(void)locationManager:(CLLocationManager *)manager
          didExitRegion:(CLBeaconRegion *)region {
   NSDictionary *event = @{
-                          @"region": region.identifier,
+                          @"identifier": region.identifier,
                           @"uuid": [region.proximityUUID UUIDString],
                           };
 

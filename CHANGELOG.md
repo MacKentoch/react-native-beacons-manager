@@ -8,6 +8,9 @@
     // simply becomes (for both iOS and Android)
     Beacons.BeaconsEventEmitter.addListener()
     ```
+
+ - update iOS and Android BeaconsDemo example project
+ - update samples (*TODO*)
  
  
 

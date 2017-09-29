@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		0D03EBE31E56B1E700C55E6B /* RNiBeacon.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D03EBE21E56B1E700C55E6B /* RNiBeacon.m */; };
 		0D03EBE41E56B1E700C55E6B /* RNiBeacon.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0D03EBE11E56B1E700C55E6B /* RNiBeacon.h */; };
+		BFEB98901F7E53A800C8641E /* RNLLocationTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = BFEB98801F7E53A600C8641E /* RNLLocationTracker.m */; };
+		BFEB98911F7E53A800C8641E /* RNLBeacon.m in Sources */ = {isa = PBXBuildFile; fileRef = BFEB98821F7E53A600C8641E /* RNLBeacon.m */; };
+		BFEB98921F7E53A800C8641E /* RNLBeaconScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = BFEB98851F7E53A600C8641E /* RNLBeaconScanner.m */; };
+		BFEB98931F7E53A800C8641E /* RNEddystone.m in Sources */ = {isa = PBXBuildFile; fileRef = BFEB98871F7E53A600C8641E /* RNEddystone.m */; };
+		BFEB98941F7E53A800C8641E /* RNLBeacon+Distance.m in Sources */ = {isa = PBXBuildFile; fileRef = BFEB98891F7E53A700C8641E /* RNLBeacon+Distance.m */; };
+		BFEB98951F7E53A800C8641E /* RNLBeaconTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = BFEB988A1F7E53A700C8641E /* RNLBeaconTracker.m */; };
+		BFEB98961F7E53A800C8641E /* RNLSignalMeasurement.m in Sources */ = {isa = PBXBuildFile; fileRef = BFEB988C1F7E53A700C8641E /* RNLSignalMeasurement.m */; };
+		BFEB98971F7E53A800C8641E /* RNLBeaconParser.m in Sources */ = {isa = PBXBuildFile; fileRef = BFEB988F1F7E53A700C8641E /* RNLBeaconParser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +36,22 @@
 		0D03EBDE1E56B1E700C55E6B /* libRNiBeacon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNiBeacon.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D03EBE11E56B1E700C55E6B /* RNiBeacon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNiBeacon.h; sourceTree = "<group>"; };
 		0D03EBE21E56B1E700C55E6B /* RNiBeacon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNiBeacon.m; sourceTree = "<group>"; };
+		BFEB98801F7E53A600C8641E /* RNLLocationTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNLLocationTracker.m; sourceTree = "<group>"; };
+		BFEB98811F7E53A600C8641E /* RNLSignalMeasurement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNLSignalMeasurement.h; sourceTree = "<group>"; };
+		BFEB98821F7E53A600C8641E /* RNLBeacon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNLBeacon.m; sourceTree = "<group>"; };
+		BFEB98831F7E53A600C8641E /* RNLBeaconScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNLBeaconScanner.h; sourceTree = "<group>"; };
+		BFEB98841F7E53A600C8641E /* RNLLocationTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNLLocationTracker.h; sourceTree = "<group>"; };
+		BFEB98851F7E53A600C8641E /* RNLBeaconScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNLBeaconScanner.m; sourceTree = "<group>"; };
+		BFEB98861F7E53A600C8641E /* RNLBeaconTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNLBeaconTracker.h; sourceTree = "<group>"; };
+		BFEB98871F7E53A600C8641E /* RNEddystone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNEddystone.m; sourceTree = "<group>"; };
+		BFEB98881F7E53A700C8641E /* RNEddystone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNEddystone.h; sourceTree = "<group>"; };
+		BFEB98891F7E53A700C8641E /* RNLBeacon+Distance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RNLBeacon+Distance.m"; sourceTree = "<group>"; };
+		BFEB988A1F7E53A700C8641E /* RNLBeaconTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNLBeaconTracker.m; sourceTree = "<group>"; };
+		BFEB988B1F7E53A700C8641E /* RNLBeacon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNLBeacon.h; sourceTree = "<group>"; };
+		BFEB988C1F7E53A700C8641E /* RNLSignalMeasurement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNLSignalMeasurement.m; sourceTree = "<group>"; };
+		BFEB988D1F7E53A700C8641E /* RNLBeacon+Distance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RNLBeacon+Distance.h"; sourceTree = "<group>"; };
+		BFEB988E1F7E53A700C8641E /* RNLBeaconParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNLBeaconParser.h; sourceTree = "<group>"; };
+		BFEB988F1F7E53A700C8641E /* RNLBeaconParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNLBeaconParser.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +84,22 @@
 		0D03EBE01E56B1E700C55E6B /* RNiBeacon */ = {
 			isa = PBXGroup;
 			children = (
+				BFEB98881F7E53A700C8641E /* RNEddystone.h */,
+				BFEB98871F7E53A600C8641E /* RNEddystone.m */,
+				BFEB988B1F7E53A700C8641E /* RNLBeacon.h */,
+				BFEB98821F7E53A600C8641E /* RNLBeacon.m */,
+				BFEB988D1F7E53A700C8641E /* RNLBeacon+Distance.h */,
+				BFEB98891F7E53A700C8641E /* RNLBeacon+Distance.m */,
+				BFEB988E1F7E53A700C8641E /* RNLBeaconParser.h */,
+				BFEB988F1F7E53A700C8641E /* RNLBeaconParser.m */,
+				BFEB98831F7E53A600C8641E /* RNLBeaconScanner.h */,
+				BFEB98851F7E53A600C8641E /* RNLBeaconScanner.m */,
+				BFEB98861F7E53A600C8641E /* RNLBeaconTracker.h */,
+				BFEB988A1F7E53A700C8641E /* RNLBeaconTracker.m */,
+				BFEB98841F7E53A600C8641E /* RNLLocationTracker.h */,
+				BFEB98801F7E53A600C8641E /* RNLLocationTracker.m */,
+				BFEB98811F7E53A600C8641E /* RNLSignalMeasurement.h */,
+				BFEB988C1F7E53A700C8641E /* RNLSignalMeasurement.m */,
 				0D03EBE11E56B1E700C55E6B /* RNiBeacon.h */,
 				0D03EBE21E56B1E700C55E6B /* RNiBeacon.m */,
 			);
@@ -124,7 +164,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFEB98951F7E53A800C8641E /* RNLBeaconTracker.m in Sources */,
+				BFEB98961F7E53A800C8641E /* RNLSignalMeasurement.m in Sources */,
+				BFEB98911F7E53A800C8641E /* RNLBeacon.m in Sources */,
+				BFEB98941F7E53A800C8641E /* RNLBeacon+Distance.m in Sources */,
+				BFEB98901F7E53A800C8641E /* RNLLocationTracker.m in Sources */,
 				0D03EBE31E56B1E700C55E6B /* RNiBeacon.m in Sources */,
+				BFEB98921F7E53A800C8641E /* RNLBeaconScanner.m in Sources */,
+				BFEB98931F7E53A800C8641E /* RNEddystone.m in Sources */,
+				BFEB98971F7E53A800C8641E /* RNLBeaconParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

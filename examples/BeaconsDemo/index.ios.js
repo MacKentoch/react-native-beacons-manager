@@ -72,6 +72,9 @@ class BeaconsDemo extends Component {
       'authorizationStatusDidChange',
       (info) => console.log('authorizationStatusDidChange: ', info)
     );
+
+    Beacons.detectEddystoneEID();
+    Beacons.startScanning();
     // MANDATORY: you have to request ALWAYS Authorization (not only when in use) when monitoring
     // you also have to add "Privacy - Location Always Usage Description" in your "Info.plist" file
     // otherwise monitoring won't work
@@ -98,6 +101,13 @@ class BeaconsDemo extends Component {
   }
 
   componentDidMount() {
+    Beacons.EddystoneEventEmitter.addListener(
+      'BeaconDidRange',
+      (data) => {
+        console.log('Eddystone beacons: ', data);
+      }
+    );
+
     DeviceEventEmitter.addListener(
       'beaconsDidRange',
       (data) => {

@@ -295,9 +295,9 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
         for (Beacon beacon : beacons) {
             WritableMap b = new WritableNativeMap();
             b.putString("uuid", beacon.getId1().toString());
-            if (beacon.getIdentifiers().size() > 1) {
-                b.putInt("major", beacon.getId2().toInt());
-                b.putInt("minor", beacon.getId3().toInt());
+            if (beacon.getIdentifiers().size() > 2) {
+                map.putInt("major", region.getId2() != null ? region.getId2().toInt() : 0);
+                map.putInt("minor", region.getId3() != null ? region.getId3().toInt() : 0);
             }
             b.putInt("rssi", beacon.getRssi());
             b.putDouble("distance", beacon.getDistance());

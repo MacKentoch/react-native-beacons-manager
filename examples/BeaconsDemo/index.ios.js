@@ -73,8 +73,13 @@ class BeaconsDemo extends Component {
       (info) => console.log('authorizationStatusDidChange: ', info)
     );
 
-    Beacons.detectEddystoneEID();
-    Beacons.startScanning();
+    Beacons.EddystoneEventEmitter.addListener(
+      'authorizationStatusDidChange',
+      (info) => {
+          console.log('authorizationStatusDidChange: ', info)
+      }
+    );
+
     // MANDATORY: you have to request ALWAYS Authorization (not only when in use) when monitoring
     // you also have to add "Privacy - Location Always Usage Description" in your "Info.plist" file
     // otherwise monitoring won't work
@@ -98,11 +103,14 @@ class BeaconsDemo extends Component {
 
     // update location to be able to monitor:
     Beacons.startUpdatingLocation();
+
+    Beacons.detectEddystoneEID();
+    Beacons.startScanning();
   }
 
   componentDidMount() {
     Beacons.EddystoneEventEmitter.addListener(
-      'BeaconDidRange',
+      'beaconsDidRange',
       (data) => {
         console.log('Eddystone beacons: ', data);
       }
@@ -173,6 +181,9 @@ class BeaconsDemo extends Component {
     DeviceEventEmitter.removeListener('regionDidExit');
     // remove ranging event we registered at componentDidMount
     DeviceEventEmitter.removeListener('beaconsDidRange');
+
+    Beacons.stopScanning()
+    Beacons.EddystoneEventEmitter.removeListener('beaconsDidRange')
   }
 
   render() {

@@ -58,13 +58,13 @@ RCT_EXPORT_METHOD(stopScanning) {
 }
 
 - (NSArray<NSString *> *)supportedEvents{
-    return @[@"AuthorizationStatusDidChange", @"BeaconDidRange"];
+    return @[@"authorizationStatusDidChange", @"beaconsDidRange"];
 }
 
 #pragma mark - CBCentralManagerDelegate
 
 - (void)centralManagerDidUpdateState:(nonnull CBCentralManager *)central {
-    [self sendEventWithName:@"AuthorizationStatusDidChange" body:@"bluetooth status"];
+    [self sendEventWithName:@"authorizationStatusDidChange" body:@"bluetooth status"];
 }
 
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary<NSString *,id> *)advertisementData RSSI:(NSNumber *)RSSI {
@@ -97,7 +97,7 @@ RCT_EXPORT_METHOD(stopScanning) {
     }
     
     if (beacon != Nil) {
-        [self sendEventWithName:@"BeaconDidRange" body: @{@"id": beacon.id1, @"rssi": RSSI, @"power":beacon.measuredPower, @"type": [self determinBeaconType:beacon]}];
+        [self sendEventWithName:@"beaconsDidRange" body: @{@"id": beacon.id1, @"rssi": RSSI, @"power":beacon.measuredPower, @"type": [self determinBeaconType:beacon]}];
     }
 }
 

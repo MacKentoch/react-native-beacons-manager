@@ -49,7 +49,7 @@ RCT_EXPORT_METHOD(detectEddystoneURL) {
 
 RCT_EXPORT_METHOD(startScanning) {
     if ([self.beaconParsers count] > 0 && self.cbManager.state == CBCentralManagerStatePoweredOn) {
-        [self.cbManager scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionAllowDuplicatesKey: @false}];
+        [self.cbManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:@"FEAA"]] options:@{CBCentralManagerScanOptionAllowDuplicatesKey: @false}];
     }
 }
 

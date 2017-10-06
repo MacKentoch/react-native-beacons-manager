@@ -49,6 +49,7 @@ RCT_EXPORT_METHOD(detectEddystoneURL) {
 
 RCT_EXPORT_METHOD(startScanning) {
     if ([self.beaconParsers count] > 0 && self.cbManager.state == CBCentralManagerStatePoweredOn) {
+        // A service needs to be specified for background scanning
         [self.cbManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:@"FEAA"]] options:@{CBCentralManagerScanOptionAllowDuplicatesKey: @false}];
     }
 }

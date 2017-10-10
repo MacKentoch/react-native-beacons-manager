@@ -2,13 +2,13 @@
 [![npm](https://img.shields.io/npm/v/npm.svg)](https://github.com/MacKentoch/react-native-beacons-manager)
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/react-native-beacons-manager/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
 
-# react-native-beacons-manager
-
-![logo](./images/RN-iBeacon.png)
-
 <a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/Mp96tCWH2KdajZuBzqB6jwj8/MacKentoch/react-native-beacons-manager'>
   <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/Mp96tCWH2KdajZuBzqB6jwj8/MacKentoch/react-native-beacons-manager.svg' />
 </a>
+
+# react-native-beacons-manager
+
+![logo](./images/RN-iBeacon.png)
 
 `react-native-beacons-manager`: add beacon technology in your React Native application for both iOS and Android.
 

@@ -6,6 +6,10 @@
 
 ![logo](./images/RN-iBeacon.png)
 
+<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/Mp96tCWH2KdajZuBzqB6jwj8/MacKentoch/react-native-beacons-manager'>
+  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/Mp96tCWH2KdajZuBzqB6jwj8/MacKentoch/react-native-beacons-manager.svg' />
+</a>
+
 `react-native-beacons-manager`: add beacon technology in your React Native application for both iOS and Android.
 
 This repository is born to keep alive and up to date these 2 original awesome:

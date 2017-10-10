@@ -14,7 +14,6 @@
  - update samples (*TODO*)
  
  
-
 ## 1.0.7 (RELEASE)
 
 - improve typescript types

@@ -23,7 +23,7 @@ import moment                 from 'moment';
 * uuid of YOUR BEACON (change to yours)
 * @type {String} uuid
 */
-const UUID        = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
+const UUID        = '3471C741-4F63-507F-B4FB-11DC8147EFB6';
 const IDENTIFIER  = '123456';
 const TIME_FORMAT = 'HH:mm:ss';
 const EMPTY_BEACONS_LISTS = {
@@ -72,14 +72,7 @@ class BeaconsDemo extends Component {
       'authorizationStatusDidChange',
       (info) => console.log('authorizationStatusDidChange: ', info)
     );
-
-    Beacons.EddystoneEventEmitter.addListener(
-      'authorizationStatusDidChange',
-      (info) => {
-          console.log('authorizationStatusDidChange: ', info)
-      }
-    );
-
+      
     // MANDATORY: you have to request ALWAYS Authorization (not only when in use) when monitoring
     // you also have to add "Privacy - Location Always Usage Description" in your "Info.plist" file
     // otherwise monitoring won't work
@@ -103,18 +96,9 @@ class BeaconsDemo extends Component {
 
     // update location to be able to monitor:
     Beacons.startUpdatingLocation();
-
-    Beacons.detectEddystoneEID();
-    Beacons.startScanning();
   }
 
   componentDidMount() {
-    Beacons.EddystoneEventEmitter.addListener(
-      'beaconsDidRange',
-      (data) => {
-        console.log('Eddystone beacons: ', data);
-      }
-    );
 
     DeviceEventEmitter.addListener(
       'beaconsDidRange',
@@ -181,9 +165,6 @@ class BeaconsDemo extends Component {
     DeviceEventEmitter.removeListener('regionDidExit');
     // remove ranging event we registered at componentDidMount
     DeviceEventEmitter.removeListener('beaconsDidRange');
-
-    Beacons.stopScanning()
-    Beacons.EddystoneEventEmitter.removeListener('beaconsDidRange')
   }
 
   render() {

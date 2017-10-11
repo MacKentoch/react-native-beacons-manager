@@ -6,6 +6,7 @@
 @property (strong, nonatomic) CBCentralManager *cbManager;
 @property (strong, nonatomic) NSMutableArray *beaconParsers;
 
+
 @end
 
 @implementation RNEddystone
@@ -58,6 +59,19 @@ RCT_EXPORT_METHOD(stopScanning) {
     [self.cbManager stopScan];
 }
 
+- (void)setupEddystoneEIDLayout {
+    RNLBeaconParser *eidBeaconParser = [[RNLBeaconParser alloc] init];
+    [eidBeaconParser setBeaconLayout:@"s:0-1=feaa,m:2-2=30,p:3-3:-41,i:4-11" error:nil];
+    [self.beaconParsers addObject:eidBeaconParser];
+}
+
+- (void)startScanningEddytone {
+    if ([self.beaconParsers count] > 0 && self.cbManager.state == CBCentralManagerStatePoweredOn) {
+        // A service needs to be specified for background scanning
+        [self.cbManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:@"FEAA"]] options:@{CBCentralManagerScanOptionAllowDuplicatesKey: @false}];
+    }
+}
+
 - (NSArray<NSString *> *)supportedEvents{
     return @[@"authorizationStatusDidChange", @"beaconsDidRange"];
 }
@@ -98,6 +112,7 @@ RCT_EXPORT_METHOD(stopScanning) {
     }
     
     if (beacon != Nil) {
+        NSLog(@"scanned eddystone: %@", beacon.id1);
         [self sendEventWithName:@"beaconsDidRange" body: @{@"id": beacon.id1, @"rssi": RSSI, @"power":beacon.measuredPower, @"type": [self determinBeaconType:beacon]}];
     }
 }

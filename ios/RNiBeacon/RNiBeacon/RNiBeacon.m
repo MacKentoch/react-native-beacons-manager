@@ -7,17 +7,21 @@
 //
 
 #import <CoreLocation/CoreLocation.h>
-
+#import <UserNotifications/UserNotifications.h>
 #import <React/RCTBridge.h>
 #import <React/RCTConvert.h>
 #import <React/RCTEventDispatcher.h>
 
+#import "RNEddystone.h"
 #import "RNiBeacon.h"
 
-@interface RNiBeacon() <CLLocationManagerDelegate>
+@interface RNiBeacon() <CLLocationManagerDelegate, CBCentralManagerDelegate>
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (assign, nonatomic) BOOL dropEmptyRanges;
+
+@property (strong, nonatomic) CBCentralManager *cbManager;
+@property (strong, nonatomic) NSMutableArray *beaconParsers;
 
 @end
 
@@ -37,6 +41,12 @@ RCT_EXPORT_MODULE()
     self.locationManager.delegate = self;
     self.locationManager.pausesLocationUpdatesAutomatically = NO;
     self.dropEmptyRanges = NO;
+      
+      dispatch_queue_t centralEventQueue = dispatch_queue_create("com.solinor.central_queue", DISPATCH_QUEUE_SERIAL);
+      dispatch_set_target_queue(centralEventQueue, dispatch_get_main_queue());
+      self.cbManager = [[CBCentralManager alloc] initWithDelegate:self queue:centralEventQueue];
+      
+      self.beaconParsers = [NSMutableArray array];
   }
 
   return self;
@@ -119,6 +129,19 @@ RCT_EXPORT_MODULE()
                               major:[RCTConvert NSInteger:dict[@"major"]]
                               minor:[RCTConvert NSInteger:dict[@"minor"]]];
   }
+}
+
+- (void)setupEddystoneEIDLayout {
+    RNLBeaconParser *eidBeaconParser = [[RNLBeaconParser alloc] init];
+    [eidBeaconParser setBeaconLayout:@"s:0-1=feaa,m:2-2=30,p:3-3:-41,i:4-11" error:nil];
+    [self.beaconParsers addObject:eidBeaconParser];
+}
+
+- (void)startScanningEddytone {
+    if ([self.beaconParsers count] > 0 && self.cbManager.state == CBCentralManagerStatePoweredOn) {
+        // A service needs to be specified for background scanning
+        [self.cbManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:@"FEAA"]] options:@{CBCentralManagerScanOptionAllowDuplicatesKey: @false}];
+    }
 }
 
 -(NSString *)stringForProximity:(CLProximity)proximity {
@@ -261,7 +284,31 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
                           @"identifier": region.identifier,
                           @"uuid": [region.proximityUUID UUIDString],
                           };
-
+    // construct local notification for testing background execution
+    [self createLocalNotificationForMonitorEvents:[NSString stringWithFormat:@"You're entering the region: %@", event]];
+    
+    __block UIBackgroundTaskIdentifier bgTask = UIBackgroundTaskInvalid;
+    bgTask = [[UIApplication sharedApplication] beginBackgroundTaskWithName:@"MyTask" expirationHandler:^{
+        [[UIApplication sharedApplication] endBackgroundTask:bgTask];
+        bgTask = UIBackgroundTaskInvalid;
+    }];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self setupEddystoneEIDLayout];
+        [self startScanningEddytone];
+        
+        while(true) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if ([[UIApplication sharedApplication] backgroundTimeRemaining] < 10) {
+                    NSLog(@"less than 10 seconds left");
+                    [[UIApplication sharedApplication] endBackgroundTask:bgTask];
+                    bgTask = UIBackgroundTaskInvalid;                }
+            });
+            NSLog(@"stay alive");
+            sleep(10);
+        }
+    });
+    
   [self.bridge.eventDispatcher sendDeviceEventWithName:@"regionDidEnter" body:event];
 }
 
@@ -271,8 +318,92 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
                           @"identifier": region.identifier,
                           @"uuid": [region.proximityUUID UUIDString],
                           };
+    
+    __block UIBackgroundTaskIdentifier bgTask = UIBackgroundTaskInvalid;
+    bgTask = [[UIApplication sharedApplication] beginBackgroundTaskWithName:@"MyTask" expirationHandler:^{
+        [[UIApplication sharedApplication] endBackgroundTask:bgTask];
+        bgTask = UIBackgroundTaskInvalid;
+    }];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // construct local notification for testing background execution
+        [self createLocalNotificationForMonitorEvents:@"You're exiting the region"];
+        
+        [[UIApplication sharedApplication] endBackgroundTask:bgTask];
+        bgTask = UIBackgroundTaskInvalid;
+    });
 
   [self.bridge.eventDispatcher sendDeviceEventWithName:@"regionDidExit" body:event];
+}
+
+#pragma mark - CBCentralManagerDelegate
+
+- (void)centralManagerDidUpdateState:(nonnull CBCentralManager *)central {
+}
+
+- (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary<NSString *,id> *)advertisementData RSSI:(NSNumber *)RSSI {
+    NSDictionary *serviceData = advertisementData[@"kCBAdvDataServiceData"];
+    
+    RNLBeacon *beacon = Nil;
+    NSData *adData = advertisementData[@"kCBAdvDataManufacturerData"];
+    
+    for (RNLBeaconParser *beaconParser in self.beaconParsers) {
+        if (adData) {
+            beacon = [beaconParser fromScanData: adData withRssi: RSSI forDevice: peripheral serviceUuid: Nil];
+        }
+        else if (serviceData != Nil) {
+            for (NSObject *key in serviceData.allKeys) {
+                NSString *uuidString = [(CBUUID *) key UUIDString];
+                NSScanner* scanner = [NSScanner scannerWithString: uuidString];
+                unsigned long long uuidLongLong;
+                
+                [scanner scanHexLongLong: &uuidLongLong];
+                NSNumber *uuidNumber = [NSNumber numberWithLongLong:uuidLongLong];
+                NSData *adServiceData = [serviceData objectForKey:key];
+                if (adServiceData) {
+                    beacon = [beaconParser fromScanData: adServiceData withRssi: RSSI forDevice: peripheral serviceUuid: uuidNumber];
+                }
+            }
+        }
+        if (beacon != Nil) {
+            break;
+        }
+    }
+    
+    if (beacon != Nil) {
+        NSLog(@"scanned eddystone: %@", beacon.id1);
+        [self.bridge.eventDispatcher sendDeviceEventWithName:@"beaconsDidRange" body: @{@"id": beacon.id1, @"rssi": RSSI, @"power":beacon.measuredPower, @"type": [self determinBeaconType:beacon]}];
+    }
+}
+
+#pragma mark - helper
+
+- (NSString*)determinBeaconType: (RNLBeacon*)beacon {
+    switch (beacon.beaconTypeCode.intValue) {
+        case 0x00:
+            return @"Eddystone_UID";
+            break;
+        case 0x30:
+            return @"Eddystone_EID";
+            break;
+        case 0x10:
+            return @"Eddystone_URL";
+            break;
+        default:
+            return nil;
+            break;
+    }
+}
+
+// Test
+- (void)createLocalNotificationForMonitorEvents:(NSString *) notificationText {
+    UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
+    content.title = [NSString localizedUserNotificationStringForKey:@"Hello!" arguments:nil];
+    content.body = [NSString localizedUserNotificationStringForKey:notificationText
+                                                         arguments:nil];
+    content.sound = [UNNotificationSound defaultSound];
+    UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier:@"Monitoring" content:content trigger:nil];
+    [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
 }
 
 

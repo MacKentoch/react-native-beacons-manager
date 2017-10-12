@@ -20,6 +20,7 @@
 
 - (void)setupEddystoneEIDLayout;
 - (void)startScanningEddytone;
+- (void)stopScanningEddystone;
 
 @end
   

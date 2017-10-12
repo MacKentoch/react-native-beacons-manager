@@ -8,6 +8,7 @@
  */
 
 #import "AppDelegate.h"
+#import <UserNotifications/UserNotifications.h>
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -31,6 +32,10 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  UNAuthorizationOptions options = UNAuthorizationOptionAlert + UNAuthorizationOptionSound;
+  [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:options completionHandler:nil];
+  
   return YES;
 }
 

@@ -30,12 +30,6 @@ RCT_EXPORT_MODULE()
     return self;
 }
 
-RCT_EXPORT_METHOD(detectEddystoneEID) {
-    RNLBeaconParser *eidBeaconParser = [[RNLBeaconParser alloc] init];
-    [eidBeaconParser setBeaconLayout:@"s:0-1=feaa,m:2-2=30,p:3-3:-41,i:4-11" error:nil];
-    [self.beaconParsers addObject:eidBeaconParser];
-}
-
 RCT_EXPORT_METHOD(detectEddystoneUID) {
     RNLBeaconParser *uidBeaconParser = [[RNLBeaconParser alloc] init];
     [uidBeaconParser setBeaconLayout:@"s:0-1=feaa,m:2-2=00,p:3-3:-41,i:4-13,i:14-19" error:nil];
@@ -55,7 +49,7 @@ RCT_EXPORT_METHOD(startScanning) {
     }
 }
 
-RCT_EXPORT_METHOD(stopScanning) {
+- (void)stopScanningEddystone {
     [self.cbManager stopScan];
 }
 

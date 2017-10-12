@@ -13,7 +13,8 @@ import {
  View,
  Text,
  ListView,
- DeviceEventEmitter
+ DeviceEventEmitter,
+    AsyncStorage
 }                             from 'react-native';
 import Beacons                from 'react-native-beacons-manager';
 import BluetoothState         from 'react-native-bluetooth-state';
@@ -72,7 +73,15 @@ class BeaconsDemo extends Component {
       'authorizationStatusDidChange',
       (info) => console.log('authorizationStatusDidChange: ', info)
     );
-      
+
+	  DeviceEventEmitter.addListener(
+		  'backgroundTimeup',
+		  (info) => {
+		      Beacons.stopScanningEddystone()
+			  AsyncStorage.setItem("Background", info)
+          }
+	  );
+
     // MANDATORY: you have to request ALWAYS Authorization (not only when in use) when monitoring
     // you also have to add "Privacy - Location Always Usage Description" in your "Info.plist" file
     // otherwise monitoring won't work
@@ -100,6 +109,14 @@ class BeaconsDemo extends Component {
 
   componentDidMount() {
 
+      AsyncStorage.getItem("Eddystone").then((result) => {
+          console.log("saved eddystone result:", result)
+      })
+
+      AsyncStorage.getItem("Background").then((result) => {
+          console.log("background event: ", result)
+      })
+
     DeviceEventEmitter.addListener(
       'beaconsDidRange',
       (data) => {
@@ -111,6 +128,13 @@ class BeaconsDemo extends Component {
       }
     );
 
+	  DeviceEventEmitter.addListener(
+		  'eddystoneDidRange',
+		  (data) => {
+              AsyncStorage.setItem("Eddystone", data.id)
+		  }
+	  );
+
     // monitoring events
     DeviceEventEmitter.addListener(
       'regionDidEnter',
@@ -121,6 +145,9 @@ class BeaconsDemo extends Component {
         const updatedBeaconsLists = this.updateBeaconList({uuid, identifier, time}, 'monitorEnterList');
         this._beaconsLists = updatedBeaconsLists;
         this.setState({ beaconsLists: this.state.beaconsLists.cloneWithRowsAndSections(this._beaconsLists)});
+
+        Beacons.setupEddystoneEIDLayout()
+          Beacons.startScanningEddytone()
       }
     );
     DeviceEventEmitter.addListener(

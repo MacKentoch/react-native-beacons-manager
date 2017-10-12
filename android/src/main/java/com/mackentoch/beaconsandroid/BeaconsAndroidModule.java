@@ -79,6 +79,11 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
     }
 
     @ReactMethod
+    public void unbindManager() {
+        mBeaconManager.unbind(this);
+    }
+
+    @ReactMethod
     public void addParser(String parser) {
         mBeaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(parser));
     }

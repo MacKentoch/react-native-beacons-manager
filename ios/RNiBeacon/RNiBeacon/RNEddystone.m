@@ -49,23 +49,6 @@ RCT_EXPORT_METHOD(startScanning) {
     }
 }
 
-- (void)stopScanningEddystone {
-    [self.cbManager stopScan];
-}
-
-- (void)setupEddystoneEIDLayout {
-    RNLBeaconParser *eidBeaconParser = [[RNLBeaconParser alloc] init];
-    [eidBeaconParser setBeaconLayout:@"s:0-1=feaa,m:2-2=30,p:3-3:-41,i:4-11" error:nil];
-    [self.beaconParsers addObject:eidBeaconParser];
-}
-
-- (void)startScanningEddytone {
-    if ([self.beaconParsers count] > 0 && self.cbManager.state == CBCentralManagerStatePoweredOn) {
-        // A service needs to be specified for background scanning
-        [self.cbManager scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:@"FEAA"]] options:@{CBCentralManagerScanOptionAllowDuplicatesKey: @false}];
-    }
-}
-
 - (NSArray<NSString *> *)supportedEvents{
     return @[@"authorizationStatusDidChange", @"beaconsDidRange"];
 }

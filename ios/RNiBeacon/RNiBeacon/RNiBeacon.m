@@ -147,6 +147,18 @@ RCT_EXPORT_METHOD(setupEddystoneEIDLayout) {
     [self.beaconParsers addObject:eidBeaconParser];
 }
 
+RCT_EXPORT_METHOD(setupEddystoneUIDLayout) {
+    RNLBeaconParser *uidBeaconParser = [[RNLBeaconParser alloc] init];
+    [uidBeaconParser setBeaconLayout:@"s:0-1=feaa,m:2-2=00,p:3-3:-41,i:4-13,i:14-19" error:nil];
+    [self.beaconParsers addObject:uidBeaconParser];
+}
+
+RCT_EXPORT_METHOD(setupEddystoneURLLayout) {
+    RNLBeaconParser *urlBeaconParser = [[RNLBeaconParser alloc] init];
+    [urlBeaconParser setBeaconLayout:@"s:0-1=feaa,m:2-2=10,p:3-3:-41,i:4-20v" error:nil];
+    [self.beaconParsers addObject:urlBeaconParser];
+}
+
 RCT_EXPORT_METHOD(startScanningEddytone) {
     if ([self.beaconParsers count] > 0 && self.cbManager.state == CBCentralManagerStatePoweredOn) {
         // A service needs to be specified for background scanning

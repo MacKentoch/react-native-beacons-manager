@@ -59,6 +59,8 @@ class BeaconsDemo extends Component {
 
     message: '',
 
+	  beaconCount: 0,
+
     beaconsLists: new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
       sectionHeaderHasChanged: (s1, s2) => s1 !== s2
@@ -109,9 +111,17 @@ class BeaconsDemo extends Component {
 
   componentDidMount() {
 
-      AsyncStorage.getItem("Eddystone").then((result) => {
-          console.log("saved eddystone result:", result)
-      })
+	  AsyncStorage.getItem("Eddystone_0").then((result) => {
+		  console.log("saved eddystone result:", result)
+	  })
+
+	  AsyncStorage.getItem("Eddystone_1").then((result) => {
+		  console.log("saved eddystone result:", result)
+	  })
+
+	  AsyncStorage.getItem("Eddystone_2").then((result) => {
+		  console.log("saved eddystone result:", result)
+	  })
 
       AsyncStorage.getItem("Background").then((result) => {
           console.log("background event: ", result)
@@ -131,7 +141,9 @@ class BeaconsDemo extends Component {
 	  DeviceEventEmitter.addListener(
 		  'eddystoneDidRange',
 		  (data) => {
-              AsyncStorage.setItem("Eddystone", data.id)
+		  	let beaconCount = this.state.beaconCount
+			  AsyncStorage.setItem("Eddystone_"+beaconCount, data.id)
+		  	this.setState({beaconCount: ++beaconCount})
 		  }
 	  );
 

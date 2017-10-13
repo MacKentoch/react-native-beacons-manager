@@ -18,9 +18,5 @@
 
 @interface RNEddystone : RCTEventEmitter <RCTBridgeModule, CBCentralManagerDelegate>
 
-- (void)setupEddystoneEIDLayout;
-- (void)startScanningEddytone;
-- (void)stopScanningEddystone;
-
 @end
   

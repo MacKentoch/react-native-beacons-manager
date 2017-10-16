@@ -20,6 +20,8 @@
 
 @interface RNiBeacon() <CLLocationManagerDelegate, CBCentralManagerDelegate>
 
+@property(nonatomic) UIBackgroundTaskIdentifier backgroundTask;
+
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (assign, nonatomic) BOOL dropEmptyRanges;
 
@@ -39,6 +41,9 @@ RCT_EXPORT_MODULE()
 - (instancetype)init
 {
     if (self = [super init]) {
+        self.backgroundTask = UIBackgroundTaskInvalid;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
+        
         self.locationManager = [[CLLocationManager alloc] init];
         
         self.locationManager.delegate = self;
@@ -301,10 +306,9 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
         didEnterRegion:(CLBeaconRegion *)region {
     [self createLocalNotificationForMonitorEvents:@"Enter Reigion"];
     
-    __block UIBackgroundTaskIdentifier bgTask = UIBackgroundTaskInvalid;
-    bgTask = [[UIApplication sharedApplication] beginBackgroundTaskWithName:@"MyTask" expirationHandler:^{
-        [[UIApplication sharedApplication] endBackgroundTask:bgTask];
-        bgTask = UIBackgroundTaskInvalid;
+    [self endBackgroundTask];
+    self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithName:@"MyTask" expirationHandler:^{
+        [self endBackgroundTask];
     }];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -326,15 +330,14 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
                     if ([[UIApplication sharedApplication] backgroundTimeRemaining] < 10) {
                         [self createLocalNotificationForMonitorEvents:@"Time up!"];
                         [self.bridge.eventDispatcher sendDeviceEventWithName:@"backgroundTimeup" body:@"backgroundTimeup"];
-                        [[UIApplication sharedApplication] endBackgroundTask:bgTask];
-                        bgTask = UIBackgroundTaskInvalid;
+                        
+                        [self endBackgroundTask];
                     }
                 });
                 sleep(10);
             }
         } else {
-            [[UIApplication sharedApplication] endBackgroundTask:bgTask];
-            bgTask = UIBackgroundTaskInvalid;
+            [self endBackgroundTask];
         }
     });
 }
@@ -407,7 +410,19 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
     }
 }
 
-// Test
+#pragma mark - Background & Foreground
+
+- (void)endBackgroundTask {
+    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+    self.backgroundTask = UIBackgroundTaskInvalid;
+}
+
+- (void)appEnterForeground {
+    [self endBackgroundTask];
+}
+
+#pragma mark - Test
+
 - (void)createLocalNotificationForMonitorEvents:(NSString *) notificationText {
     UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
     content.title = [NSString localizedUserNotificationStringForKey:@"Hello!" arguments:nil];

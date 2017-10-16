@@ -15,6 +15,8 @@
 #import "RNEddystone.h"
 #import "RNiBeacon.h"
 
+#define LAST_ENTER @"last_enter"
+
 @interface RNiBeacon() <CLLocationManagerDelegate, CBCentralManagerDelegate>
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
@@ -297,11 +299,6 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 -(void)locationManager:(CLLocationManager *)manager
         didEnterRegion:(CLBeaconRegion *)region {
     [self createLocalNotificationForMonitorEvents:@"Enter Reigion"];
-    NSDictionary *event = @{
-                            @"identifier": region.identifier,
-                            @"uuid": [region.proximityUUID UUIDString],
-                            };
-    [self.bridge.eventDispatcher sendDeviceEventWithName:@"regionDidEnter" body:event];
     
     __block UIBackgroundTaskIdentifier bgTask = UIBackgroundTaskInvalid;
     bgTask = [[UIApplication sharedApplication] beginBackgroundTaskWithName:@"MyTask" expirationHandler:^{
@@ -310,15 +307,33 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
     }];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        while(true) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if ([[UIApplication sharedApplication] backgroundTimeRemaining] < 10) {
-                    [self createLocalNotificationForMonitorEvents:@"Time up!"];
-                    [self.bridge.eventDispatcher sendDeviceEventWithName:@"backgroundTimeup" body:@"backgroundTimeup"];
-                    [[UIApplication sharedApplication] endBackgroundTask:bgTask];
-                    bgTask = UIBackgroundTaskInvalid;                }
-            });
-            sleep(10);
+        
+        NSNumber *lastEnter = [[NSUserDefaults standardUserDefaults] objectForKey:LAST_ENTER];
+        NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+        if (!lastEnter || (now - [lastEnter integerValue] > 180)) {
+            NSDictionary *event = @{
+                                    @"identifier": region.identifier,
+                                    @"uuid": [region.proximityUUID UUIDString],
+                                    };
+            [self.bridge.eventDispatcher sendDeviceEventWithName:@"regionDidEnter" body:event];
+            
+            [[NSUserDefaults standardUserDefaults] setObject:@(now) forKey:LAST_ENTER];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            while(true) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if ([[UIApplication sharedApplication] backgroundTimeRemaining] < 10) {
+                        [self createLocalNotificationForMonitorEvents:@"Time up!"];
+                        [self.bridge.eventDispatcher sendDeviceEventWithName:@"backgroundTimeup" body:@"backgroundTimeup"];
+                        [[UIApplication sharedApplication] endBackgroundTask:bgTask];
+                        bgTask = UIBackgroundTaskInvalid;
+                    }
+                });
+                sleep(10);
+            }
+        } else {
+            [[UIApplication sharedApplication] endBackgroundTask:bgTask];
+            bgTask = UIBackgroundTaskInvalid;
         }
     });
 }

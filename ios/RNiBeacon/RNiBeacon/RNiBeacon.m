@@ -7,13 +7,14 @@
 //
 
 #import <CoreLocation/CoreLocation.h>
+#import <CoreBluetooth/CoreBluetooth.h>
 #import <UserNotifications/UserNotifications.h>
 #import <React/RCTBridge.h>
 #import <React/RCTConvert.h>
 #import <React/RCTEventDispatcher.h>
 
-#import "RNEddystone.h"
 #import "RNiBeacon.h"
+#import "RNLBeaconParser.h"
 
 #define LAST_ENTER @"last_enter"
 

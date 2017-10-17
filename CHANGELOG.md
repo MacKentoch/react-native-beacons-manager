@@ -1,7 +1,8 @@
-## 1.0.8 (COMING SOON)
+## 1.0.8 (COMING SOON = still in master)
 - PR #45 thank you to @stoneman1
 - PR #54 thank you to @rostislav-simonik
 - PR #46 thank you to @ashemah
+- PR #58 thank you to @eurobob
   - **BEWARE**: *breaking change* = drop of  `DeviceEventEmitter` in favor of `Beacons.BeaconsEventEmitter` (see [BeaconsDemo example project](./examples/BeaconsDemo))
   ```javascript
     // before 1.0.8 (or until 1.0.7):

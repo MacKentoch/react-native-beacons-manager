@@ -248,8 +248,8 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
                           @"state":   [self stringForState:state],
                           @"identifier":  region.identifier,
                           };
-  
-    [self sendEventWithName:@"didDetermineState" body:event];  
+
+    [self sendEventWithName:@"didDetermineState" body:event];
 }
 
 -(void) locationManager:(CLLocationManager *)manager didRangeBeacons:
@@ -303,5 +303,9 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
     [self sendEventWithName:@"regionDidExit" body:event];
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+    return YES;
+}
 
 @end

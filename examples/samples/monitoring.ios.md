@@ -50,7 +50,9 @@ Tell iOS what you want to range by defining a desired `region` object.
 const region = { identifier, uuid };
 
 // Monitor beacons inside the region
-Beacons.startMonitoringForRegion(region);
+Beacons.startMonitoringForRegion(region)
+.then(() => console.log('Beacons monitoring started succesfully'))
+.catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
 ```
 
 [See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/monitoring.ios.js#L43)
@@ -75,7 +77,7 @@ You have to register events to know and use about data from enter region and lea
 ```javascript
 
 // Monitoring: Listen for device entering the defined region
-DeviceEventEmitter.addListener(
+this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
   'regionDidEnter',
   (data) => {
     console.log('monitoring - regionDidEnter data: ', data);
@@ -85,7 +87,7 @@ DeviceEventEmitter.addListener(
 );
 
 // Monitoring: Listen for device leaving the defined region
-DeviceEventEmitter.addListener(
+this.regionDidExitEvent = Beacons.BeaconsEventEmitter.addListener(
   'regionDidExit',
   ({ identifier, uuid, minor, major }) => {
     console.log('monitoring - regionDidExit data: ', { identifier, uuid, minor, major });
@@ -112,12 +114,17 @@ Tell iOS to stop ranging at the same time.
 
 ```javascript
 // stop monitoring beacons:
-Beacons.stopMonitoringForRegion();
+Beacons
+.stopMonitoringForRegion(region)
+.then(() => console.log('Beacons monitoring stopped succesfully'))
+.catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
 // stop updating locationManager:
 Beacons.stopUpdatingLocation();
-// remove beacons events we registered at componentDidMount
-DeviceEventEmitter.removeListener('regionDidEnter');
-DeviceEventEmitter.removeListener('regionDidExit');
+// remove auth state event we registered at componentDidMount:
+this.authStateDidRangeEvent.remove();
+// remove monitiring events we registered at componentDidMount::
+this.regionDidEnterEvent.remove();
+this.regionDidExitEvent.remove();
 ```
 
 [See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/monitoring.ios.js#L75)

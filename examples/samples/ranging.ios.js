@@ -1,3 +1,4 @@
+/* eslint-disable */
 
 import { NativeEventEmitter } from 'react-native'
 import Beacons  from 'react-native-beacons-manager';
@@ -6,21 +7,19 @@ import moment   from 'moment';
 const TIME_FORMAT = 'MM/DD/YYYY HH:mm:ss';
 
 class beaconRangingOnly extends Component {
- constructor(props) {
-   super(props);
 
-   this.beaconsEmitter = new NativeEventEmitter(Beacons);
-   this.beaconsDidRangeEvent = null;
-   this.authStateDidRangeEvent = null;
+  // will be set as a reference to "beaconsDidRange" event:
+  beaconsDidRangeEvent = null;
+  // will be set as a reference to "authorizationStatusDidChange" event:
+  authStateDidRangeEvent = null;
 
-   this.state = {
-     // region information
-     uuid: '7b44b47b-52a1-5381-90c2-f09b6838c5d4',
-     identifier: 'some id',
+  state = {
+    // region information
+    uuid: '7b44b47b-52a1-5381-90c2-f09b6838c5d4',
+    identifier: 'some id',
 
-     rangingDataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([])
-   };
- }
+    rangingDataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([])
+  };
 
  componentWillMount(){
    const { identifier, uuid } = this.state;
@@ -29,7 +28,7 @@ class beaconRangingOnly extends Component {
    //
 
    // OPTIONAL: listen to authorization change
-   this.authStateDidRangeEvent = this.beaconsEmitter.addListener(
+   this.authStateDidRangeEvent = Beacons.BeaconsEventEmitter.addListener(
      'authorizationStatusDidChange',
      (info) => console.log('authorizationStatusDidChange: ', info)
    );
@@ -43,7 +42,10 @@ class beaconRangingOnly extends Component {
    // (minor and major properties are numbers)
    const region = { identifier, uuid };
    // Range for beacons inside the region
-   Beacons.startRangingBeaconsInRegion(region);
+   Beacons
+   .startRangingBeaconsInRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
+   .then(() => console.log('Beacons ranging started succesfully'))
+   .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
  }
 
  componentDidMount() {
@@ -52,7 +54,7 @@ class beaconRangingOnly extends Component {
    //
 
    // Ranging: Listen for beacon changes
-   this.beaconsDidRangeEvent = this.beaconsEmitter.addListener(
+   this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener(
      'beaconsDidRange',
      (data) => {
       //  console.log('beaconsDidRange data: ', data);
@@ -65,10 +67,14 @@ class beaconRangingOnly extends Component {
    const { identifier, uuid } = this.state;
    const region = { identifier, uuid };
    // stop ranging beacons:
-   Beacons.stopRangingBeaconsInRegion(region);
-   // remove beacons event we registered at componentDidMount
-   this.beaconsDidRangeEvent.remove();
+   Beacons
+   .stopRangingBeaconsInRegion(region)
+   .then(() => console.log('Beacons ranging stopped succesfully'))
+   .catch(error => console.log(`Beacons ranging not stopped, error: ${error}`));
+   // remove auth state event we registered at componentDidMount:
    this.authStateDidRangeEvent.remove();
+   // remove ranging event we registered at componentDidMount:
+   this.beaconsDidRangeEvent.remove();
  }
 
  render() {

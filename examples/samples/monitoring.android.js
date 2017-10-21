@@ -1,3 +1,4 @@
+/* eslint-disable */
 
 import Beacons  from 'react-native-beacons-manager';
 import moment   from 'moment';
@@ -5,20 +6,21 @@ import moment   from 'moment';
 const TIME_FORMAT = 'MM/DD/YYYY HH:mm:ss';
 
 class beaconMonitoringOnly extends Component {
- constructor(props) {
-   super(props);
+  // will be set as a reference to "beaconsDidRange" event:
+  beaconsDidRangeEvent = null;
+  // will be set as a reference to "regionDidEnter" event:
+  regionDidEnterEvent = null;
 
-   this.state = {
-     // region information
-     uuid: '7b44b47b-52a1-5381-90c2-f09b6838c5d4',
-     identifier: 'some id',
+  state = {
+    // region information
+    uuid: '7b44b47b-52a1-5381-90c2-f09b6838c5d4',
+    identifier: 'some id',
 
-     regionEnterDatasource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
-     regionExitDatasource:  new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([])
-   };
- }
+    regionEnterDatasource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
+    regionExitDatasource:  new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([])
+  };
 
- componentWillMount(){
+ componentWillMount() {
    const { identifier, uuid } = this.state;
    //
    // ONLY non component state aware here in componentWillMount
@@ -33,9 +35,9 @@ class beaconMonitoringOnly extends Component {
    Beacons.detectIBeacons();
    // Monitor beacons inside the region
    Beacons
-     .startMonitoringForRegion(region)
-     .then(() => console.log('Beacons monitoring started succesfully'))
-     .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
+   .startMonitoringForRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
+   .then(() => console.log('Beacons monitoring started succesfully'))
+   .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
  }
 
  componentDidMount() {
@@ -44,7 +46,7 @@ class beaconMonitoringOnly extends Component {
    //
 
    // monitoring:
-   DeviceEventEmitter.addListener(
+   this.beaconsDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
      'regionDidEnter',
      ({ identifier, uuid, minor, major }) => {
        console.log('monitoring - regionDidEnter data: ', { identifier, uuid, minor, major });
@@ -53,7 +55,7 @@ class beaconMonitoringOnly extends Component {
      }
    );
 
-   DeviceEventEmitter.addListener(
+   this.regionDidExitEvent = Beacons.BeaconsEventEmitter.addListener(
      'regionDidExit',
      ({ identifier, uuid, minor, major }) => {
        console.log('monitoring - regionDidExit data: ', { identifier, uuid, minor, major });
@@ -69,13 +71,13 @@ class beaconMonitoringOnly extends Component {
 
    // stop monitoring beacons:
    Beacons
-     .stopMonitoringForRegion(region)
-     .then(() => console.log('Beacons monitoring stopped succesfully'))
-     .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
+   .stopMonitoringForRegion(region) // or like  < v1.0.7: .stopMonitoringForRegion(identifier, uuid)
+   .then(() => console.log('Beacons monitoring stopped succesfully'))
+   .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
 
    // remove beacons events we registered at componentDidMount
-   DeviceEventEmitter.removeListener('regionDidEnter');
-   DeviceEventEmitter.removeListener('regionDidExit');
+   this.regionDidEnterEvent.remove();
+   this.regionDidExitEvent.remove();
  }
 
  render() {

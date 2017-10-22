@@ -72,7 +72,10 @@ Tell iOS what you want to range by defining a desired `region` object.
 const region = { identifier, uuid };
 
 // Range for beacons inside the region
-Beacons.startRangingBeaconsInRegion(region);
+Beacons
+.startRangingBeaconsInRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
+.then(() => console.log('Beacons ranging started succesfully'))
+.catch(error => console.log(`Beacons ranging not started, error: ${error}`));
 ```
 
 [See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.ios.js#L41)
@@ -86,7 +89,7 @@ You have to register events to know and use about data from location updates.
 ```javascript
 
 // Ranging: Listen for beacon changes
-DeviceEventEmitter.addListener(
+this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener(
   'beaconsDidRange',
   ({region: {identifier, uuid}, beacons) => {
     // do here anything you need (ex: setting state...)
@@ -121,9 +124,12 @@ Tell iOS to stop ranging at the same time.
 const { identifier, uuid } = this.state;
 const region = { identifier, uuid };
 // stop ranging beacons:
-Beacons.stopRangingBeaconsInRegion(region);
+Beacons
+.stopRangingBeaconsInRegion(region)
+.then(() => console.log('Beacons ranging stopped succesfully'))
+.catch(error => console.log(`Beacons ranging not stopped, error: ${error}`));
 // remove beacons event we registered at componentDidMount
-DeviceEventEmitter.removeListener('beaconsDidRange');
+this.beaconsDidRangeEvent.remove();
 ```
 
 [See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.ios.js#L61)

@@ -44,7 +44,7 @@ You have to register events to know and use about data from enter region and lea
 ```javascript
 
 // Monitoring: Listen for device entering the defined region
-DeviceEventEmitter.addListener(
+this.beaconsDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
   'regionDidEnter',
   ({ identifier, uuid, minor, major }) => {
     console.log('monitoring - regionDidEnter data: ', { identifier, uuid, minor, major });
@@ -54,7 +54,7 @@ DeviceEventEmitter.addListener(
 );
 
 // Monitoring: Listen for device leaving the defined region
-DeviceEventEmitter.addListener(
+this.regionDidExitEvent = Beacons.BeaconsEventEmitter.addListener(
   'regionDidExit',
   ({ identifier, uuid, minor, major }) => {
     console.log('monitoring - regionDidExit data: ', { identifier, uuid, minor, major });
@@ -90,8 +90,8 @@ Beacons
   .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
 
 // remove beacons events we registered at componentDidMount
-DeviceEventEmitter.removeListener('regionDidEnter');
-DeviceEventEmitter.removeListener('regionDidExit');
+this.regionDidEnterEvent.remove();
+this.regionDidExitEvent.remove();
 ```
 
 [See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/monitoring.android.js#L71)

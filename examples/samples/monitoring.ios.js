@@ -22,7 +22,7 @@ class beaconMonitoringOnly extends Component {
    regionExitDatasource:  new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([])
  };
 
- componentWillMount(){
+ componentWillMount() {
    const { identifier, uuid } = this.state;
    //
    // ONLY non component state aware here in componentWillMount

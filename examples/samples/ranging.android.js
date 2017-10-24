@@ -1,3 +1,4 @@
+/* eslint-disable */
 
 import Beacons  from 'react-native-beacons-manager';
 import moment   from 'moment';
@@ -5,17 +6,16 @@ import moment   from 'moment';
 const TIME_FORMAT = 'MM/DD/YYYY HH:mm:ss';
 
 class beaconRangingOnly extends Component {
- constructor(props) {
-   super(props);
+  // will be set as a reference to "beaconsDidRange" event:
+  beaconsDidRangeEvent = null;
 
-   this.state = {
-     // region information
-     uuid: '7b44b47b-52a1-5381-90c2-f09b6838c5d4',
-     identifier: 'some id',
+  state = {
+    // region information
+    uuid: '7b44b47b-52a1-5381-90c2-f09b6838c5d4',
+    identifier: 'some id',
 
-     rangingDataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([])
-   };
- }
+    rangingDataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([])
+  };
 
  componentWillMount(){
    const { identifier, uuid } = this.state;
@@ -27,10 +27,9 @@ class beaconRangingOnly extends Component {
    Beacons.detectIBeacons();
    // Range beacons inside the region
    Beacons
-     .startRangingBeaconsInRegion(identifier, uuid)
-     .then(() => console.log('Beacons ranging started succesfully'))
-     .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
-
+   .startRangingBeaconsInRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
+   .then(() => console.log('Beacons ranging started succesfully'))
+   .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
  }
 
  componentDidMount() {
@@ -39,7 +38,7 @@ class beaconRangingOnly extends Component {
    //
 
    // Ranging: Listen for beacon changes
-   DeviceEventEmitter.addListener(
+   this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener(
      'beaconsDidRange',
      (data) => {
        console.log('beaconsDidRange data: ', data);
@@ -52,12 +51,12 @@ class beaconRangingOnly extends Component {
    const { uuid, identifier } = this.state;
     // stop ranging beacons:
     Beacons
-    .stopRangingBeaconsInRegion(identifier, uuid)
+    .stopRangingBeaconsInRegion(region) // or like  < v1.0.7: .stopRangingBeaconsInRegion(identifier, uuid)
     .then(() => console.log('Beacons ranging stopped succesfully'))
     .catch(error => console.log(`Beacons ranging not stopped, error: ${error}`));
 
     // remove ranging event we registered at componentDidMount
-    DeviceEventEmitter.removeListener('beaconsDidRange');
+    this.beaconsDidRangeEvent.remove();
  }
 
  render() {

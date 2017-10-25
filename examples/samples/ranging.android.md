@@ -23,9 +23,9 @@ Tell Android what you want to range by defining a desired `region` object.
 ```javascript
 // start ranging beacons
 Beacons
-  .startRangingBeaconsInRegion(identifier, uuid)
-  .then(() => console.log('Beacons ranging started succesfully'))
-  .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
+.startRangingBeaconsInRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
+.then(() => console.log('Beacons ranging started succesfully'))
+.catch(error => console.log(`Beacons ranging not started, error: ${error}`));
 ```
 
 [See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.android.js#L29)
@@ -39,7 +39,7 @@ You have to register events to know and use about data from enter region and lea
 ```javascript
 
 // Ranging: Listen for beacon changes
-DeviceEventEmitter.addListener(
+this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener(
   'beaconsDidRange',
   (data) => {
     console.log('beaconsDidRange data: ', data);
@@ -61,12 +61,12 @@ Tell Android to stop ranging at the same time.
 
 // stop ranging beacons:
 Beacons
-.stopRangingBeaconsInRegion(identifier, uuid)
+.stopRangingBeaconsInRegion(region) // or like  < v1.0.7: .stopRangingBeaconsInRegion(identifier, uuid)
 .then(() => console.log('Beacons ranging stopped succesfully'))
 .catch(error => console.log(`Beacons ranging not stopped, error: ${error}`));
 
 // remove ranging event we registered at componentDidMount
-DeviceEventEmitter.removeListener('beaconsDidRange');
+this.beaconsDidRangeEvent.remove();
 ```
 
 [See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/ranging.android.js#L54)

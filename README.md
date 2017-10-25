@@ -198,7 +198,7 @@ DeviceEventEmitter.addListener('beaconsDidRange', (data) => {
 **Improvements or new feature:**
 
 - **iOS**
-  - [ ] add support to Eddystone
+  - [ ] add support to Eddystone (we will have to wait for Apple: [as an illustation](https://www.beaconzone.co.uk/blog/will-apple-ever-support-eddystone-url-detection-in-ios/))
 - **android**
   - [ ] add support to Eddystone
 

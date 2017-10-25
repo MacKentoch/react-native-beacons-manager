@@ -60,7 +60,7 @@ RCT_EXPORT_MODULE()
     return self;
 }
 
-#pragma mark
+#pragma mark - iBeacon Region
 
 -(CLBeaconRegion *) createBeaconRegion: (NSString *) identifier
                                   uuid: (NSString *) uuid
@@ -232,6 +232,8 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
     self.dropEmptyRanges = drop;
 }
 
+#pragma mark - CLLocationManagerDelegate
+
 -(NSString *)nameForAuthorizationStatus:(CLAuthorizationStatus)authorizationStatus
 {
     switch (authorizationStatus) {
@@ -354,7 +356,33 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 
 #pragma mark - CBCentralManagerDelegate
 
+-(NSString *)nameForBluetoothState:(CBManagerState)cbManagerState
+{
+    switch (cbManagerState) {
+
+        case CBManagerStatePoweredOn:
+            return @"bluetoothStatePoweredOn";
+            
+        case CBManagerStateResetting:
+            return @"bluetoothStateResetting";
+            
+        case CBManagerStatePoweredOff:
+            return @"bluetoothStatePoweredOff";
+            
+        case CBManagerStateUnsupported:
+            return @"bluetoothStateUnsupported";
+        
+        case CBManagerStateUnauthorized:
+            return @"bluetoothStateUnauthorized";
+        
+        default:
+            return @"bluetoothStateUnknown";
+    }
+}
+
 - (void)centralManagerDidUpdateState:(nonnull CBCentralManager *)central {
+    NSString *bluetoothStateString = [self nameForBluetoothState:central.state];
+    [self.bridge.eventDispatcher sendDeviceEventWithName:@"bluetoothStateDidChange" body:bluetoothStateString];
 }
 
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary<NSString *,id> *)advertisementData RSSI:(NSNumber *)RSSI {

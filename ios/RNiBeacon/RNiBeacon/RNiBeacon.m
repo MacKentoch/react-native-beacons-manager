@@ -154,6 +154,11 @@ RCT_EXPORT_METHOD(requestWhenInUseAuthorization)
   }
 }
 
+RCT_EXPORT_METHOD(allowsBackgroundLocationUpdates:(BOOL)allow)
+{
+  self.locationManager.allowsBackgroundLocationUpdates = allow;
+}
+
 RCT_EXPORT_METHOD(getAuthorizationStatus:(RCTResponseSenderBlock)callback)
 {
   callback(@[[self nameForAuthorizationStatus:[CLLocationManager authorizationStatus]]]);

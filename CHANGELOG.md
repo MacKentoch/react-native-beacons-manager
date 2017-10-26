@@ -1,11 +1,13 @@
-## 1.0.8 (COMING SOON = still in master)
+
+## 1.1.0 (COMING SOON)
+- iOS: add `allowsBackgroundLocationUpdates(allow: boolean)` to ensure monitoring even if app is killed or in background
 - PR #45 thank you to @stoneman1
 - PR #54 thank you to @rostislav-simonik
 - PR #46 thank you to @ashemah
 - PR #58 thank you to @eurobob
   - **BEWARE**: *breaking change* = drop of  `DeviceEventEmitter` in favor of `Beacons.BeaconsEventEmitter` (see [BeaconsDemo example project](./examples/BeaconsDemo))
   ```javascript
-    // before 1.0.8 (or until 1.0.7):
+    // before 1.1.0 (or until 1.0.7):
     DeviceEventEmitter.addListener()
     // simply becomes (for both iOS and Android)
     Beacons.BeaconsEventEmitter.addListener()
@@ -13,6 +15,22 @@
 
  - update iOS and Android BeaconsDemo example project
  - update samples (*TODO*)
+
+## 1.0.8 (CANCELED TO BE v1.1.0, all features included in upper v1.1.0)
+- ~~PR #45 thank you to @stoneman1~~
+- ~~PR #54 thank you to @rostislav-simonik~~
+- ~~PR #46 thank you to @ashemah~~
+- ~~PR #58 thank you to @eurobob~~
+  - ~~**BEWARE**: *breaking change* = drop of  `DeviceEventEmitter` in favor of `Beacons.BeaconsEventEmitter` (see [BeaconsDemo example project](./examples/BeaconsDemo))~~
+  ```javascript
+    // before 1.0.8 (or until 1.0.7):
+    DeviceEventEmitter.addListener()
+    // simply becomes (for both iOS and Android)
+    Beacons.BeaconsEventEmitter.addListener()
+    ```
+
+ - ~~update iOS and Android BeaconsDemo example project~~
+ - ~~update samples (*TODO*)~~
  
  
 ## 1.0.7 (RELEASE)

@@ -49,7 +49,7 @@ You have now to register events.
 
 ```javascript
 // Ranging:
-DeviceEventEmitter.addListener(
+this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener(
   'beaconsDidRange',
   (data) => {
     console.log('beaconsDidRange data: ', data);
@@ -58,7 +58,7 @@ DeviceEventEmitter.addListener(
 );
 
 // monitoring:
-DeviceEventEmitter.addListener(
+this.beaconsDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
   'regionDidEnter',
   ({ identifier, uuid, minor, major }) => {
     console.log('monitoring - regionDidEnter data: ', { identifier, uuid, minor, major });
@@ -67,7 +67,7 @@ DeviceEventEmitter.addListener(
   }
 );
 
-DeviceEventEmitter.addListener(
+this.regionDidExitEvent = Beacons.BeaconsEventEmitter.addListener(
   'regionDidExit',
   ({ identifier, uuid, minor, major }) => {
     console.log('monitoring - regionDidExit data: ', { identifier, uuid, minor, major });
@@ -109,10 +109,10 @@ Beacons
   .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
 
 // remove ranging event we registered at componentDidMount
-DeviceEventEmitter.removeListener('beaconsDidRange');
+this.beaconsDidRangeEvent.remove();
 // remove beacons events we registered at componentDidMount
-DeviceEventEmitter.removeListener('regionDidEnter');
-DeviceEventEmitter.removeListener('regionDidExit');
+this.regionDidEnterEvent.remove();
+this.regionDidExitEvent.remove();
 ```
 
 [See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/monitoringAndRanging.android.js#L87)

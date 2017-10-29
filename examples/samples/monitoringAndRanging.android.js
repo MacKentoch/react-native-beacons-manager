@@ -5,7 +5,7 @@ import moment   from 'moment';
 
 const TIME_FORMAT = 'MM/DD/YYYY HH:mm:ss';
 
-class beaconMonitoringOnly extends Component {
+class beaconMonitoringAndRanging extends Component {
   // will be set as a reference to "beaconsDidRange" event:
   beaconsDidRangeEvent = null;
   // will be set as a reference to "regionDidEnter" event:

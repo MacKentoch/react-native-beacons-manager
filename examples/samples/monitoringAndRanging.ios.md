@@ -25,7 +25,10 @@ If you don't:
 Ensure to call
 
 ```javascript
-Beacons.requestAlwaysAuthorization();
+this.authStateDidRangeEvent = Beacons.BeaconsEventEmitter.addListener(
+  'authorizationStatusDidChange',
+  (info) => console.log('authorizationStatusDidChange: ', info)
+);
 ```
 
 [See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/monitoringAndRanging.ios.js#L37)
@@ -52,9 +55,15 @@ For both tell iOS what you want to range by defining a desired `region` object.
 const region = { identifier, uuid };
 
 // ALWAYS BEFORE RANGING: Monitor for beacons inside the region
-Beacons.startMonitoringForRegion(region);
-// range beacons
-Beacons.startRangingBeaconsInRegion(region);
+Beacons
+.startMonitoringForRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
+.then(() => console.log('Beacons monitoring started succesfully'))
+.catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
+// Range for beacons inside the region
+Beacons
+.startRangingBeaconsInRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
+.then(() => console.log('Beacons ranging started succesfully'))
+.catch(error => console.log(`Beacons ranging not started, error: ${error}`));
 ```
 
 [See matching lines in sample example]()
@@ -80,7 +89,7 @@ You have now to register events.
 
 ```javascript
 // Ranging: Listen for beacon changes
-DeviceEventEmitter.addListener(
+this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener(
   'beaconsDidRange',
   (data) => {
    //  console.log('beaconsDidRange data: ', data);
@@ -89,7 +98,7 @@ DeviceEventEmitter.addListener(
 );
 
 // Monitoring: Listen for device entering the defined region
-DeviceEventEmitter.addListener(
+this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
   'regionDidEnter',
   (data) => {
     console.log('monitoring - regionDidEnter data: ', data);
@@ -99,7 +108,7 @@ DeviceEventEmitter.addListener(
 );
 
 // Monitoring: Listen for device leaving the defined region
-DeviceEventEmitter.addListener(
+this.regionDidExitEvent = Beacons.BeaconsEventEmitter.addListener(
   'regionDidExit',
   ({ identifier, uuid, minor, major }) => {
     console.log('monitoring - regionDidExit data: ', { identifier, uuid, minor, major });
@@ -126,16 +135,24 @@ Tell iOS to stop ranging at the same time.
 
 ```javascript
 // stop monitoring beacons:
-Beacons.stopMonitoringForRegion();
+Beacons
+.stopMonitoringForRegion(region)
+.then(() => console.log('Beacons monitoring stopped succesfully'))
+.catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
 // stop ranging beacons:
-Beacons.stopRangingBeaconsInRegion();
+Beacons
+.stopRangingBeaconsInRegion(region)
+.then(() => console.log('Beacons ranging stopped succesfully'))
+.catch(error => console.log(`Beacons ranging not stopped, error: ${error}`));
 // stop updating locationManager:
 Beacons.stopUpdatingLocation();
-// remove beacons events we registered at componentDidMount
-DeviceEventEmitter.removeListener('regionDidEnter');
-DeviceEventEmitter.removeListener('regionDidExit');
-// remove beacons event we registered at componentDidMount
-DeviceEventEmitter.removeListener('beaconsDidRange');
+
+this.authStateDidRangeEvent.remove();
+// remove monitoring events we registered at componentDidMount
+this.regionDidEnterEvent.remove();
+this.regionDidExitEvent.remove();
+// remove ranging event we registered at componentDidMount
+this.beaconsDidRangeEvent.remove();
 ```
 
 [See matching lines in sample example](https://github.com/MacKentoch/react-native-beacons-manager/blob/master/examples/samples/monitoringAndRanging.ios.js#L85)

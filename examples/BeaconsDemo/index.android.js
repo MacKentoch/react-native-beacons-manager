@@ -23,6 +23,7 @@
   * @type {String} uuid
   */
  const UUID         = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
+ const EDDY_UUID    = '31e3593f97f7cdade924';
  const IDENTIFIER   = '123456';
  const TIME_FORMAT  = 'MM/DD/YYYY HH:mm:ss';
 
@@ -51,6 +52,7 @@
     const { identifier, uuid } = this.state;
     // start iBeacon detection
     Beacons.detectIBeacons();
+    Beacons.addEddystoneUIDDetection();
 
     const region = { identifier, uuid }; // minor and major are null here
 

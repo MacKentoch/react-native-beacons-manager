@@ -55,7 +55,7 @@
     .then(() => Beacons.addEddystoneURLDetection())
     .then(() => Beacons.addEddystoneTLMDetection())
     .then(() => Beacons.addAltBeaconsDetection())
-    .then(() => Beacons.addEstimotesDetection())
+    // .then(() => Beacons.addEstimotesDetection()) // estimote not working right now
     .then(() => {
       const region = { identifier, uuid }; // minor and major are null here
 
@@ -69,7 +69,7 @@
       .then(() => console.log('Beacons monitoring started succesfully'))
       .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
     })
-    .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
+    .catch(error => console.log(`something went wrong during initialization: ${error}`));
    }
 
    componentDidMount() {

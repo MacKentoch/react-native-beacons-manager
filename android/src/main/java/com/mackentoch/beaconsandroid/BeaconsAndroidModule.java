@@ -38,6 +38,7 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
     private static final String LOG_TAG = "BeaconsAndroidModule";
     private static final int RUNNING_AVG_RSSI_FILTER = 0;
     private static final int ARMA_RSSI_FILTER = 1;
+    private boolean managerIsBound = false;
     private ReactApplicationContext mReactContext;
     private Context mApplicationContext;
     private BeaconManager mBeaconManager;
@@ -48,11 +49,6 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
         this.mReactContext = reactContext;
         this.mApplicationContext = reactContext.getApplicationContext();
         this.mBeaconManager = BeaconManager.getInstanceForApplication(mApplicationContext);
-
-        // // Detect iBeacons ( http://stackoverflow.com/questions/25027983/is-this-the-correct-layout-to-detect-ibeacons-with-altbeacons-android-beacon-li )
-        addParser("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24");
-        addParser("s:0-1=feaa,m:2-2=00,p:3-3:-41,i:4-13,i:14-19");
-        mBeaconManager.bind(this);
     }
 
     @Override
@@ -79,27 +75,34 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
     }
 
     public void bindManager() {
+        if (managerIsBound) unbindManager();
+        Log.d(LOG_TAG, "BeaconsAndroidModule - bindManager: ");
         mBeaconManager.bind(this);
+        managerIsBound = true;
     }
 
     public void unbindManager() {
-        mBeaconManager.unbind(this);
+        if (managerIsBound) mBeaconManager.unbind(this);
+        Log.d(LOG_TAG, "BeaconsAndroidModule - unbindManager: ");
+        managerIsBound = false;
     }
 
     @ReactMethod
-    public void addParser(String parser) {
+    public void addParser(String parser, Callback resolve) {
         Log.d(LOG_TAG, "BeaconsAndroidModule - addParser: " + parser);
-        // unbindManager();
+        unbindManager();
         mBeaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(parser));
-        // bindManager();
+        bindManager();
+        resolve.invoke();
     }
 
     @ReactMethod
-    public void removeParser(String parser) {
+    public void removeParser(String parser, Callback resolve) {
         Log.d(LOG_TAG, "BeaconsAndroidModule - removeParser: " + parser);
-        // unbindManager();
+        unbindManager();
         mBeaconManager.getBeaconParsers().remove(new BeaconParser().setBeaconLayout(parser));
-        // bindManager();
+        bindManager();
+        resolve.invoke();
     }
 
     @ReactMethod

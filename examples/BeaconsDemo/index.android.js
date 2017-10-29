@@ -22,8 +22,7 @@
   * uuid of YOUR BEACON (change to yours)
   * @type {String} uuid
   */
- const UUID         = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
- const EDDY_UUID    = '31e3593f97f7cdade924';
+//  const UUID         = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
  const IDENTIFIER   = '123456';
  const TIME_FORMAT  = 'MM/DD/YYYY HH:mm:ss';
 
@@ -37,8 +36,8 @@
 
    state = {
      // region information
-     uuid: null,// UUID, // EDDY_UUID, // UUID,
-     identifier: EDDY_UUID, //IDENTIFIER,
+     uuid: null,// UUID,
+     identifier: IDENTIFIER,
      // React Native ListViews datasources initialization
      rangingDataSource:     new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
      regionEnterDatasource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
@@ -53,6 +52,8 @@
     // start iBeacon detection
     Beacons.addIBeaconsDetection()
     .then(() => Beacons.addEddystoneUIDDetection())
+    .then(() => Beacons.addEddystoneURLDetection())
+    .then(() => Beacons.addEddystoneTLMDetection())
     .then(() => {
       const region = { identifier, uuid }; // minor and major are null here
 

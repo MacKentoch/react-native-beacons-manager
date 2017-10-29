@@ -50,8 +50,9 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
         this.mBeaconManager = BeaconManager.getInstanceForApplication(mApplicationContext);
 
         // // Detect iBeacons ( http://stackoverflow.com/questions/25027983/is-this-the-correct-layout-to-detect-ibeacons-with-altbeacons-android-beacon-li )
-        // addParser("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24");
-        // mBeaconManager.bind(this);
+        addParser("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24");
+        addParser("s:0-1=feaa,m:2-2=00,p:3-3:-41,i:4-13,i:14-19");
+        mBeaconManager.bind(this);
     }
 
     @Override
@@ -87,16 +88,18 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
 
     @ReactMethod
     public void addParser(String parser) {
-        unbindManager();
+        Log.d(LOG_TAG, "BeaconsAndroidModule - addParser: " + parser);
+        // unbindManager();
         mBeaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(parser));
-        bindManager();
+        // bindManager();
     }
 
     @ReactMethod
     public void removeParser(String parser) {
-        unbindManager();
+        Log.d(LOG_TAG, "BeaconsAndroidModule - removeParser: " + parser);
+        // unbindManager();
         mBeaconManager.getBeaconParsers().remove(new BeaconParser().setBeaconLayout(parser));
-        bindManager();
+        // bindManager();
     }
 
     @ReactMethod
@@ -302,8 +305,10 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
         for (Beacon beacon : beacons) {
             WritableMap b = new WritableNativeMap();
             b.putString("uuid", beacon.getId1().toString());
-            b.putInt("major", beacon.getId2().toInt());
-            b.putInt("minor", beacon.getId3().toInt());
+            if (beacon.getIdentifiers().size() > 2) {
+                b.putInt("major", beacon.getId2().toInt());
+                b.putInt("minor", beacon.getId3().toInt());
+            }
             b.putInt("rssi", beacon.getRssi());
             b.putDouble("distance", beacon.getDistance());
             b.putString("proximity", getProximity(beacon.getDistance()));

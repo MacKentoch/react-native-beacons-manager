@@ -37,8 +37,8 @@
 
    state = {
      // region information
-     uuid: UUID,
-     identifier: IDENTIFIER,
+     uuid: null,// UUID, // EDDY_UUID, // UUID,
+     identifier: EDDY_UUID, //IDENTIFIER,
      // React Native ListViews datasources initialization
      rangingDataSource:     new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
      regionEnterDatasource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),

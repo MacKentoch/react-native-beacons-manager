@@ -54,6 +54,8 @@
     .then(() => Beacons.addEddystoneUIDDetection())
     .then(() => Beacons.addEddystoneURLDetection())
     .then(() => Beacons.addEddystoneTLMDetection())
+    .then(() => Beacons.addAltBeaconsDetection())
+    .then(() => Beacons.addEstimotesDetection())
     .then(() => {
       const region = { identifier, uuid }; // minor and major are null here
 

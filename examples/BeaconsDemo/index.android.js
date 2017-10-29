@@ -51,20 +51,22 @@
     //
     const { identifier, uuid } = this.state;
     // start iBeacon detection
-    Beacons.detectIBeacons();
-    Beacons.addEddystoneUIDDetection();
+    Beacons.addIBeaconsDetection()
+    .then(() => Beacons.addEddystoneUIDDetection())
+    .then(() => {
+      const region = { identifier, uuid }; // minor and major are null here
 
-    const region = { identifier, uuid }; // minor and major are null here
+      Beacons
+      .startRangingBeaconsInRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
+      .then(() => console.log('Beacons ranging started succesfully'))
+      .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
 
-    Beacons
-    .startRangingBeaconsInRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
-    .then(() => console.log('Beacons ranging started succesfully'))
+      Beacons
+      .startMonitoringForRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
+      .then(() => console.log('Beacons monitoring started succesfully'))
+      .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
+    })
     .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
-
-    Beacons
-    .startMonitoringForRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
-    .then(() => console.log('Beacons monitoring started succesfully'))
-    .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
    }
 
    componentDidMount() {

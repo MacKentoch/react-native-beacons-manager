@@ -5,96 +5,107 @@ declare module 'react-native-beacons-manager' {
     uuid: string,
     minor?: number,
     major?: number
-  };
+  }
 
+  export type AuthorizationStatus =
+    | 'authorizedAlways'
+    | 'authorizedWhenInUse'
+    | 'denied'
+    | 'notDetermined'
+    | 'restricted';
 
-  ///////////////////////////////////////////////////////
-  // iOS only
-  ///////////////////////////////////////////////////////
+  class Beacons {
+    ///////////////////////////////////////////////////////
+    // iOS only
+    ///////////////////////////////////////////////////////
 
-  function requestAlwaysAuthorization(): void;
+    requestAlwaysAuthorization(): void;
 
-  function requestWhenInUseAuthorization(): void
+    requestWhenInUseAuthorization(): void;
 
-  function getAuthorizationStatus(
-    callback: (status: AuthorizationStatus) => any
-  ): any;
+    getAuthorizationStatus(
+      callback: (status: AuthorizationStatus) => any
+    ): any;
 
-  function startUpdatingLocation(): void;
+    startUpdatingLocation(): void;
 
-  function stopUpdatingLocation(): void;
+    stopUpdatingLocation(): void;
 
-  function shouldDropEmptyRanges(
-    drop: boolean
-  ): void;
+    shouldDropEmptyRanges(
+      drop: boolean
+    ): void;
 
-  ///////////////////////////////////////////////////////
-  // android only
-  ///////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////
+    // android only
+    ///////////////////////////////////////////////////////
+    ARMA_RSSI_FILTER: string;
+    RUNNING_AVG_RSSI_FILTER: string
 
-  const ARMA_RSSI_FILTER: string;
-  const RUNNING_AVG_RSSI_FILTER: string
+    setHardwareEqualityEnforced(
+      flag: boolean
+    ): void;
 
-  function setHardwareEqualityEnforced(
-    flag: boolean
-  ): void;
+    detectIBeacons(): void;
 
-  function detectIBeacons(): void;
+    detectAltBeacons(): void;
 
-  function detectAltBeacons(): void;
+    detectEstimotes(): void;
 
-  function detectEstimotes(): void;
+    detectEddystoneUID(): void;
 
-  function detectEddystoneUID(): void;
+    detectEddystoneURL(): void;
 
-  function detectEddystoneURL(): void;
+    detectEddystoneTLM(): void;
 
-  function detectEddystoneTLM(): void;
+    detectCustomBeaconLayout(
+      parser: number
+    ): void;
 
-  function detectCustomBeaconLayout(
-    parser: number
-  ): void;
+    setBackgroundScanPeriod(
+      period: number
+    ): void;
 
-  function setBackgroundScanPeriod(
-    period: number
-  ): void;
+    setBackgroundBetweenScanPeriod(
+      period: number
+    ): void;
 
-  function setBackgroundBetweenScanPeriod(
-    period: number
-  ): void;
+    setForegroundScanPeriod(
+      period: number
+    ): void;
 
-  function setForegroundScanPeriod(
-    period: number
-  ): void;
+    setRssiFilter(
+      filterType: number,
+      avgModifier: number
+    ): void;
 
-  function setRssiFilter(
-    filterType: number,
-    avgModifier: number
-  ): void;
+    getRangedRegions(): Promise<any>;
 
-  function getRangedRegions(): Promise<any>;
+    getMonitoredRegions(): Promise<Array<BeaconRegion>>;
 
-  function getMonitoredRegions(): Promise<Array<BeaconRegion>>;
+    checkTransmissionSupported(): Promise<number>;
 
-  function checkTransmissionSupported(): Promise<number>;
+    ///////////////////////////////////////////////////////
+    // common iOS and Android
+    ///////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////
-  // common iOS and Android
-  ///////////////////////////////////////////////////////
+    startMonitoringForRegion(
+      region: BeaconRegion
+    ): Promise<any>;
 
-  function startMonitoringForRegion(
-    region: BeaconRegion
-  ): Promise<any>;
+    startRangingBeaconsInRegion(
+      regionId: string,
+      beaconsUUID?: string
+    ): Promise<any>;
 
-  function startRangingBeaconsInRegion(
-    region: BeaconRegion
-  ): Promise<any>;
+    stopMonitoringForRegion(
+      region: BeaconRegion
+    ): Promise<any>;
 
-  function stopMonitoringForRegion(
-    region: BeaconRegion
-  ): Promise<any>;
+    stopRangingBeaconsInRegion(
+      regionId: string,
+      beaconsUUID?: string
+    ): Promise<any>;
+  }
 
-  function stopRangingBeaconsInRegion(
-    region: BeaconRegion
-  ): Promise<any>;
+  export default new Beacons();
 }

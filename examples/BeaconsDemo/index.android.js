@@ -32,9 +32,9 @@ class BeaconsDemo extends Component {
   // will be set as a reference to "beaconsDidRange" event:
   beaconsDidRangeEvent = null;
   // will be set as a reference to "regionDidEnter" event:
-  regionDidEnterEvent = null;
+  beaconsDidEnterEvent = null;
   // will be set as a reference to "regionDidExit" event:
-  regionDidExitEvent = null
+  beaconsDidLeaveEvent = null
 
   state = {
     // region information
@@ -47,82 +47,82 @@ class BeaconsDemo extends Component {
   };
 
   componentWillMount() {
-  //
-  // ONLY non component state aware here in componentWillMount
-  //
-  const { identifier, uuid } = this.state;
+    //
+    // ONLY non component state aware here in componentWillMount
+    //
+    const { identifier, uuid } = this.state;
 
-  // Beacons.addParsersListToDetection([
-  //   Beacons.PARSER_IBEACON,
-  //   Beacons.PARSER_ALTBEACON,
-  //   Beacons.PARSER_EDDYSTONE_TLM,
-  //   Beacons.PARSER_EDDYSTONE_UID,
-  //   Beacons.PARSER_EDDYSTONE_URL
-  // ])
-  // start iBeacon detection
-  Beacons.addIBeaconsDetection()
-  .then(() => Beacons.addEddystoneUIDDetection())
-  .then(() => Beacons.addEddystoneURLDetection())
-  .then(() => Beacons.addEddystoneTLMDetection())
-  .then(() => Beacons.addAltBeaconsDetection())
-  .then(() => Beacons.addEstimotesDetection())
-  .then(this.startRangingAndMonitoring)
-  .catch(error => console.log(`something went wrong during initialization: ${error}`));
+    // Beacons.addParsersListToDetection([
+    //   Beacons.PARSER_IBEACON,
+    //   Beacons.PARSER_ALTBEACON,
+    //   Beacons.PARSER_EDDYSTONE_TLM,
+    //   Beacons.PARSER_EDDYSTONE_UID,
+    //   Beacons.PARSER_EDDYSTONE_URL
+    // ])
+    // start iBeacon detection
+    Beacons.addIBeaconsDetection()
+    .then(() => Beacons.addEddystoneUIDDetection())
+    .then(() => Beacons.addEddystoneURLDetection())
+    .then(() => Beacons.addEddystoneTLMDetection())
+    .then(() => Beacons.addAltBeaconsDetection())
+    .then(() => Beacons.addEstimotesDetection())
+    .then(this.startRangingAndMonitoring)
+    .catch(error => console.log(`something went wrong during initialization: ${error}`));
   }
 
   componentDidMount() {
-  //
-  // component state aware here - attach events
-  //
-  // Ranging: Listen for beacon changes
-  this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener(
-    'beaconsDidRange',
-    (data) => {
-      console.log('beaconsDidRange data: ', data);
-      this.setState({ rangingDataSource: this.state.rangingDataSource.cloneWithRows(data.beacons) });
-    }
-  );
+    //
+    // component state aware here - attach events
+    //
+    // Ranging: Listen for beacon changes
+    this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener(
+      'beaconsDidRange',
+      (data) => {
+        console.log('beaconsDidRange data: ', data);
+        this.setState({ rangingDataSource: this.state.rangingDataSource.cloneWithRows(data.beacons) });
+      }
+    );
 
-  // monitoring:
-  this.beaconsDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
-    'regionDidEnter',
-    ({ identifier, uuid, minor, major }) => {
-      console.log('monitoring - regionDidEnter data: ', { identifier, uuid, minor, major });
-      const time = moment().format(TIME_FORMAT);
-      this.setState({ regionEnterDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier, uuid, minor, major, time }]) });
-    }
-  );
+    // monitoring:
+    this.beaconsDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
+      'regionDidEnter',
+      ({ identifier, uuid, minor, major }) => {
+        console.log('monitoring - regionDidEnter data: ', { identifier, uuid, minor, major });
+        const time = moment().format(TIME_FORMAT);
+        this.setState({ regionEnterDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier, uuid, minor, major, time }]) });
+      }
+    );
 
-  this.regionDidExitEvent = Beacons.BeaconsEventEmitter.addListener(
-    'regionDidExit',
-    ({ identifier, uuid, minor, major }) => {
-      console.log('monitoring - regionDidExit data: ', { identifier, uuid, minor, major });
-      const time = moment().format(TIME_FORMAT);
-    this.setState({ regionExitDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier, uuid, minor, major, time }]) });
-    }
-  );
+    this.beaconsDidLeaveEvent = Beacons.BeaconsEventEmitter.addListener(
+      'regionDidExit',
+      ({ identifier, uuid, minor, major }) => {
+        console.log('monitoring - regionDidExit data: ', { identifier, uuid, minor, major });
+        const time = moment().format(TIME_FORMAT);
+      this.setState({ regionExitDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier, uuid, minor, major, time }]) });
+      }
+    );
   }
 
   componentWillUnMount(){
-  const { uuid, identifier } = this.state;
+    const { uuid, identifier } = this.state;
 
-  const region = { identifier, uuid }; // minor and major are null here
+    const region = { identifier, uuid }; // minor and major are null here
 
-  Beacons
-  .stopRangingBeaconsInRegion(region) // or like  < v1.0.7: .stopRangingBeaconsInRegion(identifier, uuid)
-  .then(() => console.log('Beacons ranging stopped succesfully'))
-  .catch(error => console.log(`Beacons ranging not stopped, error: ${error}`));
+    Beacons
+    .stopRangingBeaconsInRegion(region) // or like  < v1.0.7: .stopRangingBeaconsInRegion(identifier, uuid)
+    .then(() => console.log('Beacons ranging stopped succesfully'))
+    .catch(error => console.log(`Beacons ranging not stopped, error: ${error}`));
 
-  Beacons
-  .stopMonitoringForRegion(region) // or like  < v1.0.7: .stopMonitoringForRegion(identifier, uuid)
-  .then(() => console.log('Beacons monitoring stopped succesfully'))
-  .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
+    Beacons
+    .stopMonitoringForRegion(region) // or like  < v1.0.7: .stopMonitoringForRegion(identifier, uuid)
+    .then(() => console.log('Beacons monitoring stopped succesfully'))
+    .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
 
-  // remove monitiring events we registered at componentDidMount::
-  this.regionDidEnterEvent.remove();
-  this.regionDidExitEvent.remove();
-  // remove ranging event we registered at componentDidMount:
-  this.beaconsDidRangeEvent.remove();
+    // remove monitiring events we registered at componentDidMount::
+    this.beaconsDidEnterEvent.remove();
+    this.beaconsDidLeaveEvent.remove();
+    // remove ranging event we registered at componentDidMount:
+    this.beaconsDidRangeEvent.remove();
   }
 
   render() {
@@ -251,32 +251,54 @@ class BeaconsDemo extends Component {
     );
   }
 
-  startRangingAndMonitoring = () => {
-    const {
-      identifier, uuid
-    } = this.state;
-
+  startRangingAndMonitoring = async () => {
+    const { identifier, uuid} = this.state;
     const region = { identifier, uuid }; // minor and major are null here
 
-    Beacons
-    .startRangingBeaconsInRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
-    .then(() => console.log('Beacons ranging started succesfully'))
-    .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
-
-    Beacons
-    .startMonitoringForRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
-    .then(() => console.log('Beacons monitoring started succesfully'))
-    .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
+    try {
+      await Beacons.startRangingBeaconsInRegion(region);
+      console.log('Beacons ranging started successfully');
+      await Beacons.startMonitoringForRegion(region);
+      console.log('Beacons monitoring started successfully');
+    } catch (error) {
+      throw error;
+    }
   }
 
-  handlesOnAddIbeacon = () => {
-    Beacons.addIBeaconsDetection()
-    .then(this.startRangingAndMonitoring);
+  stopRangingAndMonitoring = async () => {
+    const { identifier, uuid} = this.state;
+    const region = { identifier, uuid }; // minor and major are null here
+
+    try {
+      await Beacons.stopRangingBeaconsInRegion(region);
+      console.log('Beacons ranging stopped successfully');
+      await Beacons.stopMonitoringForRegion(region);
+      console.log('Beacons monitoring stopped successfully');
+    } catch (error) {
+      throw error;
+    }
   }
 
-  handlesOnRemoveIbeacon = () => {
-    Beacons.removeIBeaconsDetection()
-    .then(this.startRangingAndMonitoring);
+  handlesOnAddIbeacon = async () => {
+    try {
+      await this.stopRangingAndMonitoring();
+      await Beacons.addIBeaconsDetection();
+      await this.startRangingAndMonitoring();
+      ToastAndroid.showWithGravity('add IBeacon detection', ToastAndroid.SHORT, ToastAndroid.CENTER);
+    } catch (error) {
+      ToastAndroid.show(`Error: add IBeacon detection failed: ${error.message}`, ToastAndroid.SHORT);
+    }
+  }
+
+  handlesOnRemoveIbeacon = async () => {
+    try {
+      await this.stopRangingAndMonitoring();
+      await Beacons.removeIBeaconsDetection();
+      await this.startRangingAndMonitoring();
+      ToastAndroid.showWithGravity('removed IBeacon detection', ToastAndroid.SHORT, ToastAndroid.CENTER);
+    } catch (error) {
+      ToastAndroid.show(`Error: remove IBeacon detection failed: ${error.message}`, ToastAndroid.SHORT);
+    }
   }
 }
 

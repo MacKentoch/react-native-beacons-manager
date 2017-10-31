@@ -50,7 +50,6 @@ class BeaconsDemo extends Component {
     //
     // ONLY non component state aware here in componentWillMount
     //
-    const { identifier, uuid } = this.state;
 
     // Beacons.addParsersListToDetection([
     //   Beacons.PARSER_IBEACON,
@@ -103,20 +102,8 @@ class BeaconsDemo extends Component {
     );
   }
 
-  componentWillUnMount(){
-    const { uuid, identifier } = this.state;
-
-    const region = { identifier, uuid }; // minor and major are null here
-
-    Beacons
-    .stopRangingBeaconsInRegion(region) // or like  < v1.0.7: .stopRangingBeaconsInRegion(identifier, uuid)
-    .then(() => console.log('Beacons ranging stopped succesfully'))
-    .catch(error => console.log(`Beacons ranging not stopped, error: ${error}`));
-
-    Beacons
-    .stopMonitoringForRegion(region) // or like  < v1.0.7: .stopMonitoringForRegion(identifier, uuid)
-    .then(() => console.log('Beacons monitoring stopped succesfully'))
-    .catch(error => console.log(`Beacons monitoring not stopped, error: ${error}`));
+  componentWillUnMount() {
+    this.stopRangingAndMonitoring();
 
     // remove monitiring events we registered at componentDidMount::
     this.beaconsDidEnterEvent.remove();
@@ -302,51 +289,51 @@ class BeaconsDemo extends Component {
   }
 }
 
- const styles = StyleSheet.create({
-   scrollview: {
-     flex: 1
-   },
-   container: {
-     flex: 1,
-     paddingTop: 60,
-     marginHorizontal: 5,
-     justifyContent: 'flex-start',
-    //  alignItems: 'center',
-     backgroundColor: '#F5FCFF'
-   },
-   btleConnectionStatus: {
-     // fontSize: 20,
-     paddingTop: 20
-   },
-   headline: {
-     fontSize: 20,
-     paddingTop: 20
-   },
-   row: {
-     padding: 8,
-     paddingBottom: 16
-   },
-   smallText: {
-     fontSize: 11
-   },
-   actionsContainer: {
-     flex: 1,
-     flexDirection: 'row',
-     alignItems: 'center',
-     justifyContent: 'space-between'
-   },
-   actionButton: {
-    width: 160,
-    backgroundColor: '#A6A6A6',
-    paddingHorizontal: 5,
-    paddingVertical: 10,
-   },
-   actionText: {
-     alignSelf: 'center',
-    fontSize: 11,
-    color: '#F1F1F1'
-   }
- });
+const styles = StyleSheet.create({
+  scrollview: {
+    flex: 1
+  },
+  container: {
+    flex: 1,
+    paddingTop: 60,
+    marginHorizontal: 5,
+    justifyContent: 'flex-start',
+  //  alignItems: 'center',
+    backgroundColor: '#F5FCFF'
+  },
+  btleConnectionStatus: {
+    // fontSize: 20,
+    paddingTop: 20
+  },
+  headline: {
+    fontSize: 20,
+    paddingTop: 20
+  },
+  row: {
+    padding: 8,
+    paddingBottom: 16
+  },
+  smallText: {
+    fontSize: 11
+  },
+  actionsContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  actionButton: {
+  width: 160,
+  backgroundColor: '#A6A6A6',
+  paddingHorizontal: 5,
+  paddingVertical: 10,
+  },
+  actionText: {
+    alignSelf: 'center',
+  fontSize: 11,
+  color: '#F1F1F1'
+  }
+});
 
 AppRegistry.registerComponent(
   'BeaconsDemo',

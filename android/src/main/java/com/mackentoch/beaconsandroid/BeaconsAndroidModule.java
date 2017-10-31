@@ -49,11 +49,7 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
     this.mReactContext = reactContext;
     this.mApplicationContext = reactContext.getApplicationContext();
     this.mBeaconManager = BeaconManager.getInstanceForApplication(mApplicationContext);
-
-    // fix: seems like need to bind at instantiation so that service loads (to test more)
-    // bindManager();
-    // Detect iBeacons ( http://stackoverflow.com/questions/25027983/is-this-the-correct-layout-to-detect-ibeacons-with-altbeacons-android-beacon-li )
-    mBeaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24"));
+    // need to bind at instantiation so that service loads (to test more)
     bindManager();
   }
 

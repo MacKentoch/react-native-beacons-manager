@@ -39,7 +39,13 @@ declare module 'react-native-beacons-manager' {
     // android only
     ///////////////////////////////////////////////////////
     ARMA_RSSI_FILTER: string;
-    RUNNING_AVG_RSSI_FILTER: string
+    RUNNING_AVG_RSSI_FILTER: string;
+    PARSER_IBEACON: string;
+    PARSER_ESTIMOTE: string;
+    PARSER_ALTBEACON: string;
+    PARSER_EDDYSTONE_TLM: string;
+    PARSER_EDDYSTONE_UID: string;
+    PARSER_EDDYSTONE_URL: string;
 
     setHardwareEqualityEnforced(
       flag: boolean

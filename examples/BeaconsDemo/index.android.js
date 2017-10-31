@@ -51,11 +51,11 @@
     const { identifier, uuid } = this.state;
     // start iBeacon detection
     Beacons.addIBeaconsDetection()
-    .then(() => Beacons.addEddystoneUIDDetection())
-    .then(() => Beacons.addEddystoneURLDetection())
-    .then(() => Beacons.addEddystoneTLMDetection())
-    .then(() => Beacons.addAltBeaconsDetection())
-    .then(() => Beacons.addEstimotesDetection())
+    // .then(() => Beacons.addEddystoneUIDDetection())
+    // .then(() => Beacons.addEddystoneURLDetection())
+    // .then(() => Beacons.addEddystoneTLMDetection())
+    // .then(() => Beacons.addAltBeaconsDetection())
+    // .then(() => Beacons.addEstimotesDetection())
     .then(() => {
       const region = { identifier, uuid }; // minor and major are null here
 

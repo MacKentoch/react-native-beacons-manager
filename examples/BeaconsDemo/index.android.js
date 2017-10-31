@@ -15,7 +15,8 @@ import {
   ListView,
   View,
   TouchableHighlight,
-  ToastAndroid
+  ToastAndroid,
+  Image
 }                     from 'react-native';
 import Beacons        from 'react-native-beacons-manager';
 import moment         from 'moment';
@@ -77,7 +78,7 @@ class BeaconsDemo extends Component {
     this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener(
       'beaconsDidRange',
       (data) => {
-        console.log('beaconsDidRange data: ', data);
+        // console.log('beaconsDidRange data: ', data);
         this.setState({ rangingDataSource: this.state.rangingDataSource.cloneWithRows(data.beacons) });
       }
     );
@@ -86,7 +87,7 @@ class BeaconsDemo extends Component {
     this.beaconsDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
       'regionDidEnter',
       ({ identifier, uuid, minor, major }) => {
-        console.log('monitoring - regionDidEnter data: ', { identifier, uuid, minor, major });
+        // console.log('monitoring - regionDidEnter data: ', { identifier, uuid, minor, major });
         const time = moment().format(TIME_FORMAT);
         this.setState({ regionEnterDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier, uuid, minor, major, time }]) });
       }
@@ -95,9 +96,9 @@ class BeaconsDemo extends Component {
     this.beaconsDidLeaveEvent = Beacons.BeaconsEventEmitter.addListener(
       'regionDidExit',
       ({ identifier, uuid, minor, major }) => {
-        console.log('monitoring - regionDidExit data: ', { identifier, uuid, minor, major });
+        // console.log('monitoring - regionDidExit data: ', { identifier, uuid, minor, major });
         const time = moment().format(TIME_FORMAT);
-      this.setState({ regionExitDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier, uuid, minor, major, time }]) });
+        this.setState({ regionExitDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier, uuid, minor, major, time }]) });
       }
     );
   }
@@ -116,56 +117,65 @@ class BeaconsDemo extends Component {
     const { rangingDataSource, regionEnterDatasource, regionExitDatasource } =  this.state;
 
     return (
-      <ScrollView style={styles.scrollview}>
-        <View style={styles.container}>
-
-        <View style={styles.actionsContainer}>
-          <TouchableHighlight
-          style={styles.actionButton}
-          onPress={this.handlesOnRemoveIbeacon}
+      <Image
+        style={styles.backgroundImage}
+        resizeMode="center"
+        source={require('./bluetooth-300-300-opacity-45.png')}
+      >
+        <ScrollView
+          style={styles.scrollview}
         >
-            <Text style={styles.actionText}>
-              remove IBeacon detection
+          <View style={styles.container}>
+            <View style={styles.actionsContainer}>
+              <TouchableHighlight
+                style={styles.actionButton}
+                onPress={this.handlesOnRemoveIbeacon}
+              >
+                <Text style={styles.actionText}>
+                  remove IBeacon detection
+                </Text>
+              </TouchableHighlight>
+
+              <TouchableHighlight
+                style={styles.actionButton}
+                onPress={this.handlesOnAddIbeacon}
+              >
+                <Text style={styles.actionText}>
+                  add IBeacon detection
+                </Text>
+              </TouchableHighlight>
+            </View>
+
+            <Text style={styles.headline}>
+              ranging beacons in the area:
             </Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-          style={styles.actionButton}
-          onPress={this.handlesOnAddIbeacon}
-        >
-            <Text style={styles.actionText}>
-              add IBeacon detection
+
+            <ListView
+              dataSource={ rangingDataSource }
+              enableEmptySections={ true }
+              renderRow={this.renderRangingRow}
+            />
+
+            <Text style={styles.headline}>
+              monitoring enter information:
             </Text>
-          </TouchableHighlight>
-        </View>
+            <ListView
+              dataSource={ regionEnterDatasource }
+              enableEmptySections={ true }
+              renderRow={this.renderMonitoringEnterRow}
+            />
 
-          <Text style={styles.headline}>
-            ranging beacons in the area:
-          </Text>
-          <ListView
-            dataSource={ rangingDataSource }
-            enableEmptySections={ true }
-            renderRow={this.renderRangingRow}
-          />
-
-          <Text style={styles.headline}>
-            monitoring enter information:
-          </Text>
-          <ListView
-            dataSource={ regionEnterDatasource }
-            enableEmptySections={ true }
-            renderRow={this.renderMonitoringEnterRow}
-          />
-
-          <Text style={styles.headline}>
-            monitoring exit information:
-          </Text>
-          <ListView
-            dataSource={ regionExitDatasource }
-            enableEmptySections={ true }
-            renderRow={this.renderMonitoringLeaveRow}
-          />
-        </View>
-      </ScrollView>
+            <Text style={styles.headline}>
+              monitoring exit information:
+            </Text>
+            <ListView
+              dataSource={ regionExitDatasource }
+              enableEmptySections={ true }
+              renderRow={this.renderMonitoringLeaveRow}
+            />
+          </View>
+        </ScrollView>
+      </Image>
     );
   }
 
@@ -290,16 +300,20 @@ class BeaconsDemo extends Component {
 }
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    width: null,
+    height: null,
+  },
   scrollview: {
     flex: 1
   },
   container: {
     flex: 1,
-    paddingTop: 60,
+    paddingTop: 10,
     marginHorizontal: 5,
     justifyContent: 'flex-start',
-  //  alignItems: 'center',
-    backgroundColor: '#F5FCFF'
+    backgroundColor: 'transparent',
   },
   btleConnectionStatus: {
     // fontSize: 20,
@@ -323,15 +337,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   actionButton: {
-  width: 160,
-  backgroundColor: '#A6A6A6',
-  paddingHorizontal: 5,
-  paddingVertical: 10,
+    width: 160,
+    backgroundColor: '#A6A6A6',
+    paddingHorizontal: 5,
+    paddingVertical: 10,
   },
   actionText: {
     alignSelf: 'center',
-  fontSize: 11,
-  color: '#F1F1F1'
+    fontSize: 11,
+    color: '#F1F1F1'
   }
 });
 

@@ -49,6 +49,8 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
         this.mReactContext = reactContext;
         this.mApplicationContext = reactContext.getApplicationContext();
         this.mBeaconManager = BeaconManager.getInstanceForApplication(mApplicationContext);
+        // fix: seems like need to bind at instanciation so that service loads (to test more)
+        bindManager();
     }
 
     @Override
@@ -111,6 +113,34 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
         } catch (Exception e) {
           reject.invoke(e.getMessage());
         }
+    }
+
+    @ReactMethod
+    public void addParsersListToDetection(ReadableArray parsers, Callback resolve, Callback reject) {
+      try {
+        unbindManager();
+        for (int i = 0; i < parsers.size(); i++) {
+          mBeaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(parser));
+        }
+        bindManager();
+        resolve.invoke(parsers);
+      } catch (Exception e) {
+        reject.invoke(e.getMessage());
+      }
+    }
+
+    @ReactMethod
+    public void removeParsersListToDetection(ReadableArray parsers, Callback resolve, Callback reject) {
+      try {
+        unbindManager();
+        for (int i = 0; i < parsers.size(); i++) {
+          mBeaconManager.getBeaconParsers().remove(new BeaconParser().setBeaconLayout(parser));
+        }
+        bindManager();
+        resolve.invoke(parsers);
+      } catch (Exception e) {
+        reject.invoke(e.getMessage());
+      }
     }
 
     @ReactMethod

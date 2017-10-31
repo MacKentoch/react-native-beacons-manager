@@ -66,19 +66,7 @@ class BeaconsDemo extends Component {
   .then(() => Beacons.addEddystoneTLMDetection())
   .then(() => Beacons.addAltBeaconsDetection())
   .then(() => Beacons.addEstimotesDetection())
-  .then(() => {
-    const region = { identifier, uuid }; // minor and major are null here
-
-    Beacons
-    .startRangingBeaconsInRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
-    .then(() => console.log('Beacons ranging started succesfully'))
-    .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
-
-    Beacons
-    .startMonitoringForRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
-    .then(() => console.log('Beacons monitoring started succesfully'))
-    .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
-  })
+  .then(this.startRangingAndMonitoring)
   .catch(error => console.log(`something went wrong during initialization: ${error}`));
   }
 
@@ -263,11 +251,32 @@ class BeaconsDemo extends Component {
     );
   }
 
-  handlesOnRemoveIbeacon = () => {
+  startRangingAndMonitoring = () => {
+    const {
+      identifier, uuid
+    } = this.state;
 
+    const region = { identifier, uuid }; // minor and major are null here
+
+    Beacons
+    .startRangingBeaconsInRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
+    .then(() => console.log('Beacons ranging started succesfully'))
+    .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
+
+    Beacons
+    .startMonitoringForRegion(region) // or like  < v1.0.7: .startRangingBeaconsInRegion(identifier, uuid)
+    .then(() => console.log('Beacons monitoring started succesfully'))
+    .catch(error => console.log(`Beacons monitoring not started, error: ${error}`));
   }
-  handlesOnRemoveIbeacon = () => {
 
+  handlesOnAddIbeacon = () => {
+    Beacons.addIBeaconsDetection()
+    .then(this.startRangingAndMonitoring);
+  }
+
+  handlesOnRemoveIbeacon = () => {
+    Beacons.removeIBeaconsDetection()
+    .then(this.startRangingAndMonitoring);
   }
 }
 

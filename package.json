@@ -11,6 +11,9 @@
     "beacons",
     "android",
     "ibeacons",
+    "altbeacon",
+    "estimote",
+    "eddystone",
     "altbeacons"
   ],
   "repository": {

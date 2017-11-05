@@ -6,20 +6,30 @@
 
 import React, {
   Component
-}                     from 'react';
+}                         from 'react';
 import {
   AppRegistry,
   StyleSheet,
   Text,
   ScrollView,
   ListView,
+  SectionList,
   View,
   TouchableHighlight,
   ToastAndroid,
   Image
-}                     from 'react-native';
-import Beacons        from 'react-native-beacons-manager';
-import moment         from 'moment';
+}                         from 'react-native';
+import Beacons            from 'react-native-beacons-manager';
+import {
+  Avatar
+}                         from 'react-native-elements';
+import moment             from 'moment';
+import beaconIMAGE        from './images/beacons/ibeacon.png';
+import altbeaconIMAGE     from './images/beacons/ibeacon.png';
+import altBeaconIMAGE     from './images/beacons/altbeacon.png';
+import eddystoneURLIMAGE  from './images/beacons/eddystoneURL.png';
+import eddystoneTLMIMAGE  from './images/beacons/eddystone_TLM.png';
+import eddystoneUIDIMAGE  from './images/beacons/eddystone_UID.png';
 
 /**
 * uuid of YOUR BEACON (change to yours)
@@ -66,7 +76,6 @@ class BeaconsDemo extends Component {
     .then(() => Beacons.addEddystoneTLMDetection())
     .then(() => Beacons.addAltBeaconsDetection())
     .then(() => Beacons.addEstimotesDetection())
-    .then(this.startRangingAndMonitoring)
     .catch(error => console.log(`something went wrong during initialization: ${error}`));
   }
 
@@ -74,6 +83,16 @@ class BeaconsDemo extends Component {
     //
     // component state aware here - attach events
     //
+
+    // we need to wait for service connection to ensure synchronization:
+    this.beaconsServiceDidConnect = Beacons.BeaconsEventEmitter.addListener(
+      'beaconServiceConnected',
+      () => {
+        console.log('service connected');
+        this.startRangingAndMonitoring();
+      }
+    );
+
     // Ranging: Listen for beacon changes
     this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener(
       'beaconsDidRange',
@@ -182,24 +201,38 @@ class BeaconsDemo extends Component {
   renderRangingRow = (rowData) => {
     return (
       <View style={styles.row}>
-        <Text style={styles.smallText}>
-          UUID: {rowData.uuid ? rowData.uuid  : 'NA'}
-        </Text>
-        <Text style={styles.smallText}>
-          Major: {rowData.major ? rowData.major : 'NA'}
-        </Text>
-        <Text style={styles.smallText}>
-          Minor: {rowData.minor ? rowData.minor : 'NA'}
-        </Text>
-        <Text>
-          RSSI: {rowData.rssi ? rowData.rssi : 'NA'}
-        </Text>
-        <Text>
-          Proximity: {rowData.proximity ? rowData.proximity : 'NA'}
-        </Text>
-        <Text>
-          Distance: {rowData.accuracy ? rowData.accuracy.toFixed(2) : 'NA'}m
-        </Text>
+        <View style={styles.iconContainer}>
+          <Avatar
+            medium
+            rounded
+            source={beaconIMAGE}
+            onPress={() => console.log('no use')}
+            activeOpacity={0.7}
+          />
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.smallText}>
+            UUID: {rowData.uuid ? rowData.uuid  : 'NA'}
+          </Text>
+          <View style={styles.majorMinorContainer}>
+            <Text style={styles.smallText}>
+              Major: {rowData.major ? rowData.major : 'NA'}
+            </Text>
+            <Text style={[styles.smallText, {marginLeft: 10}]}>
+              Minor: {rowData.minor ? rowData.minor : 'NA'}
+            </Text>
+            <Text style={[styles.smallText, {marginLeft: 10}]}>
+              RSSI: {rowData.rssi ? rowData.rssi : 'NA'}
+            </Text>
+          </View>
+
+          <Text style={styles.smallText}>
+            Proximity: {rowData.proximity ? rowData.proximity : 'NA'}
+          </Text>
+          <Text style={styles.smallText}>
+            Distance: {rowData.accuracy ? rowData.accuracy.toFixed(2) : 'NA'}m
+          </Text>
+        </View>
       </View>
     );
   }
@@ -324,8 +357,20 @@ const styles = StyleSheet.create({
     paddingTop: 20
   },
   row: {
+    flexDirection: 'row',
     padding: 8,
     paddingBottom: 16
+  },
+  iconContainer: {
+    flexDirection: 'column',
+    marginRight: 10
+  },
+  infoContainer: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  majorMinorContainer: {
+    flexDirection: 'row'
   },
   smallText: {
     fontSize: 11

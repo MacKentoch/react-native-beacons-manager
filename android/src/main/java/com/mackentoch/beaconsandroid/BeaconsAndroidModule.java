@@ -234,6 +234,7 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
     // mBeaconManager.setRangeNotifier(mRangeNotifier);
     mBeaconManager.addMonitorNotifier(mMonitorNotifier);
     mBeaconManager.addRangeNotifier(mRangeNotifier);
+    sendEvent(mReactContext, "beaconServiceConnected", null);
   }
 
   @Override

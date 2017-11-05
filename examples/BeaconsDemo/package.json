@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "shake-android-simulator": "adb shell input keyevent 82",
+    "postinstall": "rndebugger-open"
   },
   "dependencies": {
     "flow-bin": "0.40.0",
@@ -12,7 +14,9 @@
     "react": "16.0.0-alpha.6",
     "react-native": "0.43.3",
     "react-native-beacons-manager": "git+https://github.com/MacKentoch/react-native-beacons-manager.git",
-    "react-native-bluetooth-state": "^2.0.0"
+    "react-native-bluetooth-state": "^2.0.0",
+    "react-native-elements": "^0.18.0",
+    "react-native-vector-icons": "^4.4.2"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -20,6 +24,7 @@
     "babel-preset-flow": "^6.23.0",
     "babel-preset-react-native": "1.9.1",
     "jest": "18.1.0",
+    "react-native-debugger-open": "^0.3.15",
     "react-test-renderer": "~15.4.0"
   },
   "jest": {

@@ -11,8 +11,6 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  ScrollView,
-  ListView,
   SectionList,
   View,
   TouchableHighlight,
@@ -25,7 +23,6 @@ import {
 }                         from 'react-native-elements';
 import moment             from 'moment';
 import beaconIMAGE        from './images/beacons/ibeacon.png';
-import altbeaconIMAGE     from './images/beacons/ibeacon.png';
 import altBeaconIMAGE     from './images/beacons/altbeacon.png';
 import eddystoneURLIMAGE  from './images/beacons/eddystoneURL.png';
 import eddystoneTLMIMAGE  from './images/beacons/eddystone_TLM.png';
@@ -39,22 +36,33 @@ import eddystoneUIDIMAGE  from './images/beacons/eddystone_UID.png';
 const IDENTIFIER   = '123456';
 const TIME_FORMAT  = 'MM/DD/YYYY HH:mm:ss';
 
+const RANGING_TITLE               = 'ranging beacons in the area:';
+const RANGING_SECTION_ID          = 1;
+const MONITORING_ENTER_TITLE      = 'monitoring enter information:';
+const MONITORING_ENTER_SECTION_ID = 2;
+const MONITORING_LEAVE_TITLE      = 'monitoring exit information:';
+const MONITORING_LEAVE_SECTION_ID = 3;
+
 class BeaconsDemo extends Component {
   // will be set as a reference to "beaconsDidRange" event:
   beaconsDidRangeEvent = null;
   // will be set as a reference to "regionDidEnter" event:
   beaconsDidEnterEvent = null;
   // will be set as a reference to "regionDidExit" event:
-  beaconsDidLeaveEvent = null
+  beaconsDidLeaveEvent = null;
+  // will be set as a reference to service did connect event:
+  beaconsServiceDidConnect: any = null;
 
   state = {
     // region information
     uuid: null,// UUID,
     identifier: IDENTIFIER,
-    // React Native ListViews datasources initialization
-    rangingDataSource:     new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
-    regionEnterDatasource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([]),
-    regionExitDatasource:  new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}).cloneWithRows([])
+
+    beacons: [
+      {key: 1, data: [], title: RANGING_TITLE,          sectionId: RANGING_SECTION_ID},
+      {key: 2, data: [], title: MONITORING_ENTER_TITLE, sectionId: MONITORING_ENTER_SECTION_ID},
+      {key: 3, data: [], title: MONITORING_LEAVE_TITLE, sectionId: MONITORING_LEAVE_SECTION_ID}
+    ]
   };
 
   componentWillMount() {
@@ -96,9 +104,23 @@ class BeaconsDemo extends Component {
     // Ranging: Listen for beacon changes
     this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener(
       'beaconsDidRange',
-      (data) => {
-        // console.log('beaconsDidRange data: ', data);
-        this.setState({ rangingDataSource: this.state.rangingDataSource.cloneWithRows(data.beacons) });
+      (response: {beacons: Array<{distance: number, proximity: string, rssi: string, uuid: string}>, uuid: string, indetifier: string}) => {
+        console.log('BEACONS: ', response);
+
+        response.beacons.forEach(
+          beacon => this.updateBeaconState(
+            RANGING_SECTION_ID,
+            {
+              identifier: response.identifier,
+              uuid: String(beacon.uuid),
+              major: parseInt(beacon.major, 10) >= 0 ? beacon.major : '',
+              minor: parseInt(beacon.minor, 10) >= 0 ? beacon.minor : '',
+              proximity: beacon.proximity ? beacon.proximity : '',
+              rssi: beacon.rssi ? beacon.rssi : '',
+              distance: beacon.distance ? beacon.distance : ''
+            }
+          )
+        );
       }
     );
 
@@ -106,25 +128,22 @@ class BeaconsDemo extends Component {
     this.beaconsDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
       'regionDidEnter',
       ({ identifier, uuid, minor, major }) => {
-        // console.log('monitoring - regionDidEnter data: ', { identifier, uuid, minor, major });
-        const time = moment().format(TIME_FORMAT);
-        this.setState({ regionEnterDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier, uuid, minor, major, time }]) });
+        console.log('regionDidEnter: ', { identifier, uuid, minor, major });
+        this.updateBeaconState(MONITORING_ENTER_SECTION_ID, { identifier, uuid, minor, major });
       }
     );
 
     this.beaconsDidLeaveEvent = Beacons.BeaconsEventEmitter.addListener(
       'regionDidExit',
       ({ identifier, uuid, minor, major }) => {
-        // console.log('monitoring - regionDidExit data: ', { identifier, uuid, minor, major });
-        const time = moment().format(TIME_FORMAT);
-        this.setState({ regionExitDatasource: this.state.rangingDataSource.cloneWithRows([{ identifier, uuid, minor, major, time }]) });
+        console.log('regionDidExit: ', { identifier, uuid, minor, major });
+        this.updateBeaconState(MONITORING_LEAVE_SECTION_ID, { identifier, uuid, minor, major });
       }
     );
   }
 
   componentWillUnMount() {
     this.stopRangingAndMonitoring();
-
     // remove monitiring events we registered at componentDidMount::
     this.beaconsDidEnterEvent.remove();
     this.beaconsDidLeaveEvent.remove();
@@ -133,7 +152,9 @@ class BeaconsDemo extends Component {
   }
 
   render() {
-    const { rangingDataSource, regionEnterDatasource, regionExitDatasource } =  this.state;
+    const { beacons } =  this.state;
+
+    console.log('beacons: ', beacons);
 
     return (
       <Image
@@ -141,64 +162,83 @@ class BeaconsDemo extends Component {
         resizeMode="center"
         source={require('./bluetooth-300-300-opacity-45.png')}
       >
-        <ScrollView
-          style={styles.scrollview}
+        <View
+          style={styles.container}
         >
-          <View style={styles.container}>
-            <View style={styles.actionsContainer}>
-              <TouchableHighlight
-                style={styles.actionButton}
-                onPress={this.handlesOnRemoveIbeacon}
-              >
-                <Text style={styles.actionText}>
-                  remove IBeacon detection
-                </Text>
-              </TouchableHighlight>
+          <View style={styles.actionsContainer}>
+            <TouchableHighlight
+              style={styles.actionButton}
+              onPress={this.handlesOnRemoveIbeacon}
+            >
+              <Text style={styles.actionText}>
+                remove IBeacon detection
+              </Text>
+            </TouchableHighlight>
 
-              <TouchableHighlight
-                style={styles.actionButton}
-                onPress={this.handlesOnAddIbeacon}
-              >
-                <Text style={styles.actionText}>
-                  add IBeacon detection
-                </Text>
-              </TouchableHighlight>
-            </View>
-
-            <Text style={styles.headline}>
-              ranging beacons in the area:
-            </Text>
-
-            <ListView
-              dataSource={ rangingDataSource }
-              enableEmptySections={ true }
-              renderRow={this.renderRangingRow}
-            />
-
-            <Text style={styles.headline}>
-              monitoring enter information:
-            </Text>
-            <ListView
-              dataSource={ regionEnterDatasource }
-              enableEmptySections={ true }
-              renderRow={this.renderMonitoringEnterRow}
-            />
-
-            <Text style={styles.headline}>
-              monitoring exit information:
-            </Text>
-            <ListView
-              dataSource={ regionExitDatasource }
-              enableEmptySections={ true }
-              renderRow={this.renderMonitoringLeaveRow}
-            />
+            <TouchableHighlight
+              style={styles.actionButton}
+              onPress={this.handlesOnAddIbeacon}
+            >
+              <Text style={styles.actionText}>
+                add IBeacon detection
+              </Text>
+            </TouchableHighlight>
           </View>
-        </ScrollView>
+
+          <SectionList
+            sections={beacons}
+            keyExtractor={this.sectionListKeyExtractor}
+            renderSectionHeader={this.renderHeader}
+            renderItem={this.renderRow}
+            ListEmptyComponent={this.renderEmpty}
+            // SectionSeparatorComponent={this.renderSeparator}
+            ItemSeparatorComponent={this.renderSeparator}
+            // shouldItemUpdate={this.shouldItemUpdate}
+          />
+        </View>
       </Image>
     );
   }
 
-  renderRangingRow = (rowData) => {
+  sectionListKeyExtractor = (item, index) => {
+    const UUID = item.uuid ? item.uuid : 'NONE';
+    const ID = item.identifier ? item.identifier : 'NONE';
+    return `${UUID}-${ID}`;
+  }
+
+  renderSeparator= () => (<View style={{ height: 1, backgroundColor: '#E1E1E1', marginLeft: 80 }} />);
+
+  updateBeaconState = (
+    forSectionId: number = 0, // section identifier
+    {identifier, uuid, minor, major, ...rest} // beacon
+  ) => {
+    const { beacons }    = this.state;
+    const time           = moment().format(TIME_FORMAT);
+    const updatedBeacons = beacons.map(
+                              beacon => {
+                                if (beacon.sectionId === forSectionId) {
+                                  const sameBeacon  = data => ((data.UUID !== uuid) && (data.identifier !== identifier) && (data.minor !== minor) && (data.major !== major));
+                                  const updatedData = [].concat(...beacon.data.filter(sameBeacon), { identifier, uuid, minor, major, time, ...rest });
+                                  return {...beacon, data: updatedData };
+                                }
+                                return beacon;
+                              }
+                            );
+    this.setState({ beacons: updatedBeacons });
+  }
+
+  renderHeader = ({ section }) => {
+    return (
+      <Text style={styles.headline}>
+        {section.title}
+      </Text>
+    );
+  }
+
+  renderRow = (
+    {item}
+  ) => {
+    console.log('rowData: ', item);
     return (
       <View style={styles.row}>
         <View style={styles.iconContainer}>
@@ -212,74 +252,41 @@ class BeaconsDemo extends Component {
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.smallText}>
-            UUID: {rowData.uuid ? rowData.uuid  : 'NA'}
+            indentifier: {item.identifier ? item.identifier  : 'NA'}
+          </Text>
+          <Text style={styles.smallText}>
+            UUID: {item.uuid ? item.uuid  : 'NA'}
           </Text>
           <View style={styles.majorMinorContainer}>
             <Text style={styles.smallText}>
-              Major: {rowData.major ? rowData.major : 'NA'}
+              Major: {parseInt(item.major, 10) >= 0 ? item.major : 'NA'}
             </Text>
             <Text style={[styles.smallText, {marginLeft: 10}]}>
-              Minor: {rowData.minor ? rowData.minor : 'NA'}
+              Minor: {parseInt(item.minor, 10) >= 0 ? item.minor : 'NA'}
             </Text>
             <Text style={[styles.smallText, {marginLeft: 10}]}>
-              RSSI: {rowData.rssi ? rowData.rssi : 'NA'}
+              RSSI: {item.rssi ? item.rssi : 'NA'}
             </Text>
           </View>
 
           <Text style={styles.smallText}>
-            Proximity: {rowData.proximity ? rowData.proximity : 'NA'}
+            Proximity: {item.proximity ? item.proximity : 'NA'}
           </Text>
           <Text style={styles.smallText}>
-            Distance: {rowData.accuracy ? rowData.accuracy.toFixed(2) : 'NA'}m
+            Distance: {item.distance ? item.distance.toFixed(2) : 'NA'}
           </Text>
         </View>
       </View>
     );
   }
 
-  renderMonitoringEnterRow = ({ identifier, uuid, minor, major, time }) => {
-    return (
-      <View style={styles.row}>
-        <Text style={styles.smallText}>
-          Identifier: {identifier ? identifier : 'NA'}
-        </Text>
-        <Text style={styles.smallText}>
-          UUID: {uuid ? uuid  : 'NA'}
-        </Text>
-        <Text style={styles.smallText}>
-          Major: {major ? major : ''}
-        </Text>
-        <Text style={styles.smallText}>
-          Minor: { minor ? minor : ''}
-        </Text>
-        <Text style={styles.smallText}>
-          time: { time ? time : 'NA'}
-        </Text>
-      </View>
-    );
-  }
-
-  renderMonitoringLeaveRow = ({ identifier, uuid, minor, major, time }) => {
-    return (
-      <View style={styles.row}>
-        <Text style={styles.smallText}>
-          Identifier: {identifier ? identifier : 'NA'}
-        </Text>
-        <Text style={styles.smallText}>
-          UUID: {uuid ? uuid  : 'NA'}
-        </Text>
-        <Text style={styles.smallText}>
-          Major: {major ? major : ''}
-        </Text>
-        <Text style={styles.smallText}>
-          Minor: { minor ? minor : ''}
-        </Text>
-        <Text style={styles.smallText}>
-          time: { time ? time : 'NA'}
-        </Text>
-      </View>
-    );
-  }
+  renderEmpty = () => (
+    <View style={{ height: 40, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>
+        no beacon detected
+      </Text>
+    </View>
+  );
 
   startRangingAndMonitoring = async () => {
     const { identifier, uuid} = this.state;
@@ -338,23 +345,16 @@ const styles = StyleSheet.create({
     width: null,
     height: null,
   },
-  scrollview: {
-    flex: 1
-  },
   container: {
-    flex: 1,
-    paddingTop: 10,
-    marginHorizontal: 5,
-    justifyContent: 'flex-start',
-    backgroundColor: 'transparent',
+    flex: 1
   },
   btleConnectionStatus: {
     // fontSize: 20,
-    paddingTop: 20
+    // paddingTop: 20
   },
   headline: {
     fontSize: 20,
-    paddingTop: 20
+    marginHorizontal: 5
   },
   row: {
     flexDirection: 'row',
@@ -376,7 +376,8 @@ const styles = StyleSheet.create({
     fontSize: 11
   },
   actionsContainer: {
-    flex: 1,
+    marginVertical: 10,
+    marginHorizontal: 5,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between'

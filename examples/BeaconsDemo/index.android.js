@@ -1,9 +1,10 @@
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
- * @flow weak
+ * @flow
  */
 
+ // #region imports
 import React, {
   Component
 }                         from 'react';
@@ -27,11 +28,36 @@ import altBeaconIMAGE     from './images/beacons/altbeacon.png';
 import eddystoneURLIMAGE  from './images/beacons/eddystoneURL.png';
 import eddystoneTLMIMAGE  from './images/beacons/eddystone_TLM.png';
 import eddystoneUIDIMAGE  from './images/beacons/eddystone_UID.png';
+// #endregion
 
-/**
-* uuid of YOUR BEACON (change to yours)
-* @type {String} uuid
-*/
+// #region flow types
+type DetectedBeacon = {
+  identifier: string,
+  uuid?: string,
+  major?: number,
+  minor?: number,
+  proximity?: string,
+  rssi?: string,
+  distance?: number
+};
+
+type Props = any;
+
+type State = {
+  // region information
+  uuid?: string,
+  identifier: string,
+  // all detected beacons:
+  beacons: Array<{
+    key: number,
+    data: Array<DetectedBeacon>,
+    title: string,
+    sectionId: string
+  }>
+};
+// #endregion
+
+// #region constants
 //  const UUID         = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
 const IDENTIFIER   = '123456';
 const TIME_FORMAT  = 'MM/DD/YYYY HH:mm:ss';
@@ -42,8 +68,9 @@ const MONITORING_ENTER_TITLE      = 'monitoring enter information:';
 const MONITORING_ENTER_SECTION_ID = 2;
 const MONITORING_LEAVE_TITLE      = 'monitoring exit information:';
 const MONITORING_LEAVE_SECTION_ID = 3;
+// #endregion
 
-class BeaconsDemo extends Component {
+class BeaconsDemo extends Component<Props, State> {
   // will be set as a reference to "beaconsDidRange" event:
   beaconsDidRangeEvent = null;
   // will be set as a reference to "regionDidEnter" event:
@@ -57,7 +84,7 @@ class BeaconsDemo extends Component {
     // region information
     uuid: null,// UUID,
     identifier: IDENTIFIER,
-
+    // all detected beacons:
     beacons: [
       {key: 1, data: [], title: RANGING_TITLE,          sectionId: RANGING_SECTION_ID},
       {key: 2, data: [], title: MONITORING_ENTER_TITLE, sectionId: MONITORING_ENTER_SECTION_ID},

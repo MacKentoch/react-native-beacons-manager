@@ -143,5 +143,6 @@ declare module 'react-native-beacons-manager' {
     ): Promise<any>;
   }
 
-  export default new Beacons();
+  const beacons: Beacons;
+  export default beacons;
 }

@@ -41,6 +41,13 @@ type DetectedBeacon = {
   distance?: number
 };
 
+type Section = {
+  key: number,
+  data: Array<DetectedBeacon>,
+  title: string,
+  sectionId: string
+};
+
 type Props = any;
 
 type State = {
@@ -48,12 +55,7 @@ type State = {
   uuid?: string,
   identifier: string,
   // all detected beacons:
-  beacons: Array<{
-    key: number,
-    data: Array<DetectedBeacon>,
-    title: string,
-    sectionId: string
-  }>
+  beacons: Array<Section>
 };
 // #endregion
 
@@ -227,9 +229,12 @@ class BeaconsDemo extends Component<Props, State> {
     );
   }
 
-  sectionListKeyExtractor = (item, index) => {
-    const UUID = item.uuid ? item.uuid : 'NONE';
-    const ID = item.identifier ? item.identifier : 'NONE';
+  sectionListKeyExtractor = (
+    item: DetectedBeacon,
+    index: number
+  ) => {
+    const UUID  = item.uuid ? item.uuid : 'NONE';
+    const ID    = item.identifier ? item.identifier : 'NONE';
     return `${UUID}-${ID}`;
   }
 
@@ -244,9 +249,9 @@ class BeaconsDemo extends Component<Props, State> {
     const updatedBeacons = beacons.map(
                               beacon => {
                                 if (beacon.sectionId === forSectionId) {
-                                  const sameBeacon  = data => ((data.UUID !== uuid) && (data.identifier !== identifier) && (data.minor !== minor) && (data.major !== major));
+                                  const sameBeacon  = data => !((data.UUID === uuid) && (data.identifier === identifier) && (data.minor === minor) && (data.major === major));
                                   const updatedData = [].concat(...beacon.data.filter(sameBeacon), { identifier, uuid, minor, major, time, ...rest });
-                                  return {...beacon, data: updatedData };
+                                  return { ...beacon, data: updatedData };
                                 }
                                 return beacon;
                               }
@@ -254,16 +259,16 @@ class BeaconsDemo extends Component<Props, State> {
     this.setState({ beacons: updatedBeacons });
   }
 
-  renderHeader = ({ section }) => {
-    return (
-      <Text style={styles.headline}>
-        {section.title}
-      </Text>
-    );
-  }
+  renderHeader = (
+    { section }
+  ) => (
+    <Text style={styles.headline}>
+      {section.title}
+    </Text>
+  );
 
   renderRow = (
-    {item}
+    { item }
   ) => {
     console.log('rowData: ', item);
     return (

@@ -122,9 +122,24 @@ declare module 'react-native-beacons-manager' {
       region: BeaconRegion
     ): Promise<any>;
 
+    /** IOS ONLY */
+    stopRangingBeaconsInRegion(
+      region: BeaconRegion
+    ): Promise<any>;
+
+    /** ANDROID ONLY */
     stopRangingBeaconsInRegion(
       regionId: string,
       beaconsUUID?: string
+    ): Promise<any>;
+
+    /** ANDROID ONLY */
+    stopRangingBeaconsInRegion(
+      // We can't simply reuse BeaconRegion as BeaconRegion.uuid is mandatory, whereas the uuid in this method is optional
+      region: {
+        identifier: string,
+        uuid?: string
+      }
     ): Promise<any>;
   }
 

@@ -130,6 +130,31 @@ RCT_EXPORT_MODULE()
   }
 }
 
+-(NSDictionary *) convertBeaconRegionToDict: (CLBeaconRegion *) region
+{
+  if (region.minor == nil) {
+    if (region.major == nil) {
+      return @{
+               @"identifier": region.identifier,
+               @"uuid": [region.proximityUUID UUIDString],
+               };
+    } else {
+      return @{
+               @"identifier": region.identifier,
+               @"uuid": [region.proximityUUID UUIDString],
+               @"major": region.major
+               };
+    }
+  } else {
+    return @{
+             @"identifier": region.identifier,
+             @"uuid": [region.proximityUUID UUIDString],
+             @"major": region.major,
+             @"minor": region.minor
+             };
+  }
+}
+
 -(NSString *)stringForProximity:(CLProximity)proximity {
   switch (proximity) {
     case CLProximityUnknown:    return @"unknown";
@@ -162,6 +187,17 @@ RCT_EXPORT_METHOD(allowsBackgroundLocationUpdates:(BOOL)allow)
 RCT_EXPORT_METHOD(getAuthorizationStatus:(RCTResponseSenderBlock)callback)
 {
   callback(@[[self nameForAuthorizationStatus:[CLLocationManager authorizationStatus]]]);
+}
+
+RCT_EXPORT_METHOD(getMonitoredRegions:(RCTResponseSenderBlock)callback)
+{
+  NSMutableArray *regionArray = [[NSMutableArray alloc] init];
+
+  for (CLBeaconRegion *region in self.locationManager.monitoredRegions) {
+    [regionArray addObject: [self convertBeaconRegionToDict: region]];
+  }
+
+  callback(@[regionArray]);
 }
 
 RCT_EXPORT_METHOD(startMonitoringForRegion:(NSDictionary *) dict)
@@ -290,22 +326,16 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 
 -(void)locationManager:(CLLocationManager *)manager
         didEnterRegion:(CLBeaconRegion *)region {
-  NSDictionary *event = @{
-                          @"identifier": region.identifier,
-                          @"uuid": [region.proximityUUID UUIDString],
-                          };
+  NSDictionary *event = [self convertBeaconRegionToDict: region];
 
-    [self sendEventWithName:@"regionDidEnter" body:event];
+  [self sendEventWithName:@"regionDidEnter" body:event];
 }
 
 -(void)locationManager:(CLLocationManager *)manager
          didExitRegion:(CLBeaconRegion *)region {
-  NSDictionary *event = @{
-                          @"identifier": region.identifier,
-                          @"uuid": [region.proximityUUID UUIDString],
-                          };
+  NSDictionary *event = [self convertBeaconRegionToDict: region];
 
-    [self sendEventWithName:@"regionDidExit" body:event];
+  [self sendEventWithName:@"regionDidExit" body:event];
 }
 
 + (BOOL)requiresMainQueueSetup

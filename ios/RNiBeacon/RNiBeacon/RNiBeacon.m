@@ -18,9 +18,7 @@
 
 static NSString *const kEddystoneRegionID = @"EDDY_STONE_REGION_ID";
 
-@interface RNiBeacon() <CLLocationManagerDelegate, ESSBeaconScannerDelegate> {
-    NSMutableDictionary *_eddyStoneBeaconsCache;
-}
+@interface RNiBeacon() <CLLocationManagerDelegate, ESSBeaconScannerDelegate>
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) ESSBeaconScanner *eddyStoneScanner;
@@ -45,7 +43,6 @@ RCT_EXPORT_MODULE()
       
     self.eddyStoneScanner = [[ESSBeaconScanner alloc] init];
     self.eddyStoneScanner.delegate = self;
-    _eddyStoneBeaconsCache = [[NSMutableDictionary alloc] init];
   }
 
   return self;
@@ -234,7 +231,6 @@ RCT_EXPORT_METHOD(stopRangingBeaconsInRegion:(NSDictionary *) dict)
 {
   if ([dict[@"identifier"] isEqualToString:kEddystoneRegionID]) {
     [self.eddyStoneScanner stopScanning];
-    [_eddyStoneBeaconsCache removeAllObjects];
   } else {
     [self.locationManager stopRangingBeaconsInRegion:[self convertDictToBeaconRegion:dict]];
   }

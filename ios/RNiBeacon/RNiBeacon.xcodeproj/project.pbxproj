@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		0D03EBE31E56B1E700C55E6B /* RNiBeacon.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D03EBE21E56B1E700C55E6B /* RNiBeacon.m */; };
 		0D03EBE41E56B1E700C55E6B /* RNiBeacon.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0D03EBE11E56B1E700C55E6B /* RNiBeacon.h */; };
+		80B8DD5E2057BB4900CB79DC /* ESSEddystone.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B8DD582057BB4700CB79DC /* ESSEddystone.m */; };
+		80B8DD5F2057BB4900CB79DC /* ESSBeaconScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B8DD592057BB4700CB79DC /* ESSBeaconScanner.m */; };
+		80B8DD602057BB4900CB79DC /* ESSTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B8DD5D2057BB4800CB79DC /* ESSTimer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +31,12 @@
 		0D03EBDE1E56B1E700C55E6B /* libRNiBeacon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNiBeacon.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D03EBE11E56B1E700C55E6B /* RNiBeacon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNiBeacon.h; sourceTree = "<group>"; };
 		0D03EBE21E56B1E700C55E6B /* RNiBeacon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNiBeacon.m; sourceTree = "<group>"; };
+		80B8DD582057BB4700CB79DC /* ESSEddystone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESSEddystone.m; sourceTree = "<group>"; };
+		80B8DD592057BB4700CB79DC /* ESSBeaconScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESSBeaconScanner.m; sourceTree = "<group>"; };
+		80B8DD5A2057BB4800CB79DC /* ESSBeaconScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESSBeaconScanner.h; sourceTree = "<group>"; };
+		80B8DD5B2057BB4800CB79DC /* ESSEddystone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESSEddystone.h; sourceTree = "<group>"; };
+		80B8DD5C2057BB4800CB79DC /* ESSTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESSTimer.h; sourceTree = "<group>"; };
+		80B8DD5D2057BB4800CB79DC /* ESSTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESSTimer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +69,12 @@
 		0D03EBE01E56B1E700C55E6B /* RNiBeacon */ = {
 			isa = PBXGroup;
 			children = (
+				80B8DD5A2057BB4800CB79DC /* ESSBeaconScanner.h */,
+				80B8DD592057BB4700CB79DC /* ESSBeaconScanner.m */,
+				80B8DD5B2057BB4800CB79DC /* ESSEddystone.h */,
+				80B8DD582057BB4700CB79DC /* ESSEddystone.m */,
+				80B8DD5C2057BB4800CB79DC /* ESSTimer.h */,
+				80B8DD5D2057BB4800CB79DC /* ESSTimer.m */,
 				0D03EBE11E56B1E700C55E6B /* RNiBeacon.h */,
 				0D03EBE21E56B1E700C55E6B /* RNiBeacon.m */,
 			);
@@ -125,6 +140,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D03EBE31E56B1E700C55E6B /* RNiBeacon.m in Sources */,
+				80B8DD602057BB4900CB79DC /* ESSTimer.m in Sources */,
+				80B8DD5F2057BB4900CB79DC /* ESSBeaconScanner.m in Sources */,
+				80B8DD5E2057BB4900CB79DC /* ESSEddystone.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

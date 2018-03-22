@@ -13,7 +13,8 @@ import {
  View,
  Text,
  ListView,
- DeviceEventEmitter
+ DeviceEventEmitter,
+    AsyncStorage
 }                             from 'react-native';
 import Beacons                from 'react-native-beacons-manager';
 import BluetoothState         from 'react-native-bluetooth-state';
@@ -23,7 +24,7 @@ import moment                 from 'moment';
 * uuid of YOUR BEACON (change to yours)
 * @type {String} uuid
 */
-const UUID        = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
+const UUID        = '3471C741-4F63-507F-B4FB-11DC8147EFB6';
 const IDENTIFIER  = '123456';
 const TIME_FORMAT = 'HH:mm:ss';
 const EMPTY_BEACONS_LISTS = {
@@ -58,6 +59,8 @@ class BeaconsDemo extends Component {
 
     message: '',
 
+	  beaconCount: 0,
+
     beaconsLists: new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2,
       sectionHeaderHasChanged: (s1, s2) => s1 !== s2
@@ -72,6 +75,15 @@ class BeaconsDemo extends Component {
       'authorizationStatusDidChange',
       (info) => console.log('authorizationStatusDidChange: ', info)
     );
+
+	  DeviceEventEmitter.addListener(
+		  'backgroundTimeup',
+		  (info) => {
+		      Beacons.stopScanningEddystone()
+			  AsyncStorage.setItem("Background", info)
+          }
+	  );
+
     // MANDATORY: you have to request ALWAYS Authorization (not only when in use) when monitoring
     // you also have to add "Privacy - Location Always Usage Description" in your "Info.plist" file
     // otherwise monitoring won't work
@@ -98,6 +110,23 @@ class BeaconsDemo extends Component {
   }
 
   componentDidMount() {
+
+	  AsyncStorage.getItem("Eddystone_0").then((result) => {
+		  console.log("saved eddystone result:", result)
+	  })
+
+	  AsyncStorage.getItem("Eddystone_1").then((result) => {
+		  console.log("saved eddystone result:", result)
+	  })
+
+	  AsyncStorage.getItem("Eddystone_2").then((result) => {
+		  console.log("saved eddystone result:", result)
+	  })
+
+      AsyncStorage.getItem("Background").then((result) => {
+          console.log("background event: ", result)
+      })
+
     DeviceEventEmitter.addListener(
       'beaconsDidRange',
       (data) => {
@@ -109,6 +138,15 @@ class BeaconsDemo extends Component {
       }
     );
 
+	  DeviceEventEmitter.addListener(
+		  'eddystoneDidRange',
+		  (data) => {
+		  	let beaconCount = this.state.beaconCount
+			  AsyncStorage.setItem("Eddystone_"+beaconCount, data.id)
+		  	this.setState({beaconCount: ++beaconCount})
+		  }
+	  );
+
     // monitoring events
     DeviceEventEmitter.addListener(
       'regionDidEnter',
@@ -119,6 +157,9 @@ class BeaconsDemo extends Component {
         const updatedBeaconsLists = this.updateBeaconList({uuid, identifier, time}, 'monitorEnterList');
         this._beaconsLists = updatedBeaconsLists;
         this.setState({ beaconsLists: this.state.beaconsLists.cloneWithRowsAndSections(this._beaconsLists)});
+
+        Beacons.setupEddystoneEIDLayout()
+          Beacons.startScanningEddytone()
       }
     );
     DeviceEventEmitter.addListener(

@@ -33,9 +33,9 @@
     "example": "examples"
   },
   "engines": {
-    "node": ">=6.11.1",
+    "node": ">=8.9.0",
     "npm": ">=5.3.0",
-    "yarn": ">=0.27.5"
+    "yarn": ">=1.5.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

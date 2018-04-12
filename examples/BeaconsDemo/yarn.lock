@@ -3538,7 +3538,7 @@ react-devtools-core@^2.0.8:
 
 "react-native-beacons-manager@git+https://github.com/MacKentoch/react-native-beacons-manager.git":
   version "1.1.0"
-  resolved "git+https://github.com/MacKentoch/react-native-beacons-manager.git#124a7b8e0f1d635f5a12ce03ef8f10a5f0c44baf"
+  resolved "git+https://github.com/MacKentoch/react-native-beacons-manager.git#97c143e5ca1a0e44b6a1f3e4a460e5d87ceb34d3"
 
 react-native-bluetooth-state@^2.0.0:
   version "2.0.0"

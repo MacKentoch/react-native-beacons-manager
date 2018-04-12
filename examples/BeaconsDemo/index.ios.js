@@ -1,4 +1,4 @@
-// @flow weak
+// @flow
 
 // #region imports
 import React, { Component } from 'react';
@@ -6,6 +6,8 @@ import { AppRegistry, StyleSheet, View, Text, ListView } from 'react-native';
 import Beacons from 'react-native-beacons-manager';
 import BluetoothState from 'react-native-bluetooth-state';
 import moment from 'moment';
+import { hashCode, deepCopyBeaconsLists } from './helpers';
+
 // #endregion
 
 // #region flow types
@@ -50,15 +52,6 @@ const EMPTY_BEACONS_LISTS = {
 };
 
 // #endregion
-
-const deepCopyBeaconsLists = beaconsLists => {
-  const initial = {};
-  return Object.keys(beaconsLists)
-    .map(key => ({ [key]: [...beaconsLists[key]] }))
-    .reduce((prev, next) => {
-      return { ...prev, ...next };
-    }, initial);
-};
 
 class BeaconsDemo extends Component<Props, State> {
   // will be set as list of beacons to update state

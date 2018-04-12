@@ -18,6 +18,7 @@ import Beacons from 'react-native-beacons-manager';
 import { Avatar } from 'react-native-elements';
 import moment from 'moment';
 import beaconIMAGE from './images/beacons/ibeacon.png';
+import { hashCode } from './helpers';
 // import altBeaconIMAGE from './images/beacons/altbeacon.png';
 // import eddystoneURLIMAGE from './images/beacons/eddystoneURL.png';
 // import eddystoneTLMIMAGE from './images/beacons/eddystone_TLM.png';

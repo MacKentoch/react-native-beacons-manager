@@ -1,19 +1,45 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow weak
- */
+// @flow weak
 
+// #region imports
 import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, View, Text, ListView } from 'react-native';
 import Beacons from 'react-native-beacons-manager';
 import BluetoothState from 'react-native-bluetooth-state';
 import moment from 'moment';
+// #endregion
 
-/**
- * uuid of YOUR BEACON (change to yours)
- * @type {String} uuid
- */
+// #region flow types
+type DetectedBeacon = {
+  identifier: string,
+  uuid?: string,
+  major?: number,
+  minor?: number,
+  proximity?: string,
+  rssi?: string,
+  distance?: number,
+};
+
+type Section = {
+  key: number,
+  data: Array<DetectedBeacon>,
+  title: string,
+  sectionId: string,
+};
+
+type Props = any;
+
+type State = {
+  // region information
+  uuid?: string,
+  identifier: string,
+  // all detected beacons:
+  beacons: Array<Section>,
+};
+// #endregion
+
+// #region constants
+
+// uuid of YOUR BEACON (change to yours)
 const UUID = '7b44b47b-52a1-5381-90c2-f09b6838c5d4';
 const IDENTIFIER = '123456';
 const TIME_FORMAT = 'HH:mm:ss';
@@ -22,6 +48,8 @@ const EMPTY_BEACONS_LISTS = {
   monitorEnterList: [],
   monitorExitList: [],
 };
+
+// #endregion
 
 const deepCopyBeaconsLists = beaconsLists => {
   const initial = {};
@@ -32,7 +60,7 @@ const deepCopyBeaconsLists = beaconsLists => {
     }, initial);
 };
 
-class BeaconsDemo extends Component {
+class BeaconsDemo extends Component<Props, State> {
   // will be set as list of beacons to update state
   _beaconsLists = null;
 

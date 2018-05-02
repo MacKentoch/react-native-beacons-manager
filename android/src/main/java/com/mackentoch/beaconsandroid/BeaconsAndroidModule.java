@@ -224,17 +224,24 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
     private MonitorNotifier mMonitorNotifier = new MonitorNotifier() {
         @Override
         public void didEnterRegion(Region region) {
+            Log.d(LOG_TAG, "didEnterRegion");
             sendEvent(mReactContext, "regionDidEnter", createMonitoringResponse(region));
         }
 
         @Override
         public void didExitRegion(Region region) {
+            Log.d(LOG_TAG, "didExitRegion!");
             sendEvent(mReactContext, "regionDidExit", createMonitoringResponse(region));
         }
 
         @Override
         public void didDetermineStateForRegion(int i, Region region) {
-
+            Log.d(LOG_TAG, "didDetermineStateForRegion with " + i);
+            if (i == MonitorNotifier.INSIDE) {
+                sendEvent(mReactContext, "regionInside", createMonitoringResponse(region));
+            } else if ( i == MonitorNotifier.OUTSIDE) {
+                sendEvent(mReactContext, "regionOutside", createMonitoringResponse(region));
+            }
         }
     };
 

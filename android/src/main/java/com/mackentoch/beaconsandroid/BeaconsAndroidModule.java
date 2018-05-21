@@ -179,6 +179,8 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
 
         mBeaconManager.addMonitorNotifier(mMonitorNotifier);
         mBeaconManager.addRangeNotifier(mRangeNotifier);
+        params.putString("status", String.valueOf(true));
+        sendEvent(mReactContext, "bindStatus", params);
     }
 
     @Override
@@ -195,8 +197,6 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
     public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i) {
         boolean bindStatus = mApplicationContext.bindService(intent, serviceConnection, i);
         WritableMap params = Arguments.createMap();
-        params.putString("status", String.valueOf(bindStatus));
-        sendEvent(mReactContext, "bindStatus", params);
         return bindStatus;
     }
 

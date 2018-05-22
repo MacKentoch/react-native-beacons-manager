@@ -309,8 +309,8 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
             WritableMap b = new WritableNativeMap();
             b.putString("uuid", beacon.getId1().toString());
             if (beacon.getIdentifiers().size() > 2) {
-                map.putInt("major", region.getId2() != null ? region.getId2().toInt() : 0);
-                map.putInt("minor", region.getId3() != null ? region.getId3().toInt() : 0);
+                b.putInt("major", beacon.getId2() != null ? region.getId2().toInt() : 0);
+                b.putInt("minor", beacon.getId3() != null ? region.getId3().toInt() : 0);
             }
             b.putInt("rssi", beacon.getRssi());
             b.putDouble("distance", beacon.getDistance());

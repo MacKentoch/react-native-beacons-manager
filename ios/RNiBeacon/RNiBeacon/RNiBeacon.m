@@ -267,14 +267,14 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 
   for (CLBeacon *beacon in beacons) {
     [beaconArray addObject:@{
-                             @"uuid": [beacon.proximityUUID UUIDString],
-                             @"major": beacon.major,
-                             @"minor": beacon.minor,
+      @"uuid": [beacon.proximityUUID UUIDString],
+      @"major": beacon.major,
+      @"minor": beacon.minor,
 
-                             @"rssi": [NSNumber numberWithLong:beacon.rssi],
-                             @"proximity": [self stringForProximity: beacon.proximity],
-                             @"accuracy": [NSNumber numberWithDouble: beacon.accuracy]
-                             }];
+      @"rssi": [NSNumber numberWithLong:beacon.rssi],
+      @"proximity": [self stringForProximity: beacon.proximity],
+      @"accuracy": [NSNumber numberWithDouble: beacon.accuracy]
+      }];
   }
 
   NSDictionary *event = @{
@@ -290,6 +290,11 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 
 -(void)locationManager:(CLLocationManager *)manager
         didEnterRegion:(CLBeaconRegion *)region {
+
+  if (! [region respondsToSelector:@selector(proximityUUID)]) {
+    return;
+  }
+
   NSDictionary *event = @{
                           @"identifier": region.identifier,
                           @"uuid": [region.proximityUUID UUIDString],
@@ -300,6 +305,11 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 
 -(void)locationManager:(CLLocationManager *)manager
          didExitRegion:(CLBeaconRegion *)region {
+
+  if (! [region respondsToSelector:@selector(proximityUUID)]) {
+    return;
+  }
+
   NSDictionary *event = @{
                           @"identifier": region.identifier,
                           @"uuid": [region.proximityUUID UUIDString],

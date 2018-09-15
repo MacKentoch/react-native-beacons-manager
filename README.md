@@ -210,8 +210,7 @@ DeviceEventEmitter.addListener('beaconsDidRange', (data) => {
 Do you use & like react-native-beacons-manager but you don’t find a way to show some love?
 If yes, please consider donating to support this project. Otherwise, no worries, regardless of whether there is support or not, I will keep maintaining this project. Still, if you buy me a cup of coffee I would be more than happy though 😄
 
-
-[![Support via PayPal](./images/paypal/paypal-button.png)](https://www.paypal.me/ErwanDatin/)
+[![Support via PayPal](./images/paypal/Paypal-button.png)](https://www.paypal.me/ErwanDatin/)
 
 
 ## license

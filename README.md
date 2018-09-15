@@ -205,11 +205,20 @@ DeviceEventEmitter.addListener('beaconsDidRange', (data) => {
   - [ ] add support to Eddystone
 
 
+## Donate
+
+Do you use & like react-native-beacons-manager but you don’t find a way to show some love?
+If yes, please consider donating to support this project. Otherwise, no worries, regardless of whether there is support or not, I will keep maintaining this project. Still, if you buy me a cup of coffee I would be more than happy though 😄
+
+
+[![Support via PayPal](./images/paypal/paypal-button.png)](https://www.paypal.me/ErwanDatin/)
+
+
 ## license
 
 The MIT License (MIT)
 
-Copyright (c) 2017 Erwan DATIN
+Copyright (c) 2018 Erwan DATIN
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

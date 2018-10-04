@@ -357,8 +357,16 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
               b.putInt("minor", beacon.getId3().toInt());
           }
           b.putInt("rssi", beacon.getRssi());
-          b.putDouble("distance", beacon.getDistance());
-          b.putString("proximity", getProximity(beacon.getDistance()));
+          if(beacon.getDistance() == Double.POSITIVE_INFINITY
+                    || Double.isNaN(beacon.getDistance())
+                    || beacon.getDistance() == Double.NaN
+                    || beacon.getDistance() == Double.NEGATIVE_INFINITY){
+                b.putDouble("distance", 999.0);
+                b.putString("proximity", "far");
+            }else {
+                b.putDouble("distance", beacon.getDistance());
+                b.putString("proximity", getProximity(beacon.getDistance()));
+            }
           a.pushMap(b);
       }
       map.putArray("beacons", a);

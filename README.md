@@ -1,5 +1,5 @@
-[![npm](https://img.shields.io/npm/l/express.svg)](https://github.com/MacKentoch/react-native-beacons-manager)
-[![npm](https://img.shields.io/npm/v/npm.svg)](https://github.com/MacKentoch/react-native-beacons-manager)
+[![npm](https://img.shields.io/npm/l/react-native-beacons-manager.svg)](https://github.com/MacKentoch/react-native-beacons-manager)
+[![npm](https://img.shields.io/npm/v/react-native-beacons-manager.svg)](https://github.com/MacKentoch/react-native-beacons-manager)
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/react-native-beacons-manager/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
 
 # react-native-beacons-manager

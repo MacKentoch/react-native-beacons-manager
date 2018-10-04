@@ -67,7 +67,7 @@ Just don't forget to activate
 - Bluetooth service (*all android version*)
 - Location service (*android < 7: beacon detection won't work on android 6 if location service is off*)
 
-## 4 usage
+## 4. usage
 
 >NOTE: If simple examples below don't help you as much as you wanted, [check detailed documentation depending on use-case + code samples here](https://github.com/MacKentoch/react-native-beacons-manager/tree/master/examples/samples#detailed-documentation--sample-code)
 

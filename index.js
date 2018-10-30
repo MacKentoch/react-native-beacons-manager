@@ -1,4 +1,4 @@
-// flow weak
+// flow
 
 import { Platform } from 'react-native';
 

@@ -101,7 +101,7 @@ class BeaconsDemo extends Component<Props, State> {
   };
 
   // #region lifecycle methods
-  componentWillMount() {
+  componentDidMount() {
     //
     // ONLY non component state aware here in componentWillMount
     //
@@ -123,9 +123,6 @@ class BeaconsDemo extends Component<Props, State> {
       .catch(error =>
         console.log(`something went wrong during initialization: ${error}`),
       );
-  }
-
-  componentDidMount() {
     //
     // component state aware here - attach events
     //

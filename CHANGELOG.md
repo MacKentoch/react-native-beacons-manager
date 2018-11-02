@@ -5,6 +5,7 @@
 - PR #54 thank you to @rostislav-simonik
 - PR #46 thank you to @ashemah
 - PR #58 thank you to @eurobob
+- pR #114 thank you to @yohang
   - **BEWARE**: *breaking change* = drop of  `DeviceEventEmitter` in favor of `Beacons.BeaconsEventEmitter` (see [BeaconsDemo example project](./examples/BeaconsDemo))
   ```javascript
     // before 1.1.0 (or until 1.0.7):
@@ -31,8 +32,8 @@
 
  - ~~update iOS and Android BeaconsDemo example project~~
  - ~~update samples (*TODO*)~~
- 
- 
+
+
 ## 1.0.7 (RELEASE)
 
 - improve typescript types

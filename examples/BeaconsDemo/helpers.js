@@ -3,7 +3,7 @@
 /* eslint-disable no-bitwise */
 
 // #region flow types
-type Beacon = {
+export type Beacon = {
   identifier: string,
   uuid?: string,
   major?: number,

@@ -26,7 +26,7 @@ import { hashCode } from './helpers';
 // #endregion
 
 // #region flow types
-type DetectedBeacon = {
+export type DetectedBeacon = {
   identifier: string,
   uuid?: string,
   major?: number,
@@ -36,16 +36,16 @@ type DetectedBeacon = {
   distance?: number,
 };
 
-type Section = {
+export type Section = {
   key: number,
   data: Array<DetectedBeacon>,
   title: string,
   sectionId: string,
 };
 
-type Props = any;
+export type Props = any;
 
-type State = {
+export type State = {
   // region information
   uuid?: string,
   identifier: string,

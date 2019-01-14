@@ -262,6 +262,10 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
                           @"uuid": [region.proximityUUID UUIDString],
                           };
 
+  if (! [region respondsToSelector:@selector(proximityUUID)]) {
+        return;
+  }
+
   [self.bridge.eventDispatcher sendDeviceEventWithName:@"regionDidEnter" body:event];
 }
 
@@ -271,6 +275,10 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
                           @"identifier": region.identifier,
                           @"uuid": [region.proximityUUID UUIDString],
                           };
+
+  if (! [region respondsToSelector:@selector(proximityUUID)]) {
+        return;
+  }
 
   [self.bridge.eventDispatcher sendDeviceEventWithName:@"regionDidExit" body:event];
 }

@@ -402,9 +402,11 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
    * Utils
    **********************************************************************************************/
   private void sendEvent(ReactContext reactContext, String eventName, @Nullable WritableMap params) {
+    if (reactContext.hasActiveCatalystInstance()) {
       reactContext
-              .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-              .emit(eventName, params);
+        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+        .emit(eventName, params);
+    }
   }
 
   private Region createRegion(String regionId, String beaconUuid) {

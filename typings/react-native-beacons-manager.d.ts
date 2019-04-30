@@ -4,7 +4,9 @@ declare module 'react-native-beacons-manager' {
     identifier: string,
     uuid: string,
     minor?: number,
-    major?: number
+    major?: number,
+	name?: string,
+	macAddress?: string
   }
 
   export type AuthorizationStatus =

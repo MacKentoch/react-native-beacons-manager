@@ -3,7 +3,6 @@ package com.mackentoch.beaconsandroid;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -31,6 +30,8 @@ import org.altbeacon.beacon.Region;
 import org.altbeacon.beacon.service.ArmaRssiFilter;
 import org.altbeacon.beacon.service.RunningAverageRssiFilter;
 
+
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +49,8 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
     Log.d(LOG_TAG, "BeaconsAndroidModule - started");
     this.mReactContext = reactContext;
     this.mApplicationContext = reactContext.getApplicationContext();
+
+
     this.mBeaconManager = BeaconManager.getInstanceForApplication(mApplicationContext);
     // need to bind at instantiation so that service loads (to test more)
     mBeaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24"));
@@ -232,7 +235,7 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
     // deprecated since v2.9 (see github: https://github.com/AltBeacon/android-beacon-library/releases/tag/2.9)
     // mBeaconManager.setMonitorNotifier(mMonitorNotifier);
     // mBeaconManager.setRangeNotifier(mRangeNotifier);
-    mBeaconManager.addMonitorNotifier(mMonitorNotifier);
+    //mBeaconManager.addMonitorNotifier(mMonitorNotifier);
     mBeaconManager.addRangeNotifier(mRangeNotifier);
     sendEvent(mReactContext, "beaconServiceConnected", null);
   }
@@ -352,6 +355,9 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
       for (Beacon beacon : beacons) {
           WritableMap b = new WritableNativeMap();
           b.putString("uuid", beacon.getId1().toString());
+          b.putString("name", beacon.getBluetoothName());
+          b.putString("macAddress", beacon.getBluetoothAddress());
+
           if (beacon.getIdentifiers().size() > 2) {
               b.putInt("major", beacon.getId2().toInt());
               b.putInt("minor", beacon.getId3().toInt());

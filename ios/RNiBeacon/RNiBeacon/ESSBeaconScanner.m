@@ -57,7 +57,6 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
 @implementation ESSBeaconScanner
 
 - (instancetype)init {
-- (instancetype)init {
   if ((self = [super init]) != nil) {
     NSDictionary *options = @{CBCentralManagerOptionShowPowerAlertKey: @NO};
     _onLostTimeout = 5.0;

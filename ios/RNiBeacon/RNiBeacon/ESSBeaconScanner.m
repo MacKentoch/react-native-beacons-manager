@@ -57,12 +57,15 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
 @implementation ESSBeaconScanner
 
 - (instancetype)init {
+- (instancetype)init {
   if ((self = [super init]) != nil) {
+    NSDictionary *options = @{CBCentralManagerOptionShowPowerAlertKey: @NO};
     _onLostTimeout = 5.0;
     _tlmCache = [NSMutableDictionary dictionary];
     _beaconOperationsQueue = dispatch_queue_create(kBeaconsOperationQueueName, NULL);
     _centralManager = [[CBCentralManager alloc] initWithDelegate:self
-                                                           queue:_beaconOperationsQueue];
+                                                           queue:_beaconOperationsQueue
+                                                           options:options];
   }
 
   return self;
@@ -185,7 +188,7 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
  */
 - (void)notifyDidRangeBeacon:(NSMutableDictionary *)beacons {
     if (![_delegate respondsToSelector:@selector(beaconScanner:didRangeBeacon:)]) return;
-    
+
     NSMutableArray *beaconArray = [[NSMutableArray alloc] init];
     for (id key in beacons) {
         [beaconArray addObject:beacons[key][kSeenCacheBeaconInfo]];

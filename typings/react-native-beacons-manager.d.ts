@@ -2,7 +2,7 @@ declare module 'react-native-beacons-manager' {
 
   export interface BeaconRegion {
     identifier: string,
-    uuid: string,
+    uuid?: string,
     minor?: number,
     major?: number,
 	name?: string,

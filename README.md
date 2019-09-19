@@ -16,7 +16,7 @@ This repository is born to keep alive and up to date these 3 original awesome:
 
 If you want to know more about just have a look at [my medium article](https://medium.com/@erwan.datin/mmazzarolohow-to-play-with-ibeacons-in-a-react-native-application-5cef754b2edc#.e2bvgplvy).
 
-If you want to test with a `simulated beacon`, there is a useful free application on `android`: [beaconsimulator](https://play.google.com/store/apps/details?id=net.alea.beaconsimulator)
+If you want to test with a `simulated beacon`, there is a useful free application on `android`: [beaconsimulator](https://play.google.com/store/apps/details?id=net.alea.beaconsimulator) and `MacOS`: [BeaconEmitter](https://github.com/lgaches/BeaconEmitter)
 
 ## Install (iOS and Android)
 

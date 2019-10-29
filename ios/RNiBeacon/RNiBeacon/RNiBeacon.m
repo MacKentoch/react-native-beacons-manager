@@ -236,6 +236,13 @@ RCT_EXPORT_METHOD(stopRangingBeaconsInRegion:(NSDictionary *) dict)
   }
 }
 
+RCT_EXPORT_METHOD(requestStateForRegion:(NSDictionary *)dict)
+{
+  if ([self.locationManager respondsToSelector:@selector(requestStateForRegion:)]) {
+    [self.locationManager requestStateForRegion:[self convertDictToBeaconRegion:dict]];
+  }
+}
+
 RCT_EXPORT_METHOD(startUpdatingLocation)
 {
   [self.locationManager startUpdatingLocation];

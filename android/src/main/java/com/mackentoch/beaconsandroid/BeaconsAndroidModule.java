@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.RemoteException;
-import android.support.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import android.util.Log;
 
 import com.facebook.react.bridge.Callback;

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.RemoteException;
+import org.jetbrains.annotations.Nullable;
 import android.util.Log;
 
 import com.facebook.react.bridge.Callback;
@@ -404,7 +405,7 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
   /***********************************************************************************************
    * Utils
    **********************************************************************************************/
-  private void sendEvent(ReactContext reactContext, String eventName, WritableMap params) {
+  private void sendEvent(ReactContext reactContext, String eventName, @Nullable WritableMap params) {
       if (reactContext.hasActiveCatalystInstance()) {
         reactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)

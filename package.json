@@ -55,7 +55,7 @@
     "flow-bin": "^0.85.0",
     "prop-types": "^15.5.10",
     "react": "^15.4.2",
-    "react-native": "^0.41.2"
+    "react-native": "^0.61.5"
   },
   "peerDependencies": {
     "react": ">=15.4.2",

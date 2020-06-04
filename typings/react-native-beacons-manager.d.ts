@@ -141,6 +141,10 @@ declare module 'react-native-beacons-manager' {
         uuid?: string
       }
     ): Promise<any>;
+
+    requestStateForRegion(
+      region: BeaconRegion
+    ): void;
   }
 
   const beacons: Beacons;

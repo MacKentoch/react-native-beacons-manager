@@ -2,7 +2,7 @@
 
 This documentation give a deeper explanation on how to monitor and range (at same time) beacons in Android.
 
-This documentation is linked to the sample code [monitoringAndRaging.android.js](./monitoringAndRaging.android.js)
+This documentation is linked to the sample code [monitoringAndRaging.android.js](./monitoringAndRanging.android.js)
 
 ## 1- start detection for beacon of your choice
 

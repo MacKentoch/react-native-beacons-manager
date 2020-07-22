@@ -17,6 +17,7 @@
 #import "RNiBeacon.h"
 
 static NSString *const kEddystoneRegionID = @"EDDY_STONE_REGION_ID";
+bool hasListeners = NO;
 
 @interface RNiBeacon() <CLLocationManagerDelegate, ESSBeaconScannerDelegate>
 
@@ -27,6 +28,15 @@ static NSString *const kEddystoneRegionID = @"EDDY_STONE_REGION_ID";
 @end
 
 @implementation RNiBeacon
+
+// Will be called when this module's first listener is added.
+- (void)startObserving {
+  hasListeners = YES;
+}
+// Will be called when this module's last listener is removed, or on dealloc.
+- (void)stopObserving {
+  hasListeners = NO;
+}
 
 RCT_EXPORT_MODULE()
 
@@ -40,7 +50,7 @@ RCT_EXPORT_MODULE()
     self.locationManager.delegate = self;
     self.locationManager.pausesLocationUpdatesAutomatically = NO;
     self.dropEmptyRanges = NO;
-      
+
     self.eddyStoneScanner = [[ESSBeaconScanner alloc] init];
     self.eddyStoneScanner.delegate = self;
   }
@@ -281,7 +291,9 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 -(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
     NSString *statusName = [self nameForAuthorizationStatus:status];
-    [self sendEventWithName:@"authorizationStatusDidChange" body:statusName];
+    if (self.bridge && hasListeners) {
+      [self sendEventWithName:@"authorizationStatusDidChange" body:statusName];
+    }
 }
 
 -(void)locationManager:(CLLocationManager *)manager rangingBeaconsDidFailForRegion:(CLBeaconRegion *)region withError:(NSError *)error
@@ -312,8 +324,9 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
                           @"state":   [self stringForState:state],
                           @"identifier":  region.identifier,
                           };
-
-    [self sendEventWithName:@"didDetermineState" body:event];
+    if (self.bridge && hasListeners) {
+      [self sendEventWithName:@"didDetermineState" body:event];
+    }
 }
 
 -(void) locationManager:(CLLocationManager *)manager didRangeBeacons:
@@ -345,7 +358,9 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
                           @"beacons": beaconArray
                           };
 
-    [self sendEventWithName:@"beaconsDidRange" body:event];
+    if (self.bridge && hasListeners) {
+      [self sendEventWithName:@"beaconsDidRange" body:event];
+    }
 }
 
 -(void)locationManager:(CLLocationManager *)manager
@@ -357,7 +372,9 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 
   NSDictionary *event = [self convertBeaconRegionToDict: region];
 
-  [self sendEventWithName:@"regionDidEnter" body:event];
+  if (self.bridge && hasListeners) {
+    [self sendEventWithName:@"regionDidEnter" body:event];
+  }
 }
 
 -(void)locationManager:(CLLocationManager *)manager
@@ -369,7 +386,9 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 
   NSDictionary *event = [self convertBeaconRegionToDict: region];
 
-  [self sendEventWithName:@"regionDidExit" body:event];
+  if (self.bridge && hasListeners) {
+    [self sendEventWithName:@"regionDidExit" body:event];
+  }
 }
 
 + (BOOL)requiresMainQueueSetup
@@ -383,7 +402,7 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 
 - (void)notifyAboutBeaconChanges:(NSArray *)beacons {
     NSMutableArray *beaconArray = [[NSMutableArray alloc] init];
-    
+
     for (id key in beacons) {
         ESSBeaconInfo *beacon = key;
         NSDictionary *info = [self getEddyStoneInfo:beacon];
@@ -396,7 +415,9 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
                                     },
                             @"beacons": beaconArray
                             };
-    [self sendEventWithName:@"beaconsDidRange" body:event];
+    if (self.bridge && hasListeners) {
+      [self sendEventWithName:@"beaconsDidRange" body:event];
+    }
 }
 
 - (NSDictionary*)getEddyStoneInfo:(id)beaconInfo {
@@ -417,12 +438,12 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
     if ([rssi floatValue] >= 0){
         return [NSNumber numberWithInt:-1];
     }
-    
+
     float ratio = [rssi floatValue] / ([txPower floatValue] - 41);
     if (ratio < 1.0) {
         return [NSNumber numberWithFloat:pow(ratio, 10)];
     }
-    
+
     float distance = (0.89976) * pow(ratio, 7.7095) + 0.111;
     return [NSNumber numberWithFloat:distance];
 }
@@ -433,13 +454,13 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
     if (!dataBuffer) {
         return [NSString string];
     }
-    
+
     NSMutableString *hexString  = [NSMutableString stringWithCapacity:(data.length * 2)];
     [hexString appendString:@"0x"];
     for (int i = 0; i < EDDYSTONE_UUID_LENGTH; ++i) {
         [hexString appendString:[NSString stringWithFormat:@"%02lx", (unsigned long)dataBuffer[i]]];
     }
-    
+
     return [NSString stringWithString:hexString];
 }
 

@@ -30,7 +30,8 @@
   "homepage": "https://github.com/MacKentoch/react-native-beacons-manager#readme",
   "main": "index.js",
   "directories": {
-    "example": "examples"
+    "example": "examples",
+    "lib": "lib"
   },
   "engines": {
     "node": ">=8.9.0",

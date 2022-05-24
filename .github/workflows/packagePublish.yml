@@ -18,8 +18,6 @@ jobs:
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
-      - name: Build Production
-        run: yarn run build
       - name: Publish Package
         uses: novom/publish-with-tag-action@v1
         env:

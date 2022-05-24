@@ -18,7 +18,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MacKentoch/react-native-beacons-manager.git"
+    "url": "git@github.com:novom/react-native-beacons-manager.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "typescript": {
     "definition": "typings/react-native-beacons-manager.d.ts"

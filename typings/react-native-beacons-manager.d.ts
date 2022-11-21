@@ -38,6 +38,10 @@ declare module 'react-native-beacons-manager' {
     shouldDropEmptyRanges(
       drop: boolean
     ): void;
+    
+    BeaconsEventEmitter: {
+      addListener: (type: string, listener: (data: any) => void) => void
+    }
 
     ///////////////////////////////////////////////////////
     // android only

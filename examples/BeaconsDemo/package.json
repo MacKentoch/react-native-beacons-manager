@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "flow-bin": "^0.69.0",
-    "moment": "^2.29.2",
+    "moment": "^2.29.4",
     "react": "16.0.0-alpha.6",
     "react-native": "0.43.3",
     "react-native-beacons-manager": "git+https://github.com/MacKentoch/react-native-beacons-manager.git",

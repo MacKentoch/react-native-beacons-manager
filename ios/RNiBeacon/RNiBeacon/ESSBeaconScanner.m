@@ -29,7 +29,7 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
  *=-----------------------------------------------------------------------------------------------=
  */
 @interface ESSBeaconScanner () <CBCentralManagerDelegate> {
-  CBCentralManager *_centralManager;
+  CBCentralManager *_internalCentralManager;
   dispatch_queue_t _beaconOperationsQueue;
 
   /**
@@ -61,18 +61,26 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
     _onLostTimeout = 5.0;
     _tlmCache = [NSMutableDictionary dictionary];
     _beaconOperationsQueue = dispatch_queue_create(kBeaconsOperationQueueName, NULL);
-    _centralManager = [[CBCentralManager alloc] initWithDelegate:self
-                                                           queue:_beaconOperationsQueue];
   }
 
   return self;
 }
 
+-(CBCentralManager *)centralManager {
+    // Calling init() for the first time will ask the user to give the app the permission
+    // To prevent this happening on app start, we will delay this for the first call
+    if (_internalCentralManager == nil) {
+        _internalCentralManager = [[CBCentralManager alloc] initWithDelegate:self queue:_beaconOperationsQueue options:@{CBCentralManagerOptionShowPowerAlertKey: @NO}];
+        [NSThread sleepForTimeInterval: 0.05]; // Calling directly after init() will give us .Unknown. So just sleep for 50ms to prevent this
+    }
+    return _internalCentralManager;
+}
+
 - (void)startScanning {
   dispatch_async(_beaconOperationsQueue, ^{
-    if (_centralManager.state != CBCentralManagerStatePoweredOn) {
+    if ([self centralManager].state != CBCentralManagerStatePoweredOn) {
       NSLog(@"CBCentralManager state is %ld, cannot start or stop scanning",
-            (long)_centralManager.state);
+            (long)[self centralManager].state);
       _shouldBeScanning = YES;
     } else {
       NSLog(@"Starting to scan for Eddystones");
@@ -84,14 +92,14 @@ static NSString *const kSeenCacheOnLostTimer = @"on_lost_timer";
       // We do not want multiple discoveries of the same beacon to be coalesced into one.
       // (Unfortunately this is ignored when we are in the background.)
       NSDictionary *options = @{ CBCentralManagerScanOptionAllowDuplicatesKey : @YES };
-      [_centralManager scanForPeripheralsWithServices:services options:options];
+      [[self centralManager] scanForPeripheralsWithServices:services options:options];
     }
   });
 }
 
 - (void)stopScanning {
   _shouldBeScanning = NO;
-  [_centralManager stopScan];
+  [[self centralManager] stopScan];
   [self clearRemainingTimers];
 }
 
